@@ -1,0 +1,131 @@
+﻿using OpenTK.Graphics.OpenGL;
+using System;
+using System.Drawing;
+using System.Collections.Generic;
+using System.IO;
+using SudoEngine.Core;
+using SudoEngine.Maths;
+
+namespace SudoEngine.Render
+{
+    public sealed class Texture : BaseObject
+    {
+        public int Handle { get; private set; }
+        public Vector2D Size { get; set; }
+        public int Width
+        {
+            get => (int)Size.X;
+            set => Size = new Vector2D(value, Height);
+        }
+
+        public int Height
+        {
+            get => (int)Size.Y;
+            set => Size = new Vector2D(Width, value);
+        }
+
+        public byte[] Data { get; set; }
+        public TextureMagFilter Upscaling { get; set; } = TextureMagFilter.Nearest;
+
+        public static List<Texture> AllTextures { get; set; } = new List<Texture>();
+
+        public Texture() : base() => AllTextures.Add(this);
+        public Texture(string name) : base(name) => AllTextures.Add(this);
+
+        public void Dispose()
+        {
+            Delete();
+            AllTextures.Remove(this);
+            GL.DeleteTexture(Handle);
+        }
+
+        public static void DisposeAll() { for (int i = 0; i < AllTextures.Count; i++) if (AllTextures[i] != null) AllTextures[i].Dispose(); }
+
+        public void Bind(TextureTarget textureTarget) => GL.BindTexture(textureTarget, Handle);
+
+        public static void UnBind() => GL.BindTexture(TextureTarget.Texture2D, 0);
+
+        public void LoadFromFile(string path, bool isAtlas)
+        {
+            if (!File.Exists("Textures/" + path))
+            {
+                Log.Error($"Le fichier pour la texture n'existe pas : {path}");
+                return;
+            }
+
+            Bitmap image = new Bitmap("Textures/" + path);
+            image.RotateFlip(RotateFlipType.Rotate180FlipX);
+            List<byte> pixels = new List<byte>(4 * image.Width * image.Height);
+
+            for (int x = 0; x < image.Height; x++)
+            {
+                for (int y = 0; y < image.Width; y++)
+                {
+                    pixels.Add(image.GetPixel(y, x).R);
+                    pixels.Add(image.GetPixel(y, x).G);
+                    pixels.Add(image.GetPixel(y, x).B);
+                    pixels.Add(image.GetPixel(y, x).A);
+                }
+            }
+
+            Size = new Vector2D(image.Width, image.Height);
+            Data = pixels.ToArray();
+
+            if (isAtlas) GenerateAtlas();
+            else Generate();
+        }
+
+        public void LoadFromBitmap(Bitmap image, bool isAtlas)
+        {
+            image.RotateFlip(RotateFlipType.Rotate180FlipX);
+            List<byte> pixels = new List<byte>(4 * image.Width * image.Height);
+
+            for (int x = 0; x < image.Height; x++)
+            {
+                for (int y = 0; y < image.Width; y++)
+                {
+                    pixels.Add(image.GetPixel(y, x).R);
+                    pixels.Add(image.GetPixel(y, x).G);
+                    pixels.Add(image.GetPixel(y, x).B);
+                    pixels.Add(image.GetPixel(y, x).A);
+                }
+            }
+
+            Size = new Vector2D(image.Width, image.Height);
+            Data = pixels.ToArray();
+
+            if (isAtlas) GenerateAtlas();
+            else Generate();
+        }
+
+        void Generate()
+        {
+            Handle = GL.GenTexture();
+            Bind(TextureTarget.Texture2D);
+
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, Data);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (float)TextureWrapMode.ClampToBorder);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (float)TextureWrapMode.ClampToBorder);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)Upscaling);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)Upscaling);
+
+            UnBind();
+        }
+
+        void GenerateAtlas()
+        {
+            Handle = GL.GenTexture();
+            Bind(TextureTarget.Texture2DArray);
+
+            GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, Width, Height, 0, 0, PixelFormat.Rgba, PixelType.UnsignedInt, Data);
+
+            GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureWrapS, (float)TextureWrapMode.ClampToBorder);
+            GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureWrapT, (float)TextureWrapMode.ClampToBorder);
+            GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Nearest);
+            
+            UnBind();
+        }
+    }
+}
