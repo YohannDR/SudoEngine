@@ -89,14 +89,17 @@ namespace SudoEngine.Render
                 -1 + (float)Width * 2, 1 - (float)Height * 2, 0.0f, 1.0f, 0.0f
             };
             Vertices = _vertices;
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(float), Vertices, BufferUsageHint.StaticDraw);
         }
 
         public void Bind()
         {
             Shader.Use();
             GFX.Bind(TextureTarget.Texture2D);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(float), Vertices, BufferUsageHint.StaticDraw);
+
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
         }
 
         public void Dispose()
