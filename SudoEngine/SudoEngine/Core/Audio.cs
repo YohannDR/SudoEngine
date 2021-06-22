@@ -72,7 +72,7 @@ namespace SudoEngine.Core
 
             byte[] waveBytes = { buffer[8], buffer[9], buffer[10], buffer[11] };
 
-            byte[] dataBytes = { buffer[36], buffer[37], buffer[38], buffer[39] };
+            byte[] dataBytes = { buffer[36], buffer[37], buffer[38], buffer[39], };
 
             if (Encoding.ASCII.GetString(riffBytes) != "RIFF" || Encoding.ASCII.GetString(waveBytes) != "WAVE" || Encoding.ASCII.GetString(dataBytes) != "data")
             {

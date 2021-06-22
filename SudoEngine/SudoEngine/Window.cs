@@ -8,6 +8,7 @@ using SudoEngine.Maths;
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace SudoEngine
 {
@@ -30,7 +31,7 @@ namespace SudoEngine
         Texture texture3;
         Texture texture4;
 
-        Audio Audio = new Audio();
+        readonly Audio Audio = new Audio();
         Sound sound;
 
         protected override void OnLoad(EventArgs e)
@@ -44,53 +45,35 @@ namespace SudoEngine
             shader.LoadFromFile("shaderTexture.vert", "shaderTexture.frag", null);
             camera.Shader = shader;
             texture0 = new Texture("TextureTest");
-            texture0.LoadFromFile("sec2_BG3.png", false);
+            texture0.LoadFromFile("sec2_BG3.png");
             texture1 = new Texture("TextureTest");
-            texture1.LoadFromFile("sec6_caves.png", false);
+            texture1.LoadFromFile("sec6_caves.png");
             texture2 = new Texture("TextureTest");
-            texture2.LoadFromFile("sec6_caves.png", false);
+            texture2.LoadFromFile("sec6_caves.png");
             texture3 = new Texture("TextureTest");
-            texture3.LoadFromFile("sec6_caves.png", false);
+            texture3.LoadFromFile("sec6_caves.png");
             texture4 = new Texture("TextureTest");
-            texture4.LoadFromFile("sec6_caves.png", false);
-            
+            texture4.LoadFromFile("sec6_caves.png");
+
             BackGround.CreateList();
-            BG0 = new BackGround(Layer.BackGround, shader, texture0, new Vector2D(0.3, 0.2), "bgTest0");
+            //BG0 = new BackGround("bgTest");
+            //BG0.Generate(Layer.BackGround, shader, texture0, new Vector2D(0.3, 0.2));
             //BG1 = new BackGround(Layer.CloseBackGround, shader, texture1, new Vector2D(1, 1), "bgTest1");
-            BG2 = new BackGround(Layer.PlayerLayer, shader, texture0, new Vector2D(1, 1), "bgTest0");
+            BG2 = new BackGround("bgTest2");
+            //BG0.Generate(Layer.PlayerLayer, shader, texture0, new Vector2D(1, 1));
             int[,] a = new int[,]
             {
-                {178, 100, 101, 102, 103, 98, 99, 102, 343, 138, 139, 140, 140, 140, 140},
-                {194, 0, 0, 0, 0, 0, 0, 0, 359, 343, 156, 153, 140, 140, 140},
-                {129, 0, 0, 0, 0, 0, 0, 0, 0, 359, 343, 156, 141, 140, 140},
-                {145, 0, 0, 0, 0, 0, 0, 0, 0, 0, 359, 343, 157, 155, 140},
-                {161, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 359, 180, 137, 140},
-                {177, 0, 0, 0, 266, 0, 0, 0, 0, 0, 0, 0, 160, 152, 140},
-                {97, 0, 0, 0, 282, 0, 0, 0, 0, 0, 0, 0, 176, 158, 136},
-                {113, 0, 0, 0, 298, 0, 0, 0, 0, 0, 0, 0, 162, 98, 99},
-                {210, 118, 119, 131, 116, 117, 114, 115, 105, 0, 0, 0, 0, 0, 0},
-                {142, 152, 136, 138, 139, 153, 137, 143, 121, 118, 119, 114, 115, 116, 117}
+                {0, 3, 2},
+                {3, 4, 5},
+                {6, 7, 8}
             };
-            int[,] b = new int[,]
-            {
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 280, 281, 288, 289, 281, 290, 329, 293, 0, 0, 0, 0, 0, 0},
-                {0, 281, 280, 304, 305, 280, 0,  345, 309, 330, 0, 0, 0, 0, 0},
-                {0, 279, 279, 0, 0, 279, 231, 232, 233, 346, 300, 0, 0, 0, 0},
-                {0, 295, 280, 0, 0, 280, 0, 248, 0, 0, 252, 0, 0, 0, 0},
-                {0, 0, 296, 0, 0, 281, 0, 248, 0, 173, 174, 175, 0, 0, 0},
-                {0, 257, 258, 259, 0, 295, 262, 248, 0, 189, 190, 191, 0, 0, 0},
-                {0, 273, 274, 275, 0, 245, 278, 264, 224, 205, 206, 207, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 240, 221, 222, 223, 0, 291, 277},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-            };
-            //BG1.Generate(b, new Bitmap("Textures/0.png"));
-            BG2.Generate(a, new Bitmap("Textures/0.png"));
+
+            BG2.Generate(Layer.PlayerLayer, shader, a, new Bitmap("Textures/TestAtlas2.png"));
             //BG3 = new BackGround(Layer.CloseForeGround, shader, texture3, new Vector2D(1, 1), "bgTest3");
             //BG4 = new BackGround(Layer.ForeGround, shader, texture4, new Vector2D(1, 1), "bgTest4");
 
             Audio.Init();
-            
+
             sound = new Sound("test");
             sound.LoadFromFile("test3");
             IList<string> deviceList = Audio.DeviceList();
@@ -98,7 +81,7 @@ namespace SudoEngine
             //sound.Play();
 
             //foreach (DisplayIndex displayIndex in Enum.GetValues(typeof(DisplayIndex))) if (DisplayDevice.GetDisplay(displayIndex) != null && (int)displayIndex != -1) Log.Info($"Écran n°{(int)displayIndex} connecté");
-            
+
             /*Log.Info($"A : {GamePad.GetCapabilities(1).HasAButton}");
             Log.Info($"B : {GamePad.GetCapabilities(1).HasBButton}");
             Log.Info($"X : {GamePad.GetCapabilities(1).HasXButton}");
@@ -126,8 +109,9 @@ namespace SudoEngine
             Log.Info($"Mapped : {GamePad.GetCapabilities(1).IsMapped}");
             Log.Info($"Connected : {GamePad.GetCapabilities(1).IsConnected}");*/
 
-            GamePad.SetVibration(1, 1, 1);
-
+            //GamePad.SetVibration(1, 1, 1);
+            //for (int i = 0; i < BG2.GFX.Data.Length; i++) Log.Info(BG2.GFX.Data[i]);
+            //Log.Info(BG2.GFX.Data.Length);
             base.OnLoad(e);
         }
 
@@ -135,22 +119,19 @@ namespace SudoEngine
         {
             if (Keyboard.GetState().IsAnyKeyDown)
             {
-                if (Keyboard.GetState().IsKeyDown(Key.Keypad0) && BG0 != null) BG0.Visible = !BG0.Visible;
+                /*if (Keyboard.GetState().IsKeyDown(Key.Keypad0) && BG0 != null) BG0.Visible = !BG0.Visible;
                 if (Keyboard.GetState().IsKeyDown(Key.Keypad1) && BG1 != null) BG1.Visible = !BG1.Visible;
                 if (Keyboard.GetState().IsKeyDown(Key.Keypad2) && BG2 != null) BG2.Visible = !BG2.Visible;
                 if (Keyboard.GetState().IsKeyDown(Key.Keypad3) && BG3 != null) BG3.Visible = !BG3.Visible;
-                if (Keyboard.GetState().IsKeyDown(Key.Keypad4) && BG4 != null) BG4.Visible = !BG4.Visible;
+                if (Keyboard.GetState().IsKeyDown(Key.Keypad4) && BG4 != null) BG4.Visible = !BG4.Visible;*/
 
                 shader.SetAttribute("MoveX", Keyboard.GetState().IsKeyDown(Key.Right));
 
                 if (Keyboard.GetState().IsKeyDown(Key.ShiftLeft)) shader.SetAttribute("camera", true);
                 if (Keyboard.GetState().IsKeyDown(Key.ShiftRight)) shader.SetAttribute("camera", false);
-
-                if (Keyboard.GetState().IsKeyDown(Key.KeypadPlus)) WindowState = WindowState.Fullscreen;
-                if (Keyboard.GetState().IsKeyDown(Key.KeypadMinus)) WindowState = WindowState.Normal;
             }
 
-            // Log.Info($"{(1.0D / e.Time):F0} FPS");
+            //Log.Info($"{(1.0D / e.Time):F0} FPS");
 
             base.OnUpdateFrame(e);
         }
@@ -168,7 +149,7 @@ namespace SudoEngine
 
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
-            
+            if ((int)e.Key > 66 && (int)e.Key < 76) BG2.DeleteTile((int)e.Key - 67);
             if (e.Key == Key.Escape) Exit();
             if (e.Alt && e.Key == Key.F4) Exit();
 
@@ -183,7 +164,7 @@ namespace SudoEngine
             Shader.DisposeAll();
             BackGround.DisposeAll();
             Audio.Dispose();
-            
+
             base.OnUnload(e);
         }
 
