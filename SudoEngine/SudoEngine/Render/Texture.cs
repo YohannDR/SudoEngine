@@ -33,14 +33,14 @@ namespace SudoEngine.Render
         public Texture() : base() => AllTextures.Add(this);
         public Texture(string name) : base(name) => AllTextures.Add(this);
 
-        public void Dispose()
+        public override void Delete()
         {
-            Delete();
             AllTextures.Remove(this);
             GL.DeleteTexture(Handle);
+            base.Delete();
         }
 
-        public static void DisposeAll() { for (int i = 0; i < AllTextures.Count; i++) if (AllTextures[i] != null) AllTextures[i].Dispose(); }
+        public static void DeleteAll() { for (int i = 0; i < AllTextures.Count; i++) if (AllTextures[i] != null) AllTextures[i].Delete(); }
 
         public void Bind(TextureTarget textureTarget) => GL.BindTexture(textureTarget, Handle);
 

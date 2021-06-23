@@ -60,22 +60,6 @@ namespace SudoEngine.Render
         public BackGround(string name) : base(name) { }
 
 
-        void CalculateVertices()
-        {
-            float[] _vertices =
-            {
-                /*(float)Width, (float)Height, 0.0f, 1.0f, 1.0f,
-               -(float)Width, (float)Height, 0.0f, 0.0f, 1.0f,
-               -(float)Width, -(float)Height, 0.0f, 0.0f, 0.0f,
-                (float)Width, -(float)Height, 0.0f, 1.0f, 0.0f*/
-                -1 + (float)Width * 2, 1, 0.0f, 1.0f, 1.0f,
-                -1, 1, 0.0f, 0.0f, 1.0f,
-                -1, 1 - (float)Height * 2, 0.0f, 0.0f, 0.0f,
-                -1 + (float)Width * 2, 1 - (float)Height * 2, 0.0f, 1.0f, 0.0f
-            };
-            Vertices = _vertices;
-        }
-
         public void Bind()
         {
             Shader.Use();
@@ -86,21 +70,20 @@ namespace SudoEngine.Render
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
         }
-
-        public void Dispose()
+        public override void Delete()
         {
-            Delete();
-            GFX.Dispose();
-            Shader.Dispose();
+            GFX.Delete();
+            Shader.Delete();
             GL.DeleteBuffer(VBO);
             GL.DeleteVertexArray(VAO);
             GL.DeleteBuffer(EBO);
             AllBackGrounds[(int)BGType] = null;
+            base.Delete();
         }
 
         public void Render()
         {
-            if (Visible)
+            if (Visible && Transparency != 1)
             {
                 Bind();
                 Shader.SetAttribute("layer", (int)BGType);
@@ -210,8 +193,19 @@ namespace SudoEngine.Render
             return index;
         }
 
+        void CalculateVertices()
+        {
+            Vertices = new float[]
+            {
+                -1 + (float)Width * 2, 1, 0.0f, 1.0f, 1.0f,
+                -1, 1, 0.0f, 0.0f, 1.0f,
+                -1, 1 - (float)Height * 2, 0.0f, 0.0f, 0.0f,
+                -1 + (float)Width * 2, 1 - (float)Height * 2, 0.0f, 1.0f, 0.0f
+            };
+        }
+
         public static void RenderAll() { foreach (BackGround bg in AllBackGrounds) if (bg != null) bg.Render(); }
-        public static void DisposeAll() { for (int i = 0; i < 5; i++) if (AllBackGrounds[i] != null) AllBackGrounds[i].Dispose(); }
+        public static void DeleteAll() { for (int i = 0; i < 5; i++) if (AllBackGrounds[i] != null) AllBackGrounds[i].Delete(); }
         public static void CreateList() { for (int i = 0; i < 5; i++) AllBackGrounds.Add(null); }
     }
 }

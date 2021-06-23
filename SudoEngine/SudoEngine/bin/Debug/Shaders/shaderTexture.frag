@@ -24,5 +24,5 @@ void main()
         outputColor = vec4(result, texture2D(texture0, texCoord).a);
     }
     else outputColor = texture2D(texture0, texCoord);
-    if (outputColor.a < 0.1) discard;
+    //if (outputColor.a < 0.1) discard;
 }

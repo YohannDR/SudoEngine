@@ -47,12 +47,12 @@ namespace SudoEngine.Core
 
         public void Pause() => AL.SourcePause(Source);
 
-        public void Dispose()
+        public override void Delete()
         {
-            Delete();
             AllSounds.Remove(this);
             AL.DeleteBuffer(Handle);
             AL.DeleteSource(Source);
+            base.Delete();
         }
 
         public void LoadFromFile(string path)
@@ -105,6 +105,8 @@ namespace SudoEngine.Core
 
             Generate(data);
         }
+
+        public static void DeleteAll() { for (int i =0;i < AllSounds.Count; i++) if (AllSounds[i] != null) AllSounds[i].Delete(); }
     }
 
     public sealed class Music : BaseObject
@@ -131,12 +133,12 @@ namespace SudoEngine.Core
         public void Play() => AL.SourcePlay(Source);
         public void Pause() => AL.SourcePause(Source);
 
-        public void Dispose()
+        public override void Delete()
         {
-            Delete();
             AllMusics.Remove(this);
             AL.DeleteBuffer(Handle);
             AL.DeleteSource(Source);
+            base.Delete();
         }
 
         public void LoadFromFile(string path)
@@ -199,7 +201,7 @@ namespace SudoEngine.Core
 
         public IList<string> DeviceList() => Alc.GetString((IntPtr)null, AlcGetStringList.AllDevicesSpecifier);
 
-        public void Dispose()
+        public void Delete()
         {
             Alc.MakeContextCurrent(ContextHandle.Zero);
             Alc.DestroyContext(Context);

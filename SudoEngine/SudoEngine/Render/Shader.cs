@@ -59,14 +59,14 @@ namespace SudoEngine.Render
 
         public void Use() => GL.UseProgram(Handle);
 
-        public void Dispose()
+        public override void Delete()
         {
-            Delete();
             AllShaders.Remove(this);
             GL.DeleteProgram(Handle);
+            base.Delete();
         }
 
-        public static void DisposeAll() { for (int i = 0; i < AllShaders.Count; i++) if (AllShaders[i] != null) AllShaders[i].Dispose(); }
+        public static void DeleteAll() { for (int i = 0; i < AllShaders.Count; i++) if (AllShaders[i] != null) AllShaders[i].Delete(); }
 
         public void SetAttribute(string name, object value)
         {

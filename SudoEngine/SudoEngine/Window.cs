@@ -8,7 +8,7 @@ using SudoEngine.Maths;
 using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Diagnostics;
 
 namespace SudoEngine
 {
@@ -18,6 +18,8 @@ namespace SudoEngine
 
         readonly Camera camera = new Camera("Main");
         Shader shader;
+
+        Stopwatch a = new Stopwatch();
 
         BackGround BG0;
         BackGround BG1;
@@ -39,7 +41,7 @@ namespace SudoEngine
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             GL.Enable(EnableCap.Fog);
             GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcColor);
             shader = new Shader("Shader");
 
             shader.LoadFromFile("shaderTexture.vert", "shaderTexture.frag", null);
@@ -61,14 +63,14 @@ namespace SudoEngine
             //BG1 = new BackGround(Layer.CloseBackGround, shader, texture1, new Vector2D(1, 1), "bgTest1");
             BG2 = new BackGround("bgTest2");
             //BG0.Generate(Layer.PlayerLayer, shader, texture0, new Vector2D(1, 1));
-            int[,] a = new int[,]
+            int[,] b = new int[,]
             {
-                {0, 3, 2},
+                {0, 1, 2},
                 {3, 4, 5},
                 {6, 7, 8}
             };
 
-            BG2.Generate(Layer.PlayerLayer, shader, a, new Bitmap("Textures/TestAtlas2.png"));
+            BG2.Generate(Layer.PlayerLayer, shader, b, new Bitmap("Textures/TestAtlas2.png"));
             //BG3 = new BackGround(Layer.CloseForeGround, shader, texture3, new Vector2D(1, 1), "bgTest3");
             //BG4 = new BackGround(Layer.ForeGround, shader, texture4, new Vector2D(1, 1), "bgTest4");
 
@@ -160,10 +162,11 @@ namespace SudoEngine
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 
-            Texture.DisposeAll();
-            Shader.DisposeAll();
-            BackGround.DisposeAll();
-            Audio.Dispose();
+            Texture.DeleteAll();
+            Shader.DeleteAll();
+            BackGround.DeleteAll();
+            Sound.DeleteAll();
+            Audio.Delete();
 
             base.OnUnload(e);
         }

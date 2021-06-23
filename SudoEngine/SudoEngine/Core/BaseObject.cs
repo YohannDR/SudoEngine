@@ -2,7 +2,7 @@
 
 namespace SudoEngine.Core
 {
-    public class BaseObject
+    public abstract class BaseObject
     {
         public string Name { get; private set; } = "BaseObject";
         public Guid ID { get; private set; }

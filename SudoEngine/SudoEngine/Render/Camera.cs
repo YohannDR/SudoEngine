@@ -46,12 +46,11 @@ namespace SudoEngine.Render
         {
             Use();
         }
-
-        public void Dispose()
+        public override void Delete()
         {
-            Delete();
             AllCameras.Remove(this);
             if (this == Main) Main = null;
+            base.Delete();
         }
     }
 }
