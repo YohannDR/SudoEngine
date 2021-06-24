@@ -104,7 +104,7 @@ namespace SudoEngine.Render
             InitGL();
         }
 
-        public void Generate(Layer layer, Shader shader, int[,] data, Bitmap tileset)
+        public unsafe void Generate(Layer layer, Shader shader, int[,] data, Bitmap tileset)
         {
             BGType = layer;
             Shader = shader;
@@ -148,7 +148,7 @@ namespace SudoEngine.Render
         public void DeleteTile(int index)
         {
             int tilePerRow = GFX.Width / 32;
-            Log.Info(convertIndex(index));
+            Log.Info(ConvertIndex(index));
             Log.Info(12 / 2);
             int row = index / tilePerRow;
             byte[] data = GFX.Data;
@@ -186,7 +186,7 @@ namespace SudoEngine.Render
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
         }
 
-        int convertIndex(int index)
+        int ConvertIndex(int index)
         {
             int tilePerRow = GFX.Width / 32;
             int tilePerColumn = GFX.Height / 32;
