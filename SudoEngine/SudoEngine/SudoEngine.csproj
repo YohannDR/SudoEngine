@@ -74,6 +74,7 @@
     <Compile Include="Core\BaseObject.cs" />
     <Compile Include="Core\GameObject.cs" />
     <Compile Include="Core\Log.cs" />
+    <Compile Include="Core\Module.cs" />
     <Compile Include="Maths\FMath.cs" />
     <Compile Include="Maths\Matrix4D.cs" />
     <Compile Include="Maths\Quaternion.cs" />

@@ -3,12 +3,12 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using SudoEngine.Core;
-using SudoEngine.Render;
 using SudoEngine.Maths;
+using SudoEngine.Render;
 using System;
-using System.Drawing;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace SudoEngine
 {
@@ -41,21 +41,10 @@ namespace SudoEngine
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             GL.Enable(EnableCap.Fog);
             GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcColor);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             shader = new Shader("Shader");
 
             shader.LoadFromFile("shaderTexture.vert", "shaderTexture.frag", null);
-            camera.Shader = shader;
-            texture0 = new Texture("TextureTest");
-            texture0.LoadFromFile("sec2_BG3.png");
-            texture1 = new Texture("TextureTest");
-            texture1.LoadFromFile("sec6_caves.png");
-            texture2 = new Texture("TextureTest");
-            texture2.LoadFromFile("sec6_caves.png");
-            texture3 = new Texture("TextureTest");
-            texture3.LoadFromFile("sec6_caves.png");
-            texture4 = new Texture("TextureTest");
-            texture4.LoadFromFile("sec6_caves.png");
 
             BackGround.CreateList();
             //BG0 = new BackGround("bgTest");
@@ -69,8 +58,9 @@ namespace SudoEngine
                 {3, 4, 5},
                 {6, 7, 8}
             };
-
-            BG2.Generate(Layer.PlayerLayer, shader, b, new Bitmap("Textures/TestAtlas2.png"));
+            
+            BG2.Generate(Layer.PlayerLayer , shader, b, new Bitmap("Textures/TestAtlas2.png"));
+          
             //BG3 = new BackGround(Layer.CloseForeGround, shader, texture3, new Vector2D(1, 1), "bgTest3");
             //BG4 = new BackGround(Layer.ForeGround, shader, texture4, new Vector2D(1, 1), "bgTest4");
 
@@ -115,6 +105,7 @@ namespace SudoEngine
             //for (int i = 0; i < BG2.GFX.Data.Length; i++) Log.Info(BG2.GFX.Data[i]);
             //Log.Info(BG2.GFX.Data.Length);
             base.OnLoad(e);
+
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -141,7 +132,6 @@ namespace SudoEngine
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            camera.Use();
 
             BackGround.RenderAll();
 
@@ -175,6 +165,26 @@ namespace SudoEngine
         {
             GL.Viewport(0, 0, Width, Height);
             base.OnResize(e);
+        }
+
+        void TestPointer(Particle p)
+        {
+            p.Position = new Vector2D(0);
+            p.Velocity = new Vector2D(0);
+            p.Color = new Vector4D(0);
+            p.Age = 1;
+            p.LifeTime = 1;
+        }
+
+        unsafe void TestPointer(Particle* p)
+        {
+            Particle p2 = *p;
+            p2.Position = new Vector2D(0);
+            p2.Velocity = new Vector2D(0);
+            p2.Color = new Vector4D(0);
+            p2.Age = 1;
+            p2.LifeTime = 1;
+            *p = p2;
         }
     }
 }
