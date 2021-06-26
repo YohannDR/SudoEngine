@@ -43,8 +43,10 @@ namespace SudoEngine
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             shader = new Shader("Shader");
-
             shader.LoadFromFile("shaderTexture.vert", "shaderTexture.frag", null);
+
+            texture0 = new Texture();
+            texture0.LoadFromFile("testAtlas2.png");
 
             BackGround.CreateList();
             //BG0 = new BackGround("bgTest");
@@ -58,9 +60,9 @@ namespace SudoEngine
                 {3, 4, 5},
                 {6, 7, 8}
             };
-            
-            BG2.Generate(Layer.PlayerLayer , shader, b, new Bitmap("Textures/TestAtlas2.png"));
-          
+
+            //BG2.Generate(Layer.PlayerLayer , shader, b, new Bitmap("Textures/TestAtlas2.png"));
+            BG2.Generate(Layer.PlayerLayer, shader, texture0, new Vector2D(0));
             //BG3 = new BackGround(Layer.CloseForeGround, shader, texture3, new Vector2D(1, 1), "bgTest3");
             //BG4 = new BackGround(Layer.ForeGround, shader, texture4, new Vector2D(1, 1), "bgTest4");
 
@@ -74,7 +76,7 @@ namespace SudoEngine
 
             //foreach (DisplayIndex displayIndex in Enum.GetValues(typeof(DisplayIndex))) if (DisplayDevice.GetDisplay(displayIndex) != null && (int)displayIndex != -1) Log.Info($"Écran n°{(int)displayIndex} connecté");
 
-            /*Log.Info($"A : {GamePad.GetCapabilities(1).HasAButton}");
+            Log.Info($"A : {GamePad.GetCapabilities(1).HasAButton}");
             Log.Info($"B : {GamePad.GetCapabilities(1).HasBButton}");
             Log.Info($"X : {GamePad.GetCapabilities(1).HasXButton}");
             Log.Info($"Y : {GamePad.GetCapabilities(1).HasYButton}");
@@ -99,11 +101,12 @@ namespace SudoEngine
             Log.Info($"Start : {GamePad.GetCapabilities(1).HasStartButton}");
             Log.Info($"Voice : {GamePad.GetCapabilities(1).HasVoiceSupport}");
             Log.Info($"Mapped : {GamePad.GetCapabilities(1).IsMapped}");
-            Log.Info($"Connected : {GamePad.GetCapabilities(1).IsConnected}");*/
+            Log.Info($"Connected : {GamePad.GetCapabilities(1).IsConnected}");
 
             //GamePad.SetVibration(1, 1, 1);
             //for (int i = 0; i < BG2.GFX.Data.Length; i++) Log.Info(BG2.GFX.Data[i]);
             //Log.Info(BG2.GFX.Data.Length);
+
             base.OnLoad(e);
 
         }
@@ -112,11 +115,11 @@ namespace SudoEngine
         {
             if (Keyboard.GetState().IsAnyKeyDown)
             {
-                /*if (Keyboard.GetState().IsKeyDown(Key.Keypad0) && BG0 != null) BG0.Visible = !BG0.Visible;
+                if (Keyboard.GetState().IsKeyDown(Key.Keypad0) && BG0 != null) BG0.Visible = !BG0.Visible;
                 if (Keyboard.GetState().IsKeyDown(Key.Keypad1) && BG1 != null) BG1.Visible = !BG1.Visible;
                 if (Keyboard.GetState().IsKeyDown(Key.Keypad2) && BG2 != null) BG2.Visible = !BG2.Visible;
                 if (Keyboard.GetState().IsKeyDown(Key.Keypad3) && BG3 != null) BG3.Visible = !BG3.Visible;
-                if (Keyboard.GetState().IsKeyDown(Key.Keypad4) && BG4 != null) BG4.Visible = !BG4.Visible;*/
+                if (Keyboard.GetState().IsKeyDown(Key.Keypad4) && BG4 != null) BG4.Visible = !BG4.Visible;
 
                 shader.SetAttribute("MoveX", Keyboard.GetState().IsKeyDown(Key.Right));
 

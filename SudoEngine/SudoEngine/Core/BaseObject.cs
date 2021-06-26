@@ -19,7 +19,7 @@ namespace SudoEngine.Core
 
         public virtual void Delete() => Deleted = true;
 
-        public virtual void SetEnable(bool status) => Enabled = status;
+        protected internal virtual void SetEnable(bool status) => Enabled = status;
 
         public override string ToString() => $"{Name} de type {GetType().Name}";
         public override bool Equals(object obj) => obj is BaseObject;

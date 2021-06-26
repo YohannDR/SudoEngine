@@ -1,5 +1,5 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Collections.Generic;
 using System.IO;
@@ -71,6 +71,7 @@ namespace SudoEngine.Render
 
             Size = new Vector2D(image.Width, image.Height);
             Data = pixels.ToArray();
+            Image = image;
             Generate();
         }
 
