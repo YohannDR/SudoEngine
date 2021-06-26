@@ -7,18 +7,17 @@ using SudoEngine.Maths;
 using SudoEngine.Render;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace SudoEngine
 {
     public class Window : GameWindow
     {
-        public Window(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, GameWindowFlags.Fullscreen, DisplayDevice.GetDisplay(DisplayIndex.Second)) { }
+        public Window(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, GameWindowFlags.Fullscreen, DisplayDevice.GetDisplay(DisplayIndex.Second), 1, 0, GraphicsContextFlags.Debug, null, false) { }
 
         readonly Camera camera = new Camera("Main");
         Shader shader;
-
         Stopwatch a = new Stopwatch();
 
         BackGround BG0;
@@ -33,9 +32,7 @@ namespace SudoEngine
         Texture texture3;
         Texture texture4;
 
-        readonly Audio Audio = new Audio();
         Sound sound;
-
         protected override void OnLoad(EventArgs e)
         {
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -61,13 +58,12 @@ namespace SudoEngine
                 {6, 7, 8}
             };
 
-            //BG2.Generate(Layer.PlayerLayer , shader, b, new Bitmap("Textures/TestAtlas2.png"));
-            BG2.Generate(Layer.PlayerLayer, shader, texture0, new Vector2D(0));
+            BG2.Generate(Layer.PlayerLayer , shader, b, new Bitmap("Textures/TestAtlas2.png"));
+            //BG2.Generate(Layer.PlayerLayer, shader, texture0, new Vector2D(0));
             //BG3 = new BackGround(Layer.CloseForeGround, shader, texture3, new Vector2D(1, 1), "bgTest3");
             //BG4 = new BackGround(Layer.ForeGround, shader, texture4, new Vector2D(1, 1), "bgTest4");
 
             Audio.Init();
-
             sound = new Sound("test");
             sound.LoadFromFile("test3");
             IList<string> deviceList = Audio.DeviceList();
@@ -76,7 +72,7 @@ namespace SudoEngine
 
             //foreach (DisplayIndex displayIndex in Enum.GetValues(typeof(DisplayIndex))) if (DisplayDevice.GetDisplay(displayIndex) != null && (int)displayIndex != -1) Log.Info($"Écran n°{(int)displayIndex} connecté");
 
-            Log.Info($"A : {GamePad.GetCapabilities(1).HasAButton}");
+            /*Log.Info($"A : {GamePad.GetCapabilities(1).HasAButton}");
             Log.Info($"B : {GamePad.GetCapabilities(1).HasBButton}");
             Log.Info($"X : {GamePad.GetCapabilities(1).HasXButton}");
             Log.Info($"Y : {GamePad.GetCapabilities(1).HasYButton}");
@@ -101,12 +97,11 @@ namespace SudoEngine
             Log.Info($"Start : {GamePad.GetCapabilities(1).HasStartButton}");
             Log.Info($"Voice : {GamePad.GetCapabilities(1).HasVoiceSupport}");
             Log.Info($"Mapped : {GamePad.GetCapabilities(1).IsMapped}");
-            Log.Info($"Connected : {GamePad.GetCapabilities(1).IsConnected}");
+            Log.Info($"Connected : {GamePad.GetCapabilities(1).IsConnected}");*/
 
             //GamePad.SetVibration(1, 1, 1);
             //for (int i = 0; i < BG2.GFX.Data.Length; i++) Log.Info(BG2.GFX.Data[i]);
             //Log.Info(BG2.GFX.Data.Length);
-
             base.OnLoad(e);
 
         }
@@ -129,6 +124,7 @@ namespace SudoEngine
 
             //Log.Info($"{(1.0D / e.Time):F0} FPS");
 
+            GameObject.Update();
             base.OnUpdateFrame(e);
         }
 
@@ -137,6 +133,7 @@ namespace SudoEngine
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             BackGround.RenderAll();
+            GameObject.Render();
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);

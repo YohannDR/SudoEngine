@@ -4,6 +4,7 @@ using SudoEngine.Maths;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace SudoEngine.Render
 {
@@ -45,11 +46,17 @@ namespace SudoEngine.Render
             set { Size = new Vector2D(Size.X, value); CalculateVertices(); }
         }
 
-        int VBO;
-        int VAO;
-        int EBO;
-        float[] Vertices;
-
+        int VBO { get; set; }
+        int VAO { get; set; }
+        int EBO { get; set; }
+        float[] Vertices { get; set; } = new float[]
+        {
+            0, 1, 0.0f, 1.0f, 1.0f,
+            -1, 1, 0.0f, 0.0f, 1.0f,
+            -1, 0, 0.0f, 0.0f, 0.0f,
+            0, 0, 0.0f, 1.0f, 0.0f
+        };
+        
         readonly uint[] Indices =
         {
             0, 1, 2,
@@ -70,7 +77,7 @@ namespace SudoEngine.Render
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
         }
-        public override void Delete()
+        public  override void Delete()
         {
             GFX.Delete();
             Shader.Delete();
@@ -195,13 +202,10 @@ namespace SudoEngine.Render
 
         void CalculateVertices()
         {
-            Vertices = new float[]
-            {
-                -1 + (float)Width * 2, 1, 0.0f, 1.0f, 1.0f,
-                -1, 1, 0.0f, 0.0f, 1.0f,
-                -1, 1 - (float)Height * 2, 0.0f, 0.0f, 0.0f,
-                -1 + (float)Width * 2, 1 - (float)Height * 2, 0.0f, 1.0f, 0.0f
-            };
+            Vertices[0] = -1 + (float)Width * 2;
+            Vertices[11] = 1 - (float)Height * 2;
+            Vertices[15] = -1 + (float)Width * 2;
+            Vertices[16] = 1 - (float)Height * 2;
         }
 
         public static void RenderAll() { foreach (BackGround bg in AllBackGrounds) if (bg != null) bg.Render(); }

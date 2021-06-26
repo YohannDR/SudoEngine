@@ -170,12 +170,12 @@ namespace SudoEngine.Core
         }
     }
 
-    public sealed class Audio
+    public static class Audio
     {
-        public IntPtr Device { get; private set; }
-        public ContextHandle Context { get; private set; }
+        public static IntPtr Device { get; private set; }
+        public static ContextHandle Context { get; private set; }
 
-        public void Init()
+        public static void Init()
         {
             Device = Alc.OpenDevice(null);
             if (Device != null)
@@ -187,7 +187,7 @@ namespace SudoEngine.Core
             else Log.Error("Aucun device audio n'a pu être ouvert");
         }
 
-        public void Init(string deviceName)
+        public static void Init(string deviceName)
         {
             Device = Alc.OpenDevice(deviceName);
             if (Device != null)
@@ -199,9 +199,9 @@ namespace SudoEngine.Core
             else Log.Error("Aucun device audio n'a pu être ouvert");
         }
 
-        public IList<string> DeviceList() => Alc.GetString((IntPtr)null, AlcGetStringList.AllDevicesSpecifier);
+        public static IList<string> DeviceList() => Alc.GetString((IntPtr)null, AlcGetStringList.AllDevicesSpecifier);
 
-        public void Delete()
+        public static void Delete()
         {
             Alc.MakeContextCurrent(ContextHandle.Zero);
             Alc.DestroyContext(Context);
