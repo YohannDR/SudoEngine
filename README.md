@@ -34,7 +34,7 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 - (Suppression d'une tile)
 
 ### Audio
-- Fonctions pour manipuler OpenAl faciliement
+- Fonctions pour manipuler OpenAL faciliement
 - Création d'un son depuis un .wav
 - Posibilité de mettre en pause un son
 
