@@ -17,3 +17,56 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 6 : Sélectionner `SudoEngine.DLL` et cliquer sur Ajouter
 
 7 : Le .DLL est désormais bind au projet, il ne reste plus qu'à accéder aux namespaces avec des `using SudoEngine.<>` et à utiliser les classes
+
+
+## Fonctionnalités actuelles
+
+### Shader
+- Gestion complète des shaders
+- Fonction unique pour set une valeur uniform quelque soit le type de la variable
+
+### Texture
+- Création d'une texture depuis une image ou une bitmap
+
+### BackGround
+- 5 layers différents pour les BackGrounds
+- Génération avec une image ou un tileset
+- (Suppression d'une tile)
+
+### Audio
+- Fonctions pour manipuler OpenAl faciliement
+- Création d'un son depuis un .wav
+- Posibilité de mettre en pause un son
+
+### Log
+- 3 log différents : info (en bleu), warning (en jaune) et erreur (en rouge)
+- Suporte n'importe quel type de variable
+
+### BaseObject
+- Offre des fonctionnalités de base pour des classes
+
+### GameObject
+- Offre du scripting pour des objets
+
+### Maths
+- Vecteur de taille 2, 3 et 4 disponibles
+- Matrice 4\*4 disponible
+
+
+## Fonctionnalités prévues
+
+### Camera
+- Une caméra
+
+### Textures
+- Les textures atlas
+
+### Audio
+- Possibilité de jouer des .MP3
+- Meilleure implémentation d'OpenAL
+
+### GameObject
+- Plus de propriétés
+
+### Sprite
+- Gestion des sprites
