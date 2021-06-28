@@ -36,17 +36,17 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 ### Audio
 - Fonctions pour manipuler OpenAL faciliement
 - Création d'un son depuis un .wav
-- Posibilité de mettre en pause un son
+- Posibilité de jouer et de mettre en pause un son
 
 ### Log
 - 3 log différents : info (en bleu), warning (en jaune) et erreur (en rouge)
-- Suporte n'importe quel type de variable
+- Supporte n'importe quel type de variable
 
 ### BaseObject
 - Offre des fonctionnalités de base pour des classes
 
 ### GameObject
-- Offre du scripting pour des objets
+- (Offre du scripting pour des objets)
 
 ### Maths
 - Vecteur de taille 2, 3 et 4 disponibles
