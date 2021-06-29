@@ -87,6 +87,7 @@
     <Compile Include="Render\Camera.cs" />
     <Compile Include="Render\Particle.cs" />
     <Compile Include="Render\Shader.cs" />
+    <Compile Include="Render\Sprite.cs" />
     <Compile Include="Render\Text.cs" />
     <Compile Include="Render\Texture.cs" />
     <Compile Include="Window.cs" />

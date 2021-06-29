@@ -63,8 +63,7 @@ namespace SudoEngine.Render
             2, 3, 0
         };
 
-        public BackGround() : base() { }
-        public BackGround(string name) : base(name) { }
+        public BackGround(string name = "BaseObject") : base(name) { }
 
 
         public void Bind()
@@ -156,7 +155,6 @@ namespace SudoEngine.Render
         {
             int tilePerRow = GFX.Width / 32;
             Log.Info(ConvertIndex(index));
-            Log.Info(12 / 2);
             int row = index / tilePerRow;
             byte[] data = GFX.Data;
             int f = index % tilePerRow * 128;

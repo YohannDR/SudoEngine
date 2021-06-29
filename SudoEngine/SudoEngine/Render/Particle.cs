@@ -14,7 +14,7 @@ namespace SudoEngine.Render
         public double Age { get; set; }
         public double LifeTime { get; set; }
 
-        public Particle(Vector2D position, Vector4D color, float lifeTime) => (Position, Velocity, Color, Rotation, Age, LifeTime) = (position, new Vector2D(0), color, 0, 0, lifeTime);
+        public Particle(Vector2D position, Vector4D color, float lifeTime) => (Position, Velocity, Color, Rotation, Age, LifeTime) = (position, new Vector2D(0), color, 0, lifeTime, lifeTime);
 
         public static Particle NewBorn = new Particle(new Vector2D(0), new Vector4D(0), 0);
     }
@@ -36,8 +36,7 @@ namespace SudoEngine.Render
 
         int VAO;
 
-        public ParticleEffect() : base() => AllParticlesEffects.Add(this);
-        public ParticleEffect(string name) : base(name) => AllParticlesEffects.Add(this);
+        public ParticleEffect(string name = "BaseObject") : base(name) => AllParticlesEffects.Add(this);
 
         public void Generate(Texture gfx, Shader shader, int maxParticles, float speed, float speedOverLifeTime, Vector2D size, float sizeOverLifeTime, int particlePerCycle)
         {
@@ -57,16 +56,32 @@ namespace SudoEngine.Render
         {
             for (int i = 0; i < ParticlePerCycle; i++)
             {
-                int j = FirstUnused();
+                Particle p = Particles[FirstUnused()];
+                unsafe
+                {
+                    Particle* Ppointer = &p;
+                    NewParticle(Ppointer);
+                }
             }
 
             for (int i = 0; i < MaxParticles; i++)
             {
+                if (Particles[i].Age > 0)
+                {
+                    Particle p = Particles[i];
+                    unsafe
+                    {
+                        Particle* Ppointer = &p;
+                        UpdateParticle(Ppointer);
+                    }
+                }
             }
         }
 
         public void Render()
         {
+            GFX.Bind(TextureTarget.Texture2D);
+            Shader.Use();
         }  
 
         int FirstUnused()
@@ -81,6 +96,20 @@ namespace SudoEngine.Render
             }
             LastUsedParticle = 0;
             return 0;
+        }
+
+
+        unsafe void UpdateParticle(Particle* p)
+        {
+            Particle P = *p;
+            P.Age -= 0.1;
+            P.Position += P.Velocity;
+            *p = P;
+        }
+
+        unsafe void NewParticle(Particle* p)
+        {
+
         }
 
         public override void Delete()

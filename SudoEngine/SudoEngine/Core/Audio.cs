@@ -1,7 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Audio.OpenAL;
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -20,23 +19,13 @@ namespace SudoEngine.Core
         public int Size { get; private set; }
         public ALFormat Format { get; private set; }
 
-        public Sound() : base() => AllSounds.Add(this);
-        public Sound(string name) : base(name) => AllSounds.Add(this);
+        public Sound(string name = "BaseObject") : base(name) => AllSounds.Add(this);
 
         void Generate(byte[] data)
         {
             Handle = AL.GenBuffer();
             Source = AL.GenSource();
-            if (NumberChannels == 1)
-            {
-                if (BitsPerSample == 8) Format = ALFormat.Mono8;
-                else Format = ALFormat.Mono16;
-            }
-            else
-            {
-                if (BitsPerSample == 8) Format = ALFormat.Stereo8;
-                else Format = ALFormat.Stereo16;
-            }
+            Format = NumberChannels == 1 ? BitsPerSample == 8 ? ALFormat.Mono8 : ALFormat.Mono16 : BitsPerSample == 8 ? ALFormat.Stereo8 : ALFormat.Stereo16;
 
             AL.BufferData(Handle, Format, data, data.Length, SampleRate);
             AL.Source(Source, ALSourcei.Buffer, Handle);
@@ -97,8 +86,7 @@ namespace SudoEngine.Core
 
             byte[] sizeBytes = { buffer[40],  buffer[41], buffer[42], buffer[43] };
 
-            int size = BitConverter.ToInt32(sizeBytes, 0);
-            Size = size;
+            Size = BitConverter.ToInt32(sizeBytes, 0); 
 
             byte[] data = new byte[Size];
             Array.Copy(buffer, 44, data, 0, Size);
@@ -118,8 +106,7 @@ namespace SudoEngine.Core
         public int SampleRate { get; private set; }
         public ALFormat Format { get; private set; }
 
-        public Music() : base() => AllMusics.Add(this);
-        public Music(string name) : base(name) => AllMusics.Add(this);
+        public Music(string name = "BaseObject") : base(name) => AllMusics.Add(this);
 
         void Generate(byte[] data)
         {

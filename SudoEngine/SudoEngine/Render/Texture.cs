@@ -1,5 +1,4 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using System.Diagnostics;
 using System.Drawing;
 using System.Collections.Generic;
 using System.IO;
@@ -30,8 +29,7 @@ namespace SudoEngine.Render
 
         public static List<Texture> AllTextures { get; set; } = new List<Texture>();
 
-        public Texture() : base() => AllTextures.Add(this);
-        public Texture(string name) : base(name) => AllTextures.Add(this);
+        public Texture(string name = "BaseObject") : base(name) => AllTextures.Add(this);
 
         public override void Delete()
         {
@@ -110,8 +108,8 @@ namespace SudoEngine.Render
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, Data);
 
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (float)TextureWrapMode.ClampToBorder);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (float)TextureWrapMode.ClampToBorder);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (float)TextureWrapMode.Repeat);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (float)TextureWrapMode.Repeat);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)Upscaling);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)Upscaling);
 

@@ -4,8 +4,8 @@ namespace SudoEngine.Core
 {
     public abstract class BaseObject
     {
-        public string Name { get; private set; }
-        public Guid ID { get; private set; }
+        protected internal string Name { get; private set; }
+        protected internal Guid ID { get; private set; }
         protected internal bool Enabled { get; set; } = true;
         protected internal bool Deleted { get; set; } = false;
 

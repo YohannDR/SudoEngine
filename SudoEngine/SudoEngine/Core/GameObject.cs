@@ -49,13 +49,12 @@ namespace SudoEngine.Core
                 GO.OnRender();
             }
         }
-
+        
         protected internal virtual void OnCreation() { }
         protected internal virtual void OnStart() { }
         protected internal virtual void OnUpdate() { }
         protected internal virtual void OnRender() { }
         protected internal virtual void OnDelete() { }
-
         protected internal virtual void OnEnable() { }
         protected internal virtual void OnDisable() { }
     }
