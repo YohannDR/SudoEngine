@@ -2,10 +2,13 @@
 
 namespace SudoEngine.Core
 {
-    public abstract class GameObject : BaseObject
+    public class GameObject : BaseObject
     {
         public static List<GameObject> AllGameObjects { get; set; } = new List<GameObject>();
+
         protected internal bool Started { get; private set; } = false;
+        protected internal GameObject Parent { get; private set; } = null;
+        protected internal List<GameObject> Childrens { get; private set; } = new List<GameObject>();
 
         public GameObject(string name = "BaseObjet") : base(name)
         {
@@ -50,6 +53,44 @@ namespace SudoEngine.Core
             }
         }
         
+
+        public void SetParent(GameObject parent)
+        {
+            if (parent.Deleted)
+            {
+                Log.Error("Impossible d'assigner un GameObject supprimé en tant que parent");
+                return;
+            }
+
+            if (!parent)
+            {
+                Parent = null;
+                return;
+            }
+
+            Parent = parent;
+            parent.Childrens.Add(this);
+            if (Enabled != Parent.Enabled) SetEnable(Parent.Enabled);
+        }
+
+        public void Hierarchy()
+        {
+            if (!Parent)
+            {
+                Log.Info("Aucune hiérarchie pour cet objet");
+                return;
+            }
+            Log.Warning($"Hiérarchie de {Name}\n");
+            GameObject gameObject = this;
+            int a = 0;
+            while (gameObject.Parent)
+            {
+                Log.Info($"Parent N°{a} : {gameObject.Parent.Name}");
+                gameObject = gameObject.Parent;
+                a++;
+            }
+        }
+
         protected internal virtual void OnCreation() { }
         protected internal virtual void OnStart() { }
         protected internal virtual void OnUpdate() { }

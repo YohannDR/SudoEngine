@@ -51,6 +51,12 @@ namespace SudoEngine
                 {6, 7, 8}
             };
 
+            GameObject a = new GameObject("a");
+            GameObject B = new GameObject("B");
+            GameObject c = new GameObject("c");
+            B.SetParent(c);
+            a.SetParent(B);
+            a.Hierarchy();
             BG2.Generate(Layer.PlayerLayer , shader, b, new Bitmap("Textures/TestAtlas2.png"));
 
             Audio.Init();
