@@ -6,7 +6,6 @@ using SudoEngine.Core;
 using SudoEngine.Maths;
 using SudoEngine.Render;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Diagnostics;
 
@@ -45,7 +44,7 @@ namespace SudoEngine
             camera.Shader = shader;
 
             texture0.LoadFromFile("bg.png");
-            
+
             BackGround.CreateList();
             int[,] a = new int[,]
             {
@@ -121,8 +120,7 @@ namespace SudoEngine
         
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            //Log.Info($"{(1.0D / e.Time):F0} FPS");
-            camera.Scroll(Direcction.Down, 0);
+            Log.Info($"{(1.0D / e.Time):F0} FPS");
             GameObject.Update();
             base.OnUpdateFrame(e);
         }
@@ -149,10 +147,10 @@ namespace SudoEngine
             if (e.Key == Key.Escape) Exit();
             if (e.Alt && e.Key == Key.F4) Exit();
 
-            /*if (e.Key == Key.Right) camera.Scroll(Direcction.Right, 0);
+            if (e.Key == Key.Right) camera.Scroll(Direcction.Right, 0);
             if (e.Key == Key.Left) camera.Scroll(Direcction.Left, 0);
             if (e.Key == Key.Up) camera.Scroll(Direcction.Up, 0);
-            if (e.Key == Key.Down) camera.Scroll(Direcction.Down, 0);*/
+            if (e.Key == Key.Down) camera.Scroll(Direcction.Down, 0);
             if (e.Key == Key.Space) moveVector.W -= 0.01;
             if (e.Key == Key.BackSpace) moveVector.W += 0.01;
 

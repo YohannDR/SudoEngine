@@ -59,12 +59,12 @@ namespace SudoEngine.Render
         int VBO { get; set; }
         int VAO { get; set; }
         int EBO { get; set; }
-        float[] Vertices { get; set; } = new float[]
+        double[] Vertices { get; set; } = new double[]
         {
-            0, 1, 0.0f, 1.0f, 1.0f,
-            -1, 1, 0.0f, 0.0f, 1.0f,
-            -1, 0, 0.0f, 0.0f, 0.0f,
-            0, 0, 0.0f, 1.0f, 0.0f
+            0, 1, 0, 1, 1,
+            -1, 1, 0, 0, 1,
+            -1, 0, 0, 0, 0,
+            0, 0, 0, 1, 0
         };
         
         readonly uint[] Indices =
@@ -81,10 +81,10 @@ namespace SudoEngine.Render
             Shader.Use();
             GFX.Bind(TextureTarget.Texture2D);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(float), Vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
         }
         public  override void Delete()
         {
@@ -190,15 +190,15 @@ namespace SudoEngine.Render
             VAO = GL.GenVertexArray();
             EBO = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(float), Vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
             GL.BufferData(BufferTarget.ElementArrayBuffer, 6 * sizeof(uint), Indices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
 
             GL.EnableVertexAttribArray(1);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
         }
 
         int ConvertIndex(int index)
@@ -210,10 +210,10 @@ namespace SudoEngine.Render
 
         void CalculateVertices()
         {
-            Vertices[0] = -1 + (float)Width * 2;
-            Vertices[11] = 1 - (float)Height * 2;
-            Vertices[15] = -1 + (float)Width * 2;
-            Vertices[16] = 1 - (float)Height * 2;
+            Vertices[0] = -1 + Width * 2;
+            Vertices[11] = 1 - Height * 2;
+            Vertices[15] = -1 + Width * 2;
+            Vertices[16] = 1 - Height * 2;
         }
 
         public static void RenderAll() { foreach (BackGround bg in AllBackGrounds) if (bg != null) bg.Render(); }
