@@ -47,6 +47,7 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 
 ### GameObject
 - (Offre du scripting pour des objets)
+- (Offre la possibilité de créer une hiérarachie de GameObject)
 
 ### Maths
 - Vecteur de taille 2, 3 et 4 disponibles
