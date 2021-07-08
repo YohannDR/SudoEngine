@@ -49,6 +49,7 @@ namespace SudoEngine.Render
             if (!File.Exists("Textures/" + path))
             {
                 Log.Error($"Le fichier pour la texture n'existe pas : {path}");
+                //path = "Default.png";
                 return;
             }
 

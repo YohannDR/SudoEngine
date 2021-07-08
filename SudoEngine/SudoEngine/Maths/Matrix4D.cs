@@ -366,6 +366,8 @@ namespace SudoEngine.Maths
         public static Matrix4D operator -(Matrix4D matrix) => new Matrix4D(-matrix.Row0, -matrix.Row1, -matrix.Row2, -matrix.Row3);
         public static Matrix4D operator -(Matrix4D matrix1, Matrix4D matrix2) => new Matrix4D(matrix1.Row0 - matrix2.Row0, matrix1.Row1 - matrix2.Row1, matrix1.Row2 - matrix2.Row2, matrix1.Row3 - matrix2.Row3);
         public static Matrix4D operator *(Matrix4D matrix1, Matrix4D matrix2) => Multiply(matrix1, matrix2);
+
         public static implicit operator Matrix4(Matrix4D matrix) => new Matrix4(matrix.Row0, matrix.Row1, matrix.Row2, matrix.Row3);
+        public static implicit operator Matrix4D(Matrix4 matrix) => new Matrix4D(matrix.Row0, matrix.Row1, matrix.Row2, matrix.Row3);
     }
 }

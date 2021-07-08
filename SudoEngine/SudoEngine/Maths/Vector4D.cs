@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenTK;
 
 namespace SudoEngine.Maths
 {
@@ -153,6 +154,7 @@ namespace SudoEngine.Maths
         public static Vector4D operator *(Vector4D vector, double n) => new Vector4D(vector.X * n, vector.Y * n, vector.Z * n, vector.W * n);
         public static Vector4D operator /(Vector4D vector1, Vector4D vector2) => new Vector4D(vector1.X / vector2.X, vector1.Y / vector2.Y, vector1.Z / vector2.Z, vector1.W / vector2.W);
         public static Vector4D operator /(Vector4D vector, double n) => new Vector4D(vector.X / n, vector.Y / n, vector.Z / n, vector.W / n);
-        public static implicit operator OpenTK.Vector4(Vector4D vector) => new OpenTK.Vector4((float)vector.X, (float)vector.Y, (float)vector.Z, (float)vector.W); 
+        public static implicit operator Vector4(Vector4D vector) => new Vector4((float)vector.X, (float)vector.Y, (float)vector.Z, (float)vector.W);
+        public static implicit operator Vector4D(Vector4 vector) => new Vector4D(vector.X, vector.Y, vector.Z, vector.W);
     }
 }

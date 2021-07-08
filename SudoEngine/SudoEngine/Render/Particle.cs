@@ -19,7 +19,7 @@ namespace SudoEngine.Render
         public static Particle NewBorn = new Particle(new Vector2D(0), new Vector4D(0), 0);
     }
 
-    public sealed class ParticleEffect : BaseObject
+    public sealed class ParticleEffect : GameObject
     {
         public static List<ParticleEffect> AllParticlesEffects = new List<ParticleEffect>();
 
@@ -52,7 +52,7 @@ namespace SudoEngine.Render
             VAO = GL.GenVertexArray();
         }
 
-        public void Update()
+        public new void Update()
         {
             for (int i = 0; i < ParticlePerCycle; i++)
             {
@@ -78,7 +78,7 @@ namespace SudoEngine.Render
             }
         }
 
-        public void Render()
+        public new void Render()
         {
             GFX.Bind(TextureTarget.Texture2D);
             Shader.Use();
@@ -109,7 +109,7 @@ namespace SudoEngine.Render
 
         unsafe void NewParticle(Particle* p)
         {
-
+            
         }
 
         public override void Delete()

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 
 namespace SudoEngine.Core
 {
@@ -16,17 +17,33 @@ namespace SudoEngine.Core
             AllGameObjects.Add(this);
         }
 
+        /// <summary>
+        /// Supprime le GameObject ainsi que tous ces enfants
+        /// </summary>
         public override void Delete()
         {
             OnDelete();
+            if (Childrens.Count != 0) foreach (GameObject GO in Childrens) GO.Delete();
             AllGameObjects.Remove(this);
             base.Delete();
         }
 
+        /// <summary>
+        /// Active ou désactive l'objet ainsi que tous ces enfants
+        /// </summary>
+        /// <param name="status">true pour activer l'objet, false pour le désactiver</param>
         public override void SetEnable(bool status)
         {
-            if (status) OnEnable();
-            else OnDisable();
+            if (status)
+            {
+                OnEnable();
+                if (Childrens.Count != 0) foreach (GameObject GO in Childrens.FindAll(GameObject => status)) GO.SetEnable(true);
+            }
+            else
+            {
+                OnDisable();
+                if (Childrens.Count != 0) foreach (GameObject GO in Childrens.FindAll(GameObject => !status)) GO.SetEnable(false);
+            }
             base.SetEnable(status);
         }
 
@@ -53,7 +70,10 @@ namespace SudoEngine.Core
             }
         }
         
-
+        /// <summary>
+        /// Permet d'assigner un objet en tant que parent de l'objet actuel
+        /// </summary>
+        /// <param name="parent">L'objet a mettre en parent</param>
         public void SetParent(GameObject parent)
         {
             if (parent.Deleted)
@@ -73,6 +93,9 @@ namespace SudoEngine.Core
             if (Enabled != Parent.Enabled) SetEnable(Parent.Enabled);
         }
 
+        /// <summary>
+        /// Écrit dans la console la hiérarchie de l'objet actuel (remonte l'arbre des parents)
+        /// </summary>
         public void Hierarchy()
         {
             if (!Parent)
@@ -80,7 +103,7 @@ namespace SudoEngine.Core
                 Log.Info("Aucune hiérarchie pour cet objet");
                 return;
             }
-            Log.Warning($"Hiérarchie de {Name}\n");
+            Log.Warning($"Hiérarchie de {Name}");
             GameObject gameObject = this;
             int a = 0;
             while (gameObject.Parent)
@@ -90,6 +113,23 @@ namespace SudoEngine.Core
                 a++;
             }
         }
+
+        public void Children(int index = 0)
+        {
+            if (Childrens.Count == 0)
+            {
+                Log.Info($"Cet objet ({Name}) n'a aucun enfant");
+                return;
+            }
+            string indent = "";
+            for (int x = 0; x < index; x++) indent += "   ";
+            for (int i = 0; i < Childrens.Count; i++)
+            {
+                Log.Info($"{indent}Enfant N°{i} : {Childrens[i].Name}");
+                if (Childrens[i].Childrens.Count != 0) Childrens[i].Children(index + 1);
+            }
+        }
+
 
         protected internal virtual void OnCreation() { }
         protected internal virtual void OnStart() { }

@@ -5,17 +5,11 @@ layout(location = 1) in vec2 aTexCoord;
 
 out vec2 texCoord;
 
-uniform bool camera = false;
-uniform bool MoveX = false;
-uniform bool start = true;
-uniform vec4 position;
+uniform vec4 moveVector;
 
 void main(void)
 {
     texCoord = aTexCoord;
 
-    gl_Position = vec4(aPosition, 1.0);
-    //gl_Position = position;
-    
-    if (MoveX) gl_Position.x += 1;
+    gl_Position = vec4(aPosition, 1.0) + moveVector;
 }

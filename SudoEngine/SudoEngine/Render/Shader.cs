@@ -67,49 +67,25 @@ namespace SudoEngine.Render
 
         public static void DeleteAll() { for (int i = 0; i < AllShaders.Count; i++) if (AllShaders[i] != null) AllShaders[i].Delete(); }
 
-        public void SetAttribute(string name, object value)
-        {
-            if (value is int)
-            {
-                GL.Uniform1(GetAttribLocation(name), (int)value);
-                return;
-            }
-            if (value is float || value is double)
-            {
-                GL.Uniform1(GetAttribLocation(name), (float)value);
-                return;
-            }
-            if (value is Vector2 || value is Vector2D)
-            {
-                GL.Uniform2(GetAttribLocation(name), value is Vector2 ? (Vector2)value : (Vector2D)value);
-                return;
-            }
-            if (value is Vector3 || value is Vector3D)
-            {
-                GL.Uniform3(GetAttribLocation(name), value is Vector3 ? (Vector3)value : (Vector3D)value);
-                return;
-            }
-            if (value is Vector4 || value is Vector4D)
-            {
-                GL.Uniform4(GetAttribLocation(name), value is Vector4 ? (Vector4)value : (Vector4D)value);
-                return;
-            }
-            if (value is Matrix4 || value is Matrix4D)
-            {
-                //var _value = value is Matrix4 ? (Matrix4)value : (Matrix4D)value;
-                Matrix4 _value = (Matrix4)value;
-                GL.UniformMatrix4(GetAttribLocation(name), false, ref _value);
-                return;
-            }
-            if (value is bool) GL.Uniform1(GetAttribLocation(name), value is true ? 1 : 0);
-        }
+        public void SetAttribute(string name, int value) => GL.Uniform1(GetAttribLocation(name), value);
+        public void SetAttribute(string name, float value) => GL.Uniform1(GetAttribLocation(name), value);
+        public void SetAttribute(string name, double value) => GL.Uniform1(GetAttribLocation(name), value);
+        public void SetAttribute(string name, Vector2 value) => GL.Uniform2(GetAttribLocation(name), value);
+        public void SetAttribute(string name, Vector2D value) => GL.Uniform2(GetAttribLocation(name), value);
+        public void SetAttribute(string name, Vector3 value) => GL.Uniform3(GetAttribLocation(name), value);
+        public void SetAttribute(string name, Vector3D value) => GL.Uniform3(GetAttribLocation(name), value);
+        public void SetAttribute(string name, Vector4 value) => GL.Uniform4(GetAttribLocation(name), value);
+        public void SetAttribute(string name, Vector4D value) => GL.Uniform4(GetAttribLocation(name), value);
+        public void SetAttribute(string name, Matrix4 value) => GL.UniformMatrix4(GetAttribLocation(name), false, ref value);
+        public void SetAttribute(string name, Matrix4D value) => SetAttribute(name, (Matrix4)value); 
+        public void SetAttribute(string name, bool value) => GL.Uniform1(GetAttribLocation(name), value ? 1 : 0);
 
         public int GetAttribLocation(string name) => GL.GetUniformLocation(Handle, name);
 
         void CheckCompileError(int Object, string type)
         {
             string ErrorLog = GL.GetShaderInfoLog(Object);
-            if (ErrorLog != "")
+            if (ErrorLog != string.Empty)
             {
                 Log.Error($"Erreur dans {type} shader\n");
                 Log.Error(ErrorLog);

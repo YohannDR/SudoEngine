@@ -8,6 +8,16 @@ using System.Diagnostics;
 
 namespace SudoEngine.Render
 {
+    public enum Layer
+    {
+        BackGround,
+        CloseBackGround,
+        PlayerLayer,
+        CloseForeGround,
+        ForeGround
+    }
+
+
     public sealed class BackGround : BaseObject
     {
         public static List<BackGround> AllBackGrounds = new List<BackGround>(5);
