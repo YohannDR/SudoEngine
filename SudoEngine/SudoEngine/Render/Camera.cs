@@ -25,8 +25,7 @@ namespace SudoEngine.Render
         public Shader Shader { get; set; }
 
         public Vector4D MoveVector { get; set; } = new Vector4D(0);
-        public double MovementSpeed { get; set; } = 0.01;
-       
+
         public Camera(string name = "BaseObject") : base(name)
         {
             AllCameras.Add(this);
@@ -38,16 +37,16 @@ namespace SudoEngine.Render
             switch (direction)
             {
                 case Direcction.Left:
-                    MoveVector = new Vector4D(MoveVector.X - MovementSpeed, MoveVector.YZW);
+                    MoveVector = new Vector4D(MoveVector.X - value, MoveVector.YZW);
                     break;
                 case Direcction.Right:
-                    MoveVector = new Vector4D(MoveVector.X + MovementSpeed, MoveVector.YZW);
+                    MoveVector = new Vector4D(MoveVector.X + value, MoveVector.YZW);
                     break;
                 case Direcction.Up:
-                    MoveVector = new Vector4D(MoveVector.X, MoveVector.Y + MovementSpeed, MoveVector.Y, MoveVector.W);
+                    MoveVector = new Vector4D(MoveVector.X, MoveVector.Y + value, MoveVector.Y, MoveVector.W);
                     break;
                 case Direcction.Down:
-                    MoveVector = new Vector4D(MoveVector.X, MoveVector.Y - MovementSpeed, MoveVector.Y, MoveVector.W);
+                    MoveVector = new Vector4D(MoveVector.X, MoveVector.Y - value, MoveVector.Y, MoveVector.W);
                     break;
             }
             Shader.SetAttribute("moveVector", MoveVector);

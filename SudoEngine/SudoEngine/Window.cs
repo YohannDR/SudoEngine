@@ -26,12 +26,13 @@ namespace SudoEngine
         BackGround BG4;
 
         Texture texture0 = new Texture();
-        Texture texture1;
+        Texture spriteSheet = new Texture();
         Texture texture2;
         Texture texture3;
         Texture texture4;
 
         Sound sound;
+        Sprite sprite = new Sprite("Test");
 
         Vector4D moveVector = new Vector4D(0);
         protected override void OnLoad(EventArgs e)
@@ -43,6 +44,9 @@ namespace SudoEngine
             shader.LoadFromFile("shaderTexture.vert", "shaderTexture.frag", null);
             camera.Shader = shader;
 
+            spriteSheet.LoadFromFile("spriteSheet.png");
+            sprite.SpriteSheet = spriteSheet;
+            sprite.Shader = shader;
             texture0.LoadFromFile("bg.png");
 
             BackGround.CreateList();
@@ -73,7 +77,7 @@ namespace SudoEngine
                 {0, 0, 0, 0, 0, 0, 0, 0, 240, 221, 222, 223, 0, 291, 277},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
             };
-
+            
             BG2.Generate(Layer.PlayerLayer, shader, a, new Bitmap("Textures/1.png"));
             BG1.Generate(Layer.CloseBackGround, shader, b, new Bitmap("Textures/1.png"));
             BG0.Generate(Layer.BackGround, shader, texture0, BG1.Size);
@@ -114,13 +118,12 @@ namespace SudoEngine
             Log.Info($"Connected : {GamePad.GetCapabilities(1).IsConnected}");*/
             //GamePad.SetVibration(1, 1, 1);
             //Collision.CreateWorld();
-
             base.OnLoad(e);
         }
         
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            Log.Info($"{(1.0D / e.Time):F0} FPS");
+            //Log.Info($"{(1.0D / e.Time):F0} FPS");
             GameObject.Update();
             base.OnUpdateFrame(e);
         }
@@ -147,10 +150,10 @@ namespace SudoEngine
             if (e.Key == Key.Escape) Exit();
             if (e.Alt && e.Key == Key.F4) Exit();
 
-            if (e.Key == Key.Right) camera.Scroll(Direcction.Right, 0);
-            if (e.Key == Key.Left) camera.Scroll(Direcction.Left, 0);
-            if (e.Key == Key.Up) camera.Scroll(Direcction.Up, 0);
-            if (e.Key == Key.Down) camera.Scroll(Direcction.Down, 0);
+            if (e.Key == Key.Right) camera.Scroll(Direcction.Right, 0.05);
+            if (e.Key == Key.Left) camera.Scroll(Direcction.Left, 0.05);
+            if (e.Key == Key.Up) camera.Scroll(Direcction.Up, 0.05);
+            if (e.Key == Key.Down) camera.Scroll(Direcction.Down, 0.055);
             if (e.Key == Key.Space) moveVector.W -= 0.01;
             if (e.Key == Key.BackSpace) moveVector.W += 0.01;
 

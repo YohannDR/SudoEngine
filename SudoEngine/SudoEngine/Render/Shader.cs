@@ -72,10 +72,15 @@ namespace SudoEngine.Render
         public void SetAttribute(string name, double value) => GL.Uniform1(GetAttribLocation(name), value);
         public void SetAttribute(string name, Vector2 value) => GL.Uniform2(GetAttribLocation(name), value);
         public void SetAttribute(string name, Vector2D value) => GL.Uniform2(GetAttribLocation(name), value);
+        public unsafe void SetAttribute(string name, Vector3* value) => GL.Uniform3(GetAttribLocation(name), *value);
         public void SetAttribute(string name, Vector3 value) => GL.Uniform3(GetAttribLocation(name), value);
+        public unsafe void SetAttribute(string name, Vector3D* value) => GL.Uniform3(GetAttribLocation(name), *value);
         public void SetAttribute(string name, Vector3D value) => GL.Uniform3(GetAttribLocation(name), value);
+        public unsafe void SetAttribute(string name, Vector4* value) => GL.Uniform4(GetAttribLocation(name), *value);
         public void SetAttribute(string name, Vector4 value) => GL.Uniform4(GetAttribLocation(name), value);
+        public unsafe void SetAttribute(string name, Vector4D* value) => GL.Uniform4(GetAttribLocation(name), *value);
         public void SetAttribute(string name, Vector4D value) => GL.Uniform4(GetAttribLocation(name), value);
+        public unsafe void SetAttribute(string name, Matrix4* value) => GL.UniformMatrix4(GetAttribLocation(name), false, ref *value);
         public void SetAttribute(string name, Matrix4 value) => GL.UniformMatrix4(GetAttribLocation(name), false, ref value);
         public void SetAttribute(string name, Matrix4D value) => SetAttribute(name, (Matrix4)value); 
         public void SetAttribute(string name, bool value) => GL.Uniform1(GetAttribLocation(name), value ? 1 : 0);

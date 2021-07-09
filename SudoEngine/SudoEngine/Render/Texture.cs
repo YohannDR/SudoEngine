@@ -9,6 +9,8 @@ namespace SudoEngine.Render
 {
     public sealed class Texture : BaseObject
     {
+        public static List<Texture> AllTextures { get; set; } = new List<Texture>();
+
         public int Handle { get; private set; }
         public Vector2D Size { get; set; }
         public int Width
@@ -25,9 +27,8 @@ namespace SudoEngine.Render
 
         public byte[] Data { get; set; }
         public Bitmap Image { get; set; }
-        public TextureMagFilter Upscaling { get; set; } = TextureMagFilter.Nearest;
+        public bool IsAtlas { get; set; }
 
-        public static List<Texture> AllTextures { get; set; } = new List<Texture>();
 
         public Texture(string name = "BaseObject") : base(name) => AllTextures.Add(this);
 
@@ -40,7 +41,7 @@ namespace SudoEngine.Render
 
         public static void DeleteAll() { for (int i = 0; i < AllTextures.Count; i++) if (AllTextures[i] != null) AllTextures[i].Delete(); }
 
-        public void Bind(TextureTarget textureTarget) => GL.BindTexture(textureTarget, Handle);
+        public void Bind() => GL.BindTexture(TextureTarget.Texture2D, Handle);
 
         public static void UnBind() => GL.BindTexture(TextureTarget.Texture2D, 0);
 
@@ -105,14 +106,14 @@ namespace SudoEngine.Render
         void Generate()
         {
             Handle = GL.GenTexture();
-            Bind(TextureTarget.Texture2D);
+            Bind();
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, Data);
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (float)TextureWrapMode.Repeat);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (float)TextureWrapMode.Repeat);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)Upscaling);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)Upscaling);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMagFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Nearest);
 
             UnBind();
         }

@@ -80,7 +80,7 @@ namespace SudoEngine.Render
 
         public new void Render()
         {
-            GFX.Bind(TextureTarget.Texture2D);
+            GFX.Bind();
             Shader.Use();
         }  
 

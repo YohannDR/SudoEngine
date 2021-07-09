@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenTK.Graphics.OpenGL;
 
 namespace SudoEngine.Core
 {
@@ -24,5 +25,7 @@ namespace SudoEngine.Core
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"[LOG] - {message}");
         }
+        /// <summary> <param>Écrit l'erreur OpenGL La plus récente dans la console (police rouge)</param> </summary>
+        public static void GLError() => Error(GL.GetError());
     }
 }

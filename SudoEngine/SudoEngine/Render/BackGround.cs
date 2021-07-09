@@ -23,7 +23,7 @@ namespace SudoEngine.Render
         public static List<BackGround> AllBackGrounds = new List<BackGround>(5);
 
         /// <summary> Indique le layer sur lequel se trouve le BackGround </summary>
-        public Layer BGType { get; private set; }
+        public Layer Layer { get; private set; }
         /// <summary> La texture attaché au BackGround </summary>
         public Texture GFX { get; set; }
         /// <summary> Le shader attaché au BackGround </summary>
@@ -35,6 +35,7 @@ namespace SudoEngine.Render
             get => _transparency;
             set
             {
+                if (Layer != Layer.ForeGround) throw new ArgumentOutOfRangeException("Seul le background sur le layer ForeGround peut être transparent");
                 if (value < 0 || value > 1) throw new ArgumentOutOfRangeException("La transparence doit être comprise entre 0 et 1");
                 else _transparency = value;
             }
@@ -79,21 +80,23 @@ namespace SudoEngine.Render
         public void Bind()
         {
             Shader.Use();
-            GFX.Bind(TextureTarget.Texture2D);
+            GFX.Bind();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
             GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
+            GL.EnableVertexAttribArray(1);
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
         }
-        public  override void Delete()
+        public override void Delete()
         {
             GFX.Delete();
             Shader.Delete();
             GL.DeleteBuffer(VBO);
             GL.DeleteVertexArray(VAO);
             GL.DeleteBuffer(EBO);
-            AllBackGrounds[(int)BGType] = null;
+            AllBackGrounds[(int)Layer] = null;
             base.Delete();
         }
 
@@ -102,7 +105,7 @@ namespace SudoEngine.Render
             if (Visible && Transparency != 1)
             {
                 Bind();
-                Shader.SetAttribute("layer", (int)BGType);
+                Shader.SetAttribute("layer", (int)Layer);
                 if (Transparency != 0) Shader.SetAttribute("transparency", Transparency);
                 GL.DrawElements(PrimitiveType.Triangles, Indices.Length, DrawElementsType.UnsignedInt, 0);
             }
@@ -111,21 +114,21 @@ namespace SudoEngine.Render
 
         public void Generate(Layer layer, Shader shader, Texture gfx, Vector2D size)
         {
-            BGType = layer;
+            Layer = layer;
             Shader = shader;
             GFX = gfx;
             Size = size;
             CalculateVertices();
-            AllBackGrounds[(int)BGType] = this;
+            AllBackGrounds[(int)Layer] = this;
             InitGL();
         }
 
-        public unsafe void Generate(Layer layer, Shader shader, int[,] data, Bitmap tileset)
+        public void Generate(Layer layer, Shader shader, int[,] data, Bitmap tileset)
         {
-            BGType = layer;
+            Layer = layer;
             Shader = shader;
             Generate(data, tileset);
-            AllBackGrounds[(int)BGType] = this;
+            AllBackGrounds[(int)Layer] = this;
             InitGL();
         }
 
@@ -216,8 +219,8 @@ namespace SudoEngine.Render
             Vertices[16] = 1 - Height * 2;
         }
 
-        public static void RenderAll() { foreach (BackGround bg in AllBackGrounds) if (bg != null) bg.Render(); }
-        public static void DeleteAll() { for (int i = 0; i < 5; i++) if (AllBackGrounds[i] != null) AllBackGrounds[i].Delete(); }
+        public static void RenderAll() { foreach (BackGround bg in AllBackGrounds) if (bg) bg.Render(); }
+        public static void DeleteAll() { for (int i = 0; i < 5; i++) if (AllBackGrounds[i]) AllBackGrounds[i].Delete(); }
         public static void CreateList() { for (int i = 0; i < 5; i++) AllBackGrounds.Add(null); }
     }
 }

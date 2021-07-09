@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 namespace SudoEngine.Core
 {
@@ -51,7 +50,7 @@ namespace SudoEngine.Core
         {
             foreach (GameObject GO in AllGameObjects)
             {
-                if (GO.Enabled && !GO.Deleted) continue;
+                if (!GO.Enabled && !GO.Deleted) continue;
                 if (!GO.Started)
                 {
                     GO.OnStart();
@@ -65,7 +64,7 @@ namespace SudoEngine.Core
         {
             foreach (GameObject GO in AllGameObjects)
             {
-                if (GO.Enabled && !GO.Deleted) continue;
+                if (!GO.Enabled && !GO.Deleted) continue;
                 GO.OnRender();
             }
         }
