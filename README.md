@@ -41,26 +41,25 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 ### Log
 - 3 log différents : info (en bleu), warning (en jaune) et erreur (en rouge)
 - Supporte n'importe quel type de variable
+- Un log pour l'erreur OpenGL la plus récente
 
 ### BaseObject
 - Offre des fonctionnalités de base pour des classes
 
 ### GameObject
-- (Offre du scripting pour des objets)
+- Offre du scripting pour des objets
 - (Offre la possibilité de créer une hiérarachie de GameObject)
 
 ### Maths
 - Vecteur de taille 2, 3 et 4 disponibles
 - Matrice 4\*4 disponible
+- Quaternion disponnible (rotation 3D, probablement jamais utilisé mais à voir)
 
 
 ## Fonctionnalités prévues
 
 ### Camera
 - Une caméra
-
-### Textures
-- Les textures atlas
 
 ### Audio
 - Possibilité de jouer des .MP3
