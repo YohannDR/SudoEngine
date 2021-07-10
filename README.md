@@ -42,6 +42,7 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 - 3 log différents : info (en bleu), warning (en jaune) et erreur (en rouge)
 - Supporte n'importe quel type de variable
 - Un log pour l'erreur OpenGL la plus récente
+- Possibilité de démarrer et de d'arrêter une Stopwatch (l'arrêter va automatiquement log le temps passé en Tick et en MilliSecondes)
 
 ### BaseObject
 - Offre des fonctionnalités de base pour des classes
@@ -55,6 +56,11 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 - Matrice 4\*4 disponible
 - Quaternion disponnible (rotation 3D, probablement jamais utilisé mais à voir)
 
+### Sprite
+- Permet en héritant de cette classe, de facilement créer un sprite (comportement, animations...)
+- Gestion automatique du Rendering
+- Possibilité de faire des animations en changeant d'image sur le vol
+
 
 ## Fonctionnalités prévues
 
@@ -64,9 +70,3 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 ### Audio
 - Possibilité de jouer des .MP3
 - Meilleure implémentation d'OpenAL
-
-### GameObject
-- Plus de propriétés
-
-### Sprite
-- Gestion des sprites
