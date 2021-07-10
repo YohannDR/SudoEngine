@@ -42,7 +42,7 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 - 3 log différents : info (en bleu), warning (en jaune) et erreur (en rouge)
 - Supporte n'importe quel type de variable
 - Un log pour l'erreur OpenGL la plus récente
-- Possibilité de démarrer et de d'arrêter une Stopwatch (l'arrêter va automatiquement log le temps passé en Tick et en MilliSecondes)
+- Possibilité de démarrer et d'arrêter une Stopwatch (l'arrêter va automatiquement log le temps passé en Tick et en MilliSecondes)
 
 ### BaseObject
 - Offre des fonctionnalités de base pour des classes
