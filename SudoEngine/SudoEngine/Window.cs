@@ -13,7 +13,7 @@ namespace SudoEngine
 {
     public sealed class Window : GameWindow
     {
-        public Window(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, GameWindowFlags.Fullscreen, DisplayDevice.GetDisplay(DisplayIndex.Second)) { }
+        public Window(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, GameWindowFlags.Fullscreen, DisplayDevice.GetDisplay(DisplayIndex.First)) { }
 
         readonly Camera camera = new Camera("Main");
         Shader shader = new Shader();
@@ -32,7 +32,8 @@ namespace SudoEngine
         Texture texture4;
 
         Sound sound;
-        Sprite sprite = new Sprite("Test");
+
+        Sprite sprite = new Sprite();
 
         Vector4D moveVector = new Vector4D(0);
         protected override void OnLoad(EventArgs e)
@@ -44,10 +45,12 @@ namespace SudoEngine
             shader.LoadFromFile("shaderTexture.vert", "shaderTexture.frag", null);
             camera.Shader = shader;
 
-            spriteSheet.LoadFromFile("spriteSheet.png");
-            sprite.SpriteSheet = spriteSheet;
-            sprite.Shader = shader;
+            spriteSheet.LoadFromFile("spriteSheet2.png");
             texture0.LoadFromFile("bg.png");
+            sprite.Shader = shader;
+            sprite.SpriteSheet = spriteSheet;
+            sprite.Size = new Vector2D(32, 32);
+            sprite.RowInSpriteSheet = 2;
 
             BackGround.CreateList();
             int[,] a = new int[,]
@@ -119,10 +122,16 @@ namespace SudoEngine
             //GamePad.SetVibration(1, 1, 1);
             //Collision.CreateWorld();
             base.OnLoad(e);
+            SW.Start();
         }
         
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            if (SW.ElapsedMilliseconds > 400)
+            {
+                idx++;
+                SW.Restart();
+            }
             //Log.Info($"{(1.0D / e.Time):F0} FPS");
             GameObject.Update();
             base.OnUpdateFrame(e);
@@ -130,6 +139,7 @@ namespace SudoEngine
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            sprite.DisplayImage(idx);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             shader.Use();
             BackGround.RenderAll();
@@ -138,7 +148,7 @@ namespace SudoEngine
             Context.SwapBuffers();
             base.OnRenderFrame(e);
         }
-
+        int idx = 0;
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
             if (e.Key == Key.Keypad0 && BG0) BG0.Visible = !BG0.Visible;
@@ -150,13 +160,12 @@ namespace SudoEngine
             if (e.Key == Key.Escape) Exit();
             if (e.Alt && e.Key == Key.F4) Exit();
 
-            if (e.Key == Key.Right) camera.Scroll(Direcction.Right, 0.05);
+            /*if (e.Key == Key.Right) camera.Scroll(Direcction.Right, 0.05);
             if (e.Key == Key.Left) camera.Scroll(Direcction.Left, 0.05);
             if (e.Key == Key.Up) camera.Scroll(Direcction.Up, 0.05);
             if (e.Key == Key.Down) camera.Scroll(Direcction.Down, 0.055);
             if (e.Key == Key.Space) moveVector.W -= 0.01;
-            if (e.Key == Key.BackSpace) moveVector.W += 0.01;
-
+            if (e.Key == Key.BackSpace) moveVector.W += 0.01;*/
             base.OnKeyDown(e);
         }
 

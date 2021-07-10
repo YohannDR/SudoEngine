@@ -36,7 +36,7 @@ namespace SudoEngine.Render
 
         int VAO;
 
-        public ParticleEffect(string name = "BaseObject") : base(name) => AllParticlesEffects.Add(this);
+        public ParticleEffect(string name = "ParticleEffect") : base(name) => AllParticlesEffects.Add(this);
 
         public void Generate(Texture gfx, Shader shader, int maxParticles, float speed, float speedOverLifeTime, Vector2D size, float sizeOverLifeTime, int particlePerCycle)
         {

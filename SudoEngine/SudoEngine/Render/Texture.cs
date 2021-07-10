@@ -30,7 +30,7 @@ namespace SudoEngine.Render
         public bool IsAtlas { get; set; }
 
 
-        public Texture(string name = "BaseObject") : base(name) => AllTextures.Add(this);
+        public Texture(string name = "Texture") : base(name) => AllTextures.Add(this);
 
         public override void Delete()
         {

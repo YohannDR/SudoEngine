@@ -10,7 +10,7 @@ namespace SudoEngine.Core
         protected internal GameObject Parent { get; private set; } = null;
         protected internal List<GameObject> Childrens { get; private set; } = new List<GameObject>();
 
-        public GameObject(string name = "BaseObjet") : base(name)
+        public GameObject(string name = "GameObject") : base(name)
         {
             OnCreation();
             AllGameObjects.Add(this);

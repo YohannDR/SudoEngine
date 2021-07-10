@@ -74,7 +74,7 @@ namespace SudoEngine.Render
             2, 3, 0
         };
 
-        public BackGround(string name = "BaseObject") : base(name) { }
+        public BackGround(string name = "BackGround") : base(name) { }
 
 
         public void Bind()
@@ -86,8 +86,12 @@ namespace SudoEngine.Render
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
-            GL.EnableVertexAttribArray(1);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
+
+            if (Layer == Layer.BackGround)
+            {
+                GL.EnableVertexAttribArray(1);
+                GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
+            }
         }
         public override void Delete()
         {

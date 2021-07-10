@@ -19,7 +19,7 @@ namespace SudoEngine.Core
         public int Size { get; private set; }
         public ALFormat Format { get; private set; }
 
-        public Sound(string name = "BaseObject") : base(name) => AllSounds.Add(this);
+        public Sound(string name = "Sound") : base(name) => AllSounds.Add(this);
 
         void Generate(byte[] data)
         {
@@ -106,7 +106,7 @@ namespace SudoEngine.Core
         public int SampleRate { get; private set; }
         public ALFormat Format { get; private set; }
 
-        public Music(string name = "BaseObject") : base(name) => AllMusics.Add(this);
+        public Music(string name = "Music") : base(name) => AllMusics.Add(this);
 
         void Generate(byte[] data)
         {

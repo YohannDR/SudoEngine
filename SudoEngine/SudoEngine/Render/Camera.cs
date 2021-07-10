@@ -26,7 +26,7 @@ namespace SudoEngine.Render
 
         public Vector4D MoveVector { get; set; } = new Vector4D(0);
 
-        public Camera(string name = "BaseObject") : base(name)
+        public Camera(string name = "Camera") : base(name)
         {
             AllCameras.Add(this);
             if (Main == null) Main = this;

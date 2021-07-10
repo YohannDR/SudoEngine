@@ -13,7 +13,7 @@ namespace SudoEngine.Render
         public int Handle { get; private set; }
         public static List<Shader> AllShaders = new List<Shader>();
 
-        public Shader(string name = "BaseObject") : base(name) => AllShaders.Add(this);
+        public Shader(string name = "Shader") : base(name) => AllShaders.Add(this);
 
         void Generate(string VertexSource, string FragmentSource, string GeometrySource)
         {
