@@ -22,6 +22,7 @@ namespace SudoEngine.Render
             get => Size.Y;
             set => Size = new Vector2D(Size.X, value);
         }
+
         public bool Visible { get; set; } = true;
 
         public Vector2D Position { get; set; }
@@ -54,6 +55,14 @@ namespace SudoEngine.Render
 
         public Sprite(string name = "Sprite") : base(name) => AllSprites.Add(this);
 
+        public void Generate(Texture spriteSheet, Shader shader, double rowInSpriteSheet, Vector2D size)
+        {
+            SpriteSheet = spriteSheet;
+            Shader = shader;
+            RowInSpriteSheet = rowInSpriteSheet;
+            Size = size;
+        }
+
         protected internal override void OnStart()
         {
             Vertices[4] = Vertices[9] = 1 - RowInSpriteSheet / NbrRows;
@@ -71,7 +80,7 @@ namespace SudoEngine.Render
                 GL.DrawElements(PrimitiveType.Triangles, Indices.Length, DrawElementsType.UnsignedInt, 0);
             }
         }
-
+        
         public override void Delete()
         {
             AllSprites.Remove(this);

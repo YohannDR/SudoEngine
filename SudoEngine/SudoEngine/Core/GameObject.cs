@@ -30,7 +30,7 @@ namespace SudoEngine.Core
         /// <summary>
         /// Active ou désactive l'objet ainsi que tous ces enfants
         /// </summary>
-        /// <param name="status">true pour activer l'objet, false pour le désactiver</param>
+        /// <param name="status">Booléen indiquant le nouvel état de l'objet>/param>
         public override void SetEnable(bool status)
         {
             if (status)
@@ -129,13 +129,19 @@ namespace SudoEngine.Core
             }
         }
 
-
+        /// <summary>Invoqué lors de l'appel du constructeur</summary>
         protected internal virtual void OnCreation() { }
+        /// <summary>Invoqué lors de la première frame active</summary>
         protected internal virtual void OnStart() { }
+        /// <summary>Invoqué à chaque passage dans l'event OnUpdate de la fenêtre (La méthode statique <see cref="Update"/> doit y être appelé)</summary>
         protected internal virtual void OnUpdate() { }
+        /// <summary>Invoqué à chaque passage dans l'event OnRender de la fenêtre (La méthode statique <see cref="Render"/> doit y être appelé)</summary>
         protected internal virtual void OnRender() { }
+        /// <summary>Invoqué lorsque la méthode <see cref="Delete"/> est appelé</summary>
         protected internal virtual void OnDelete() { }
+        /// <summary>Invoqué lorsque l'objet est activé avec la méthode <see cref="SetEnable(bool)"/></summary>
         protected internal virtual void OnEnable() { }
+        /// <summary>Invoqué lorsque l'objet est déactivé avec la méthode <see cref="SetEnable(bool)"/></summary>
         protected internal virtual void OnDisable() { }
     }
 }

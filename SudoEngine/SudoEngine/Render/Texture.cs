@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Collections.Generic;
 using System.IO;
+using System;
 using SudoEngine.Core;
 using SudoEngine.Maths;
 
@@ -11,47 +12,55 @@ namespace SudoEngine.Render
     {
         public static List<Texture> AllTextures { get; set; } = new List<Texture>();
 
+        /// <summary>Handle de la texture (nécessaire au fonctionnement d'OpenGL)</summary>
         public int Handle { get; private set; }
+        /// <summary>Taille de la texture, en pixels</summary>
         public Vector2D Size { get; set; }
+        /// <summary>Longueur de la texture en pixels</summary>
         public int Width
         {
             get => (int)Size.X;
             set => Size = new Vector2D(value, Height);
         }
-
+        /// <summary>Hauteur de la texture en pixels</summary>
         public int Height
         {
             get => (int)Size.Y;
             set => Size = new Vector2D(Width, value);
         }
+        /// <summary>L/es données brutes des pixels de la texture</summary>
+        public byte[] Data { get; private set; }
 
-        public byte[] Data { get; set; }
-        public Bitmap Image { get; set; }
-        public bool IsAtlas { get; set; }
-
-
+        /// <summary>
+        /// Crée un nouvel objet <see cref="Texture"/> et appele le constructeur de BaseObject
+        /// </summary>
+        /// <param name="name">Le nom interne de l'objet (Texture par défaut)</param>
         public Texture(string name = "Texture") : base(name) => AllTextures.Add(this);
 
+        /// <summary>Supprime la texture</summary>
         public override void Delete()
         {
             AllTextures.Remove(this);
             GL.DeleteTexture(Handle);
             base.Delete();
         }
-
+        /// <summary>Supprime l'intégralité des textures</summary>
         public static void DeleteAll() { for (int i = 0; i < AllTextures.Count; i++) if (AllTextures[i] != null) AllTextures[i].Delete(); }
 
+        /// <summary>Bind la texture</summary>
         public void Bind() => GL.BindTexture(TextureTarget.Texture2D, Handle);
 
-        public static void UnBind() => GL.BindTexture(TextureTarget.Texture2D, 0);
-
+        /// <summary>
+        /// Crée une texture à partir d'un fichier (préférablement un PNG)
+        /// </summary>
+        /// <param name="path">Le chemin vers le fichier de la texture (ajoute "Texture/" devant par défaut)</param>
         public void LoadFromFile(string path)
         {
             if (!File.Exists("Textures/" + path))
             {
                 Log.Error($"Le fichier pour la texture n'existe pas : {path}");
-                //path = "Default.png";
-                return;
+                path = "Default.png";
+                //return;
             }
 
             Bitmap image = new Bitmap("Textures/" + path);
@@ -71,10 +80,14 @@ namespace SudoEngine.Render
 
             Size = new Vector2D(image.Width, image.Height);
             Data = pixels.ToArray();
-            Image = image;
             Generate();
         }
 
+        /// <summary>
+        /// Crée une texture à partir d'un <see cref="Bitmap"/>
+        /// </summary>
+        /// <param name="image">L'image à convertir en texture</param>
+        /// <param name="reverse">Booléen indiquant si l'image doit être flip verticalement</param>
         public void LoadFromBitmap(Bitmap image, bool reverse)
         {
             if (reverse) image.RotateFlip(RotateFlipType.Rotate180FlipX);
@@ -93,10 +106,13 @@ namespace SudoEngine.Render
 
             Size = new Vector2D(image.Width, image.Height);
             Data = pixels.ToArray();
-            Image = image;
             Generate();
         }
 
+        /// <summary>
+        /// Génère une texture directement à partir de données brutes de pixels
+        /// </summary>
+        /// <param name="data">Array de <see cref="byte"/> contenant les données RGBA de chaque pixel</param>
         public void Generate(byte[] data)
         {
             Data = data;
@@ -114,8 +130,6 @@ namespace SudoEngine.Render
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (float)TextureWrapMode.Repeat);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMagFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Nearest);
-
-            UnBind();
         }
     }
 }

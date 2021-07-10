@@ -6,8 +6,8 @@ using SudoEngine.Core;
 using SudoEngine.Maths;
 using SudoEngine.Render;
 using System;
-using System.Drawing;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace SudoEngine
 {
@@ -16,24 +16,16 @@ namespace SudoEngine
         public Window(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, GameWindowFlags.Fullscreen, DisplayDevice.GetDisplay(DisplayIndex.First)) { }
 
         readonly Camera camera = new Camera("Main");
-        Shader shader = new Shader();
-        Stopwatch SW = new Stopwatch();
-
-        BackGround BG0 = new BackGround();
-        BackGround BG1 = new BackGround();
-        BackGround BG2 = new BackGround();
-        BackGround BG3;
-        BackGround BG4;
-
-        Texture texture0 = new Texture();
-        Texture spriteSheet = new Texture();
-        Texture texture2;
-        Texture texture3;
-        Texture texture4;
+        readonly Shader shader = new Shader();
+        readonly Stopwatch SW = new Stopwatch();
+        readonly BackGround BG0 = new BackGround();
+        readonly BackGround BG1 = new BackGround();
+        readonly BackGround BG2 = new BackGround();
+        readonly Texture texture0 = new Texture();
+        readonly Texture spriteSheet = new Texture();
 
         Sound sound;
-
-        Sprite sprite = new Sprite();
+        readonly Sprite sprite = new Sprite();
 
         Vector4D moveVector = new Vector4D(0);
         protected override void OnLoad(EventArgs e)
@@ -44,13 +36,10 @@ namespace SudoEngine
 
             shader.LoadFromFile("shaderTexture.vert", "shaderTexture.frag", null);
             camera.Shader = shader;
-
             spriteSheet.LoadFromFile("spriteSheet2.png");
             texture0.LoadFromFile("bg.png");
-            sprite.Shader = shader;
-            sprite.SpriteSheet = spriteSheet;
-            sprite.Size = new Vector2D(32, 32);
-            sprite.RowInSpriteSheet = 2;
+
+            sprite.Generate(spriteSheet, shader, 2, new Vector2D(32, 32));
 
             BackGround.CreateList();
             int[,] a = new int[,]
@@ -80,7 +69,7 @@ namespace SudoEngine
                 {0, 0, 0, 0, 0, 0, 0, 0, 240, 221, 222, 223, 0, 291, 277},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
             };
-            
+
             BG2.Generate(Layer.PlayerLayer, shader, a, new Bitmap("Textures/1.png"));
             BG1.Generate(Layer.CloseBackGround, shader, b, new Bitmap("Textures/1.png"));
             BG0.Generate(Layer.BackGround, shader, texture0, BG1.Size);
@@ -93,38 +82,12 @@ namespace SudoEngine
             //foreach (string str in deviceList) Log.Info(str);
             //foreach (DisplayIndex displayIndex in Enum.GetValues(typeof(DisplayIndex))) if (DisplayDevice.GetDisplay(displayIndex) != null && (int)displayIndex != -1) Log.Info($"Écran n°{(int)displayIndex} connecté");
 
-            /*Log.Info($"A : {GamePad.GetCapabilities(1).HasAButton}");
-            Log.Info($"B : {GamePad.GetCapabilities(1).HasBButton}");
-            Log.Info($"X : {GamePad.GetCapabilities(1).HasXButton}");
-            Log.Info($"Y : {GamePad.GetCapabilities(1).HasYButton}");
-            Log.Info($"Back : {GamePad.GetCapabilities(1).HasBackButton}");
-            Log.Info($"BigButton : {GamePad.GetCapabilities(1).HasBigButton}");
-            Log.Info($"Dpad down : {GamePad.GetCapabilities(1).HasDPadDownButton}");
-            Log.Info($"Dpad up : {GamePad.GetCapabilities(1).HasDPadUpButton}");
-            Log.Info($"Dpad left : {GamePad.GetCapabilities(1).HasDPadLeftButton}");
-            Log.Info($"Dpad right : {GamePad.GetCapabilities(1).HasDPadRightButton}");
-            Log.Info($"Left shoulder : {GamePad.GetCapabilities(1).HasLeftShoulderButton}");
-            Log.Info($"Left stick : {GamePad.GetCapabilities(1).HasLeftStickButton}");
-            Log.Info($"Left trigger : {GamePad.GetCapabilities(1).HasLeftTrigger}");
-            Log.Info($"Left vibration : {GamePad.GetCapabilities(1).HasLeftVibrationMotor}");
-            Log.Info($"Left X thumb stick : {GamePad.GetCapabilities(1).HasLeftXThumbStick}");
-            Log.Info($"Left Y thumb stick : {GamePad.GetCapabilities(1).HasLeftYThumbStick}");
-            Log.Info($"Right shoulder : {GamePad.GetCapabilities(1).HasRightShoulderButton}");
-            Log.Info($"Right stick : {GamePad.GetCapabilities(1).HasRightStickButton}");
-            Log.Info($"Right trigger : {GamePad.GetCapabilities(1).HasRightTrigger}");
-            Log.Info($"Right vibration : {GamePad.GetCapabilities(1).HasRightVibrationMotor}");
-            Log.Info($"Right X thumb stick : {GamePad.GetCapabilities(1).HasRightXThumbStick}");
-            Log.Info($"Right Y thumb stick : {GamePad.GetCapabilities(1).HasRightYThumbStick}");
-            Log.Info($"Start : {GamePad.GetCapabilities(1).HasStartButton}");
-            Log.Info($"Voice : {GamePad.GetCapabilities(1).HasVoiceSupport}");
-            Log.Info($"Mapped : {GamePad.GetCapabilities(1).IsMapped}");
-            Log.Info($"Connected : {GamePad.GetCapabilities(1).IsConnected}");*/
             //GamePad.SetVibration(1, 1, 1);
             //Collision.CreateWorld();
             base.OnLoad(e);
             SW.Start();
         }
-        
+
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             if (SW.ElapsedMilliseconds > 400)
@@ -132,7 +95,6 @@ namespace SudoEngine
                 idx++;
                 SW.Restart();
             }
-            //Log.Info($"{(1.0D / e.Time):F0} FPS");
             GameObject.Update();
             base.OnUpdateFrame(e);
         }
@@ -146,6 +108,7 @@ namespace SudoEngine
             GameObject.Render();
 
             Context.SwapBuffers();
+            //Log.Info($"{(1.0D / e.Time):F0} FPS");
             base.OnRenderFrame(e);
         }
         int idx = 0;
@@ -154,8 +117,6 @@ namespace SudoEngine
             if (e.Key == Key.Keypad0 && BG0) BG0.Visible = !BG0.Visible;
             if (e.Key == Key.Keypad1 && BG1) BG1.Visible = !BG1.Visible;
             if (e.Key == Key.Keypad2 && BG2) BG2.Visible = !BG2.Visible;
-            if (e.Key == Key.Keypad3 && BG3) BG3.Visible = !BG3.Visible;
-            if (e.Key == Key.Keypad4 && BG4) BG4.Visible = !BG4.Visible;
 
             if (e.Key == Key.Escape) Exit();
             if (e.Alt && e.Key == Key.F4) Exit();
