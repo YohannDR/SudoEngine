@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Audio.OpenAL;
 
 namespace SudoEngine.Core
 {
@@ -29,6 +30,10 @@ namespace SudoEngine.Core
         }
         /// <summary> <param>Écrit l'erreur OpenGL la plus récente dans la console (police rouge)</param> </summary>
         public static void GLError() => Error(GL.GetError());
+        /// <summary> <param>Écrit l'erreur OpenAL la plus récente dans la console (police rouge)</param> </summary>
+        public static void ALError() => Error(AL.GetError());
+        /// <summary> <param>Écrit l'erreur OpenAL la plus récente dans la console (police rouge)</param> </summary>
+        public static void AlcError() => Error(Alc.GetError(Audio.Device));
         /// <summary> <param>Lance une StopWatch</param> </summary>
         public static void StartTimer() => SW.Start();
         /// <summary> <param>Stoppe la Stopwatch et écrit le temps écoulé avec un log info</param> </summary>

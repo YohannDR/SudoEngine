@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Collections.Generic;
 using System.IO;
-using System;
 using SudoEngine.Core;
 using SudoEngine.Maths;
 
@@ -10,6 +9,7 @@ namespace SudoEngine.Render
 {
     public sealed class Texture : BaseObject
     {
+        /// <summary>Liste de toutes les <see cref="Texture"/> actuellement chargé en mémoire</summary>
         public static List<Texture> AllTextures { get; set; } = new List<Texture>();
 
         /// <summary>Handle de la texture (nécessaire au fonctionnement d'OpenGL)</summary>
@@ -32,7 +32,7 @@ namespace SudoEngine.Render
         public byte[] Data { get; private set; }
 
         /// <summary>
-        /// Crée un nouvel objet <see cref="Texture"/> et appele le constructeur de BaseObject
+        /// Crée un nouvel objet <see cref="Texture"/> et appele le constructeur de <see cref="BaseObject"/>
         /// </summary>
         /// <param name="name">Le nom interne de l'objet (Texture par défaut)</param>
         public Texture(string name = "Texture") : base(name) => AllTextures.Add(this);

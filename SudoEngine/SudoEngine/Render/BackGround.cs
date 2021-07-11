@@ -75,7 +75,7 @@ namespace SudoEngine.Render
         };
 
         /// <summary>
-        /// Crée un nouvel objet <see cref="BackGround"/> et appele le constructeur de BaseObject
+        /// Crée un nouvel objet <see cref="BackGround"/> et appele le constructeur de <see cref="BaseObject"/>
         /// </summary>
         /// <param name="name">Le nom interne de l'objet (BackGround par défaut)</param>
         public BackGround(string name = "BackGround") : base(name) { }
@@ -174,6 +174,7 @@ namespace SudoEngine.Render
         /// <param name="tileset"><see cref="Bitmap"/> représentant le tileset</param>
         public void Generate(int[,] data, Bitmap tileset)
         {
+            Log.StartTimer();
             Bitmap Gfx = new Bitmap(data.GetLength(1) * 32, data.GetLength(0) * 32);
             Size = new Vector2D(Gfx.Width / (float)1920, Gfx.Height / (float)1080);
             CalculateVertices();
@@ -196,6 +197,7 @@ namespace SudoEngine.Render
             Texture tex = new Texture();
             tex.LoadFromBitmap(Gfx, true);
             GFX = tex;
+            Log.StopTimer();
         }
 
         public void DeleteTile(int index)

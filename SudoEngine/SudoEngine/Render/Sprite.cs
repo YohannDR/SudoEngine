@@ -25,11 +25,24 @@ namespace SudoEngine.Render
 
         public bool Visible { get; set; } = true;
 
-        public Vector2D Position { get; set; }
+        Vector2D _position;
+        public Vector2D Position
+        {
+            get => _position;
+            set
+            {
+                Vertices[0] = Vertices[15] = (value.X + Size.X) / Camera.Resolution.X;
+                Vertices[1] = Vertices[6] = (value.Y + Size.Y) / Camera.Resolution.Y;
+
+                Vertices[5] = Vertices[10] = (value.X - Size.X) / Camera.Resolution.X;
+                Vertices[11] = Vertices[16] = (value.Y - Size.Y) / Camera.Resolution.Y;
+                _position = value;
+            }
+        }
 
         public double RowInSpriteSheet { get; set; }
 
-        double NbrRows => SpriteSheet.Height / 32;
+        double NbrRows => SpriteSheet.Height / Size.Y;
 
         int VBO { get; set; }
         int VAO { get; set; }
@@ -40,10 +53,6 @@ namespace SudoEngine.Render
             -1, 1, 0, 0, 0,
             -1, -1, 0, 0, 0,
             1, -1, 0, 0, 0
-            /*0, 1, 0, 1, 1,
-            -1, 1, 0, 0, 1,
-            -1, 0, 0, 0, 0,
-            0, 0, 0, 1, 0*/
         };
 
         readonly uint[] Indices =
@@ -67,6 +76,7 @@ namespace SudoEngine.Render
         {
             Vertices[4] = Vertices[9] = 1 - RowInSpriteSheet / NbrRows;
             Vertices[14] = Vertices[19] = 1 - (RowInSpriteSheet + 1) / NbrRows;
+            DisplayImage(0);
             VBO = GL.GenBuffer();
             VAO = GL.GenVertexArray();
             EBO = GL.GenBuffer();

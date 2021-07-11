@@ -90,3 +90,26 @@ H:\SudoEngine\SudoEngine - Copie\SudoEngine\obj\Debug\SudoEngine.csproj.CoreComp
 H:\SudoEngine\SudoEngine - Copie\SudoEngine\obj\Debug\SudoEngine.csproj.CopyComplete
 H:\SudoEngine\SudoEngine - Copie\SudoEngine\obj\Debug\SudoEngine.exe
 H:\SudoEngine\SudoEngine - Copie\SudoEngine\obj\Debug\SudoEngine.pdb
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\SudoEngine.exe.config
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\SudoEngine.exe
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\SudoEngine.pdb
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\Box2DSharp.dll
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\Newtonsoft.Json.dll
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\OpenTK.dll
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\System.Buffers.dll
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\System.Memory.dll
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\System.Numerics.Vectors.dll
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\Box2DSharp.xml
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\Newtonsoft.Json.xml
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\OpenTK.pdb
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\OpenTK.xml
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\System.Buffers.xml
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\System.Memory.xml
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\System.Numerics.Vectors.xml
+H:\SudoEngine\SudoEngine\SudoEngine\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+H:\SudoEngine\SudoEngine\SudoEngine\obj\Debug\SudoEngine.csproj.AssemblyReference.cache
+H:\SudoEngine\SudoEngine\SudoEngine\obj\Debug\SudoEngine.csproj.CoreCompileInputs.cache
+H:\SudoEngine\SudoEngine\SudoEngine\obj\Debug\SudoEngine.csproj.CopyComplete
+H:\SudoEngine\SudoEngine\SudoEngine\obj\Debug\SudoEngine.exe
+H:\SudoEngine\SudoEngine\SudoEngine\obj\Debug\SudoEngine.pdb
