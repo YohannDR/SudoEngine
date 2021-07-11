@@ -1,4 +1,4 @@
-﻿using OpenTK;
+﻿/*using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
@@ -42,7 +42,7 @@ namespace SudoEngine
             sprite.Generate(spriteSheet, shader, 0, new Vector2D(64, 64));
             sprite.Position = new Vector2D(0, -325);
 
-            BackGround.CreateList();
+            /*BackGround.CreateList();
             int[,] a = new int[,]
             {
                 {178, 100, 101, 102, 103, 98, 99, 102, 343, 138, 139, 140, 140, 140, 140},
@@ -129,7 +129,7 @@ namespace SudoEngine
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             shader.Use();
-            BackGround.RenderAll();
+            //BackGround.RenderAll();
             GameObject.Render();
 
             Context.SwapBuffers();
@@ -151,7 +151,7 @@ namespace SudoEngine
             if (e.Key == Key.Up) camera.Scroll(Direcction.Up, 0.05);
             if (e.Key == Key.Down) camera.Scroll(Direcction.Down, 0.055);
             if (e.Key == Key.Space) moveVector.W -= 0.01;
-            if (e.Key == Key.BackSpace) moveVector.W += 0.01;*/
+            if (e.Key == Key.BackSpace) moveVector.W += 0.01;
             base.OnKeyDown(e);
         }
 
@@ -174,4 +174,4 @@ namespace SudoEngine
             base.OnResize(e);
         }
     }
-}
+}*/

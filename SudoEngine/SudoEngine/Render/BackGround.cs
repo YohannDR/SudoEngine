@@ -85,6 +85,7 @@ namespace SudoEngine.Render
         {
             Shader.Use();
             GFX.Bind();
+            //GL.BindVertexArray(VAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
             GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
 
