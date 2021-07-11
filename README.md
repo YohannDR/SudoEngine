@@ -8,7 +8,7 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 
 2 : Créer un nouveau projet console C# en .NET FrameWork 4.8
 
-3 : De préférence, placer le .DLL dans le dossier `bin/Debug` et/ou le dossier `bin/Release` du projet
+3 : De préférence, placer les fichiers dans le dossier `bin/Debug` et/ou le dossier `bin/Release` du projet
 
 4 : Dans l'explorateur de solutions, clic droit sur `Références` -> `Ajouter une référence`
 
