@@ -73,3 +73,6 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 ### Audio
 - Possibilité de jouer des .MP3
 - Meilleure implémentation d'OpenAL
+
+### Collisions
+- Système de collisions
