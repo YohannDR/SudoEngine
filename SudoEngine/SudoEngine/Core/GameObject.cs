@@ -2,15 +2,27 @@
 
 namespace SudoEngine.Core
 {
-    public class GameObject : BaseObject
+    /// <summary>
+    /// Classe abstarct qui fournit du scripting et un système de hiérarchie d'objet
+    /// <para>Hérite de <see cref="BaseObject"/> et doit être hérité pour être utilisé</para>
+    /// </summary>
+    public abstract class GameObject : BaseObject
     {
+        /// <summary>Liste de tous les <see cref="GameObject"/> chargés en mémoire</summary>
         public static List<GameObject> AllGameObjects { get; set; } = new List<GameObject>();
 
+        /// <summary><see cref="bool"/> indiquant si le GameObject est passé par l'évenement <see cref="OnStart"/></summary>
         protected internal bool Started { get; private set; } = false;
+        /// <summary>Le <see cref="GameObject"/> assigné en parent de ce GameObject, null si aucun parent</summary>
         protected internal GameObject Parent { get; private set; } = null;
+        /// <summary>Liste des enfatns de ce GameObject</summary>
         protected internal List<GameObject> Childrens { get; private set; } = new List<GameObject>();
 
-        public GameObject(string name = "GameObject") : base(name)
+        /// <summary>
+        /// Crée un nouvel objet <see cref="GameObject"/> et appele le constructeur de <see cref="BaseObject"/>
+        /// </summary>
+        /// <param name="name">Le nom interne de l'objet (GameObject par défaut)</param>
+        protected internal GameObject(string name = "GameObject") : base(name)
         {
             OnCreation();
             AllGameObjects.Add(this);
@@ -30,7 +42,7 @@ namespace SudoEngine.Core
         /// <summary>
         /// Active ou désactive l'objet ainsi que tous ces enfants
         /// </summary>
-        /// <param name="status">Booléen indiquant le nouvel état de l'objet>/param>
+        /// <param name="status">Booléen indiquant le nouvel état de l'objet</param>
         public override void SetEnable(bool status)
         {
             if (status)
@@ -46,6 +58,7 @@ namespace SudoEngine.Core
             base.SetEnable(status);
         }
 
+        /// <summary>Update tous les <see cref="GameObject"/></summary>
         public static void Update()
         {
             foreach (GameObject GO in AllGameObjects)
@@ -60,6 +73,7 @@ namespace SudoEngine.Core
             }
         }
 
+        /// <summary>Render tous les <see cref="GameObject"/></summary>
         public static void Render()
         {
             foreach (GameObject GO in AllGameObjects)
@@ -70,7 +84,7 @@ namespace SudoEngine.Core
         }
         
         /// <summary>
-        /// Permet d'assigner un objet en tant que parent de l'objet actuel
+        /// Permet d'assigner un objet en tant que parent du GameObject actuel
         /// </summary>
         /// <param name="parent">L'objet a mettre en parent</param>
         public void SetParent(GameObject parent)
@@ -92,9 +106,7 @@ namespace SudoEngine.Core
             if (Enabled != Parent.Enabled) SetEnable(Parent.Enabled);
         }
 
-        /// <summary>
-        /// Écrit dans la console la hiérarchie de l'objet actuel (remonte l'arbre des parents)
-        /// </summary>
+        /// <summary>Écrit dans la console la hiérarchie du GameObject actuel (remonte l'arbre des parents)</summary>
         public void Hierarchy()
         {
             if (!Parent)
@@ -113,6 +125,10 @@ namespace SudoEngine.Core
             }
         }
 
+        /// <summary>
+        /// Écrit dans la console la liste des enfants du GameObject actuel (écrit également les enfants des enfants)
+        /// </summary>
+        /// <param name="index">Paramètre utilisé pour la rrécursivité, ne doit pas être modifié</param>
         public void Children(int index = 0)
         {
             if (Childrens.Count == 0)
@@ -141,7 +157,7 @@ namespace SudoEngine.Core
         protected internal virtual void OnDelete() { }
         /// <summary>Invoqué lorsque l'objet est activé avec la méthode <see cref="SetEnable(bool)"/></summary>
         protected internal virtual void OnEnable() { }
-        /// <summary>Invoqué lorsque l'objet est déactivé avec la méthode <see cref="SetEnable(bool)"/></summary>
+        /// <summary>Invoqué lorsque l'objet est désactivé avec la méthode <see cref="SetEnable(bool)"/></summary>
         protected internal virtual void OnDisable() { }
     }
 }

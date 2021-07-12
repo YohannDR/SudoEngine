@@ -7,9 +7,13 @@ using SudoEngine.Maths;
 
 namespace SudoEngine.Render
 {
+    /// <summary>
+    /// Classe permettant de gérer des Textures, fourni un ensemble de méthodes et de propriétés qui facilitent la création et l'utilisation
+    /// <para>Hérite de <see cref="BaseObject"/> et ne peut pas être héritée</para>
+    /// </summary>
     public sealed class Texture : BaseObject
     {
-        /// <summary>Liste de toutes les <see cref="Texture"/> actuellement chargé en mémoire</summary>
+        /// <summary>Liste de toutes les <see cref="Texture"/> actuellement chargées en mémoire</summary>
         public static List<Texture> AllTextures { get; set; } = new List<Texture>();
 
         /// <summary>Handle de la texture (nécessaire au fonctionnement d'OpenGL)</summary>
@@ -44,8 +48,8 @@ namespace SudoEngine.Render
             GL.DeleteTexture(Handle);
             base.Delete();
         }
-        /// <summary>Supprime l'intégralité des textures</summary>
-        public static void DeleteAll() { for (int i = 0; i < AllTextures.Count; i++) if (AllTextures[i] != null) AllTextures[i].Delete(); }
+        /// <summary>Supprime toutes les <see cref="Texture"/></summary>
+        public static void DeleteAll() { for (int i = 0; i < AllTextures.Count; i++) if (AllTextures[i]) AllTextures[i].Delete(); }
 
         /// <summary>Bind la texture</summary>
         public void Bind() => GL.BindTexture(TextureTarget.Texture2D, Handle);
@@ -60,7 +64,6 @@ namespace SudoEngine.Render
             {
                 Log.Error($"Le fichier pour la texture n'existe pas : {path}");
                 path = "Default.png";
-                //return;
             }
 
             Bitmap image = new Bitmap("Textures/" + path);

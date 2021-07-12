@@ -8,7 +8,7 @@ uniform sampler2D texture0;
 uniform float weight[5] = float[] (0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216);
 uniform bool isBlur = false;
 uniform int layer;
-uniform float transparency = 0;
+uniform float transparency;
 
 void main()
 {

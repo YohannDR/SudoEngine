@@ -4,22 +4,185 @@
         <name>SudoEngine</name>
     </assembly>
     <members>
+        <member name="T:SudoEngine.Core.Sound">
+            <summary>
+            Classe qui représente un son, fourni un ensemble de méthodes et de propriétés qui facilitent la création et la manipulation
+            <para>Hérite de <see cref="T:SudoEngine.Core.BaseObject"/> et ne peut pas être hérité</para>
+            </summary>
+        </member>
+        <member name="P:SudoEngine.Core.Sound.AllSounds">
+            <summary>Liste de tous les <see cref="T:SudoEngine.Core.Sound"/> chargés en mémoire</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Sound.Handle">
+            <summary>Handle du son (nécessaire au fonctionnement d'OpenAL)</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Sound.Source">
+            <summary>Handle de la source du son</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Sound.NumberChannels">
+            <summary>Nombre de chaines du son (Mono ou Stereo)</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Sound.SampleRate">
+            <summary>Sample rate du son</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Sound.BitsPerSample">
+            <summary>Bits par sample du son</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Sound.Size">
+            <summary>Taille des données du son</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Sound.Format">
+            <summary><see cref="T:OpenTK.Audio.OpenAL.ALFormat"/> représentant le format du son</summary>
+        </member>
+        <member name="M:SudoEngine.Core.Sound.#ctor(System.String)">
+            <summary>
+            Crée un nouvel objet <see cref="T:SudoEngine.Core.Sound"/> et appele le constructeur de <see cref="T:SudoEngine.Core.BaseObject"/>
+            </summary>
+            <param name="name">Le nom interne de l'objet (Sound par défaut)</param>
+        </member>
+        <member name="M:SudoEngine.Core.Sound.Play">
+            <summary>Joue le son</summary>
+        </member>
+        <member name="M:SudoEngine.Core.Sound.Pause">
+            <summary>Met le son en pause</summary>
+        </member>
+        <member name="M:SudoEngine.Core.Sound.Delete">
+            <summary>Supprime le son</summary>
+        </member>
+        <member name="M:SudoEngine.Core.Sound.LoadFromFile(System.String)">
+            <summary>
+            Crée un son à partir d'un fichier .WAV
+            </summary>
+            <param name="path">Le chemin vers le fichier du son (ajoute "Sounds/" devant et ".wav" derrière par défaut)</param>
+        </member>
+        <member name="M:SudoEngine.Core.Sound.DeleteAll">
+            <summary>Supprime tous les <see cref="T:SudoEngine.Core.Sound"/></summary>
+        </member>
+        <member name="T:SudoEngine.Core.Music">
+            <summary>
+            Classe qui représente une musique, fourni un ensemble de méthodes et de propriétés qui facilitent la création et la manipulation
+            <para>Hérite de <see cref="T:SudoEngine.Core.BaseObject"/> et ne peut pas être hérité</para>
+            <para>Pas encore implémenté</para>
+            </summary>
+        </member>
+        <member name="P:SudoEngine.Core.Music.AllMusics">
+            <summary>Liste de tous les <see cref="T:SudoEngine.Core.Music"/> chargés en mémoire</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Music.Handle">
+            <summary>Handle de la musique (nécessaire au fonctionnement d'OpenAL)</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Music.Source">
+            <summary>Handle de la source</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Music.SampleRate">
+            <summary>Sample rate de la musique</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Music.Format">
+            <summary><see cref="T:OpenTK.Audio.OpenAL.ALFormat"/> représentant le format de la musique</summary>
+        </member>
+        <member name="M:SudoEngine.Core.Music.#ctor(System.String)">
+            <summary>
+            Crée un nouvel objet <see cref="T:SudoEngine.Core.Music"/> et appele le constructeur de <see cref="T:SudoEngine.Core.BaseObject"/>
+            </summary>
+            <param name="name">Le nom interne de l'objet (Music par défaut)</param>
+        </member>
+        <member name="M:SudoEngine.Core.Music.Play">
+            <summary>Joue le son</summary>
+        </member>
+        <member name="M:SudoEngine.Core.Music.Pause">
+            <summary>Met le son en pause</summary>
+        </member>
+        <member name="M:SudoEngine.Core.Music.Delete">
+            <summary>Supprime le son</summary>
+        </member>
+        <member name="M:SudoEngine.Core.Music.LoadFromFile(System.String)">
+            <summary>
+            Crée une musique à partir d'un fichier .MP3
+            </summary>
+            <param name="path">Le chemin vers le fichier de la musique (ajoute "Musics/" devant et ".mp3" derrière par défaut)</param>
+        </member>
+        <member name="T:SudoEngine.Core.Audio">
+            <summary>Classe statique offrant des méthodes pour gérer OpenAL (contexte et device)</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Audio.Device">
+            <summary>Le device actuellement ouvert</summary>
+        </member>
+        <member name="P:SudoEngine.Core.Audio.Context">
+            <summary>Le contexte actuellement créé</summary>
+        </member>
+        <member name="M:SudoEngine.Core.Audio.Init">
+            <summary>Crée un contexte OpenAL valide</summary>
+        </member>
+        <member name="M:SudoEngine.Core.Audio.Init(System.String)">
+            <summary>
+            Crée un contexte OpenAL valide avec le device spécifié
+            </summary>
+            <param name="deviceName">Le nom du device</param>
+        </member>
+        <member name="M:SudoEngine.Core.Audio.DeviceList">
+            <summary>
+            Récupère la liste des devices
+            </summary>
+            <returns><see cref="T:System.Collections.Generic.IList`1"/> contenant la liste des noms des devices</returns>
+        </member>
+        <member name="M:SudoEngine.Core.Audio.Delete">
+            <summary>Détruit le contexte et ferme le device</summary>
+        </member>
+        <member name="T:SudoEngine.Core.GameObject">
+            <summary>
+            Classe abstarct qui fournit du scripting et un système de hiérarchie d'objet
+            <para>Hérite de <see cref="T:SudoEngine.Core.BaseObject"/> et doit être hérité pour être utilisé</para>
+            </summary>
+        </member>
+        <member name="P:SudoEngine.Core.GameObject.AllGameObjects">
+            <summary>Liste de tous les <see cref="T:SudoEngine.Core.GameObject"/> chargés en mémoire</summary>
+        </member>
+        <member name="P:SudoEngine.Core.GameObject.Started">
+            <summary><see cref="T:System.Boolean"/> indiquant si le GameObject est passé par l'évenement <see cref="M:SudoEngine.Core.GameObject.OnStart"/></summary>
+        </member>
+        <member name="P:SudoEngine.Core.GameObject.Parent">
+            <summary>Le <see cref="T:SudoEngine.Core.GameObject"/> assigné en parent de ce GameObject, null si aucun parent</summary>
+        </member>
+        <member name="P:SudoEngine.Core.GameObject.Childrens">
+            <summary>Liste des enfatns de ce GameObject</summary>
+        </member>
+        <member name="M:SudoEngine.Core.GameObject.#ctor(System.String)">
+            <summary>
+            Crée un nouvel objet <see cref="T:SudoEngine.Core.GameObject"/> et appele le constructeur de <see cref="T:SudoEngine.Core.BaseObject"/>
+            </summary>
+            <param name="name">Le nom interne de l'objet (GameObject par défaut)</param>
+        </member>
         <member name="M:SudoEngine.Core.GameObject.Delete">
             <summary>
             Supprime le GameObject ainsi que tous ces enfants
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:SudoEngine.Core.GameObject.SetEnable(System.Boolean)" -->
+        <member name="M:SudoEngine.Core.GameObject.SetEnable(System.Boolean)">
+            <summary>
+            Active ou désactive l'objet ainsi que tous ces enfants
+            </summary>
+            <param name="status">Booléen indiquant le nouvel état de l'objet</param>
+        </member>
+        <member name="M:SudoEngine.Core.GameObject.Update">
+            <summary>Update tous les <see cref="T:SudoEngine.Core.GameObject"/></summary>
+        </member>
+        <member name="M:SudoEngine.Core.GameObject.Render">
+            <summary>Render tous les <see cref="T:SudoEngine.Core.GameObject"/></summary>
+        </member>
         <member name="M:SudoEngine.Core.GameObject.SetParent(SudoEngine.Core.GameObject)">
             <summary>
-            Permet d'assigner un objet en tant que parent de l'objet actuel
+            Permet d'assigner un objet en tant que parent du GameObject actuel
             </summary>
             <param name="parent">L'objet a mettre en parent</param>
         </member>
         <member name="M:SudoEngine.Core.GameObject.Hierarchy">
+            <summary>Écrit dans la console la hiérarchie du GameObject actuel (remonte l'arbre des parents)</summary>
+        </member>
+        <member name="M:SudoEngine.Core.GameObject.Children(System.Int32)">
             <summary>
-            Écrit dans la console la hiérarchie de l'objet actuel (remonte l'arbre des parents)
+            Écrit dans la console la liste des enfants du GameObject actuel (écrit également les enfants des enfants)
             </summary>
+            <param name="index">Paramètre utilisé pour la rrécursivité, ne doit pas être modifié</param>
         </member>
         <member name="M:SudoEngine.Core.GameObject.OnCreation">
             <summary>Invoqué lors de l'appel du constructeur</summary>
@@ -40,7 +203,10 @@
             <summary>Invoqué lorsque l'objet est activé avec la méthode <see cref="M:SudoEngine.Core.GameObject.SetEnable(System.Boolean)"/></summary>
         </member>
         <member name="M:SudoEngine.Core.GameObject.OnDisable">
-            <summary>Invoqué lorsque l'objet est déactivé avec la méthode <see cref="M:SudoEngine.Core.GameObject.SetEnable(System.Boolean)"/></summary>
+            <summary>Invoqué lorsque l'objet est désactivé avec la méthode <see cref="M:SudoEngine.Core.GameObject.SetEnable(System.Boolean)"/></summary>
+        </member>
+        <member name="T:SudoEngine.Core.Log">
+            <summary>Classe statique offrant des méthodes pour écrire dans la console</summary>
         </member>
         <member name="M:SudoEngine.Core.Log.Info(System.Object)">
             <summary> <param>Écrit un message dans la console (police bleue)</param> </summary>
@@ -131,6 +297,35 @@
         <member name="P:SudoEngine.Maths.Vector2D.Left">
             <summary> Crée un vecteur qui pointe vers la droite </summary>
         </member>
+        <member name="T:SudoEngine.Render.Layer">
+            <summary>Couche sur lequel un <see cref="T:SudoEngine.Render.BackGround"/> se trouve
+            <para>Affecte l'ordre de Render ainsi que l'accessibilité de certaines propriétés</para>
+            </summary>
+        </member>
+        <member name="F:SudoEngine.Render.Layer.BackGround">
+            <summary>Le layer le plus au fond</summary>
+        </member>
+        <member name="F:SudoEngine.Render.Layer.CloseBackGround">
+            <summary>Le Layer entre le <see cref="F:SudoEngine.Render.Layer.PlayerLayer"/> et le <see cref="F:SudoEngine.Render.Layer.BackGround"/></summary>
+        </member>
+        <member name="F:SudoEngine.Render.Layer.PlayerLayer">
+            <summary>Le Layer sur lequel se trouve le joueur</summary>
+        </member>
+        <member name="F:SudoEngine.Render.Layer.CloseForeGround">
+            <summary>Le Layer entre le <see cref="F:SudoEngine.Render.Layer.PlayerLayer"/> et le <see cref="F:SudoEngine.Render.Layer.ForeGround"/></summary>
+        </member>
+        <member name="F:SudoEngine.Render.Layer.ForeGround">
+            <summary>Le BackGround le plus proche</summary>
+        </member>
+        <member name="T:SudoEngine.Render.BackGround">
+            <summary>
+            Classe permettant de gérer des BackGround, fourni un ensemble de méthodes et de propriétés qui facilitent la création et le rendu
+            <para>Hérite de <see cref="T:SudoEngine.Core.BaseObject"/> et ne peut pas être héritée</para>
+            </summary>
+        </member>
+        <member name="F:SudoEngine.Render.BackGround.AllBackGrounds">
+            <summary>Liste des 5 <see cref="T:SudoEngine.Render.BackGround"/> ayant un layer</summary>
+        </member>
         <member name="P:SudoEngine.Render.BackGround.Layer">
             <summary> Indique le layer sur lequel se trouve le BackGround </summary>
         </member>
@@ -142,6 +337,7 @@
         </member>
         <member name="P:SudoEngine.Render.BackGround.Transparency">
             <summary> La transparence du BackGround, entre 0 (opaque) et 1 (complètement transparent) </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
         </member>
         <member name="P:SudoEngine.Render.BackGround.Visible">
             <summary> Indique si oui ou non le BackGround doit être render </summary>
@@ -150,7 +346,7 @@
             <summary> La taille (en écrans) du BackGround </summary>
         </member>
         <member name="P:SudoEngine.Render.BackGround.Width">
-            <summary> La largeur (en écrans) du background </summary>
+            <summary> La largeur (en écrans) du BackGround </summary>
         </member>
         <member name="P:SudoEngine.Render.BackGround.Height">
             <summary> La hauteur (en écrans) du BackGround </summary>
@@ -162,57 +358,66 @@
             <param name="name">Le nom interne de l'objet (BackGround par défaut)</param>
         </member>
         <member name="M:SudoEngine.Render.BackGround.Bind">
-            <summary>Bind les ressources du background</summary>
+            <summary>Bind les ressources du BackGround</summary>
         </member>
         <member name="M:SudoEngine.Render.BackGround.Delete">
-            <summary>Supprime le background</summary>
+            <summary>Supprime le BackGround</summary>
         </member>
         <member name="M:SudoEngine.Render.BackGround.Render">
-            <summary>Render le background</summary>
+            <summary>Render le BackGround</summary>
         </member>
         <member name="M:SudoEngine.Render.BackGround.Generate(SudoEngine.Render.Layer,SudoEngine.Render.Shader,SudoEngine.Render.Texture,SudoEngine.Maths.Vector2D)">
             <summary>
-            Génère le background avec les paramètres donnés (<see cref="T:SudoEngine.Render.Layer"/>, <see cref="T:SudoEngine.Render.Shader"/>, <see cref="T:SudoEngine.Render.Texture"/> et <see cref="T:SudoEngine.Maths.Vector2D"/>)
+            Génère le BackGround avec les paramètres donnés (<see cref="T:SudoEngine.Render.Layer"/>, <see cref="T:SudoEngine.Render.Shader"/>, <see cref="T:SudoEngine.Render.Texture"/> et <see cref="T:SudoEngine.Maths.Vector2D"/>)
             </summary>
-            <param name="layer">Le <see cref="T:SudoEngine.Render.Layer"/> sur lequel se trouve le background</param>
-            <param name="shader">Le <see cref="T:SudoEngine.Render.Shader"/> associé au background</param>
-            <param name="gfx">La <see cref="T:SudoEngine.Render.Texture"/> du background, ces graphismes</param>
-            <param name="size"><see cref="T:SudoEngine.Maths.Vector2D"/> représentant la taille du background en écrans</param>
+            <param name="layer">Le <see cref="T:SudoEngine.Render.Layer"/> sur lequel se trouve le BackGround</param>
+            <param name="shader">Le <see cref="T:SudoEngine.Render.Shader"/> associé au BackGround</param>
+            <param name="gfx">La <see cref="T:SudoEngine.Render.Texture"/> du BackGround, ces graphismes</param>
+            <param name="size"><see cref="T:SudoEngine.Maths.Vector2D"/> représentant la taille du BackGround en écrans</param>
         </member>
         <member name="M:SudoEngine.Render.BackGround.Generate(SudoEngine.Render.Layer,SudoEngine.Render.Shader,System.Int32[0:,0:],System.Drawing.Bitmap)">
             <summary>
-            Génère le background avec les paramètres données (<see cref="T:SudoEngine.Render.Layer"/>, <see cref="T:SudoEngine.Render.Shader"/>, <see cref="!:int[,]"/> et <see cref="T:System.Drawing.Bitmap"/>)
+            Génère le BackGround avec les paramètres données (<see cref="T:SudoEngine.Render.Layer"/>, <see cref="T:SudoEngine.Render.Shader"/>, <see cref="!:int[,]"/> et <see cref="T:System.Drawing.Bitmap"/>)
             </summary>
-            <param name="layer">Le <see cref="T:SudoEngine.Render.Layer"/> sur lequel se trouve le background</param>
-            <param name="shader">Le <see cref="T:SudoEngine.Render.Shader"/> associé au background</param>
+            <param name="layer">Le <see cref="T:SudoEngine.Render.Layer"/> sur lequel se trouve le BackGround</param>
+            <param name="shader">Le <see cref="T:SudoEngine.Render.Shader"/> associé au BackGround</param>
             <param name="data">Array d'<see cref="!:int[,]"/> représentant les données des tiles</param>
             <param name="tileset"><see cref="T:System.Drawing.Bitmap"/> représentant le tileset</param>
         </member>
         <member name="M:SudoEngine.Render.BackGround.Generate(SudoEngine.Render.Texture,SudoEngine.Maths.Vector2D)">
             <summary>
-            Génère le background avec les paramètres données (<see cref="T:SudoEngine.Render.Texture"/>, <see cref="T:SudoEngine.Maths.Vector2D"/>)
+            Génère le BackGround avec les paramètres données (<see cref="T:SudoEngine.Render.Texture"/>, <see cref="T:SudoEngine.Maths.Vector2D"/>)
             </summary>
-            <param name="gfx">La <see cref="T:SudoEngine.Render.Texture"/> du background, ces graphismes</param>
-            <param name="size"><see cref="T:SudoEngine.Maths.Vector2D"/> représentant la taille du background en écrans</param>
+            <param name="gfx">La <see cref="T:SudoEngine.Render.Texture"/> du BackGround, ces graphismes</param>
+            <param name="size"><see cref="T:SudoEngine.Maths.Vector2D"/> représentant la taille du BackGround en écrans</param>
         </member>
         <member name="M:SudoEngine.Render.BackGround.Generate(System.Int32[0:,0:],System.Drawing.Bitmap)">
             <summary>
-            Génère le background avec les paramètres données (<see cref="!:int[,]"/> et <see cref="T:System.Drawing.Bitmap"/>)
+            Génère le BackGround avec les paramètres données (<see cref="!:int[,]"/> et <see cref="T:System.Drawing.Bitmap"/>)
             </summary>
             <param name="data">Array d'<see cref="!:int[,]"/> représentant les données des tiles</param>
             <param name="tileset"><see cref="T:System.Drawing.Bitmap"/> représentant le tileset</param>
         </member>
+        <member name="M:SudoEngine.Render.BackGround.DeleteTile(System.Int32)">
+            <summary>Supprime une tile du BackGround (utilisation déconseillée)</summary>
+        </member>
         <member name="M:SudoEngine.Render.BackGround.RenderAll">
-            <summary>Render tous les background non null/></summary>
+            <summary>Render tous les BackGround non null/></summary>
         </member>
         <member name="M:SudoEngine.Render.BackGround.DeleteAll">
-            <summary>Supprime tous les background/></summary>
+            <summary>Supprime tous les BackGround/></summary>
         </member>
         <member name="M:SudoEngine.Render.BackGround.CreateList">
-            <summary>Initialise la liste des backgrounds avec la valeur null</summary>
+            <summary>Initialise la liste des BackGrounds avec la valeur null</summary>
+        </member>
+        <member name="T:SudoEngine.Render.Shader">
+            <summary>
+            Classe permettant de gérer des Shader, fourni des méthodes facilitant la manipulation des données
+            <para>Hérite de <see cref="T:SudoEngine.Core.BaseObject"/> et ne peut pas être héritée</para>
+            </summary>
         </member>
         <member name="P:SudoEngine.Render.Shader.AllShaders">
-            <summary>Liste de toutes les <see cref="T:SudoEngine.Render.Shader"/> actuellement chargé en mémoire</summary>
+            <summary>Liste de toutes les <see cref="T:SudoEngine.Render.Shader"/> actuellement chargés en mémoire</summary>
         </member>
         <member name="P:SudoEngine.Render.Shader.Handle">
             <summary>Handle du shader (nécessaire au fonctionnement d'OpenGL)</summary>
@@ -230,7 +435,7 @@
             <summary>Supprime le shader </summary>
         </member>
         <member name="M:SudoEngine.Render.Shader.DeleteAll">
-            <summary>Supprime tous les shaders</summary>
+            <summary>Supprime tous les <see cref="T:SudoEngine.Render.Shader"/></summary>
         </member>
         <member name="M:SudoEngine.Render.Shader.SetAttribute(System.String,System.Int32)">
             <summary>
@@ -380,8 +585,82 @@
             <param name="Fpath">Cheminvers le Fragment Shader</param>
             <param name="Gpath">Chemin vers le Geometry Shader (null si non présent)</param>
         </member>
+        <member name="T:SudoEngine.Render.Sprite">
+            <summary>
+            Classe abstract offrant un ensemble de propriétés et des méthodes permettant de créer des sprites et d'utiliser le système de scripting de 
+            <see cref="T:SudoEngine.Core.GameObject"/> en plus d'automatiser le rendu
+            <para>Hérite de <see cref="T:SudoEngine.Core.GameObject"/> et doit être héritée pour être utilisé</para>
+            </summary>
+        </member>
+        <member name="P:SudoEngine.Render.Sprite.AllSprites">
+            <summary>Liste des tous les <see cref="T:SudoEngine.Render.Sprite"/> chargés en mémoire</summary>
+        </member>
+        <member name="P:SudoEngine.Render.Sprite.Shader">
+            <summary><see cref="T:SudoEngine.Render.Shader"/> associé au sprite</summary>
+        </member>
+        <member name="P:SudoEngine.Render.Sprite.SpriteSheet">
+            <summary><see cref="T:SudoEngine.Render.Texture"/> contenant les différentes frames de l'animation du Sprite</summary>
+        </member>
+        <member name="P:SudoEngine.Render.Sprite.Size">
+            <summary><see cref="T:SudoEngine.Maths.Vector2D"/> représenant la taille en pixels du sprite
+            <para>Il est fortement recommandé que cette taille soit égale à la taille des frames dans le <see cref="P:SudoEngine.Render.Sprite.SpriteSheet"/></para>
+            </summary>
+        </member>
+        <member name="P:SudoEngine.Render.Sprite.Width">
+            <summary>Largueur du sprite</summary>
+        </member>
+        <member name="P:SudoEngine.Render.Sprite.Height">
+            <summary>Hauteur du sprite</summary>
+        </member>
+        <member name="P:SudoEngine.Render.Sprite.Visible">
+            <summary><see cref="T:System.Boolean"/> indiquant si le sprite doit être render</summary>
+        </member>
+        <member name="P:SudoEngine.Render.Sprite.Position">
+            <summary>Position du sprite dans la fenêtre
+            <para>La position 0;0 se toruve au centre de la fenêtre et elle est relative à la taille de l'écran et non la fenêtre</para>
+            </summary>
+        </member>
+        <member name="P:SudoEngine.Render.Sprite.RowInSpriteSheet">
+            <summary>La ligne sur laquelle se trouve les frames d'animations dans le <see cref="P:SudoEngine.Render.Sprite.SpriteSheet"/></summary>
+        </member>
+        <member name="M:SudoEngine.Render.Sprite.#ctor(System.String)">
+            <summary>
+            Crée un nouvel objet <see cref="T:SudoEngine.Render.Sprite"/> et appele le constructeur de <see cref="T:SudoEngine.Core.GameObject"/>
+            </summary>
+            <param name="name">Le nom interne de l'objet (Sprite par défaut)</param>
+        </member>
+        <member name="M:SudoEngine.Render.Sprite.Generate(SudoEngine.Render.Texture,SudoEngine.Render.Shader,System.Double,SudoEngine.Maths.Vector2D)">
+            <summary>
+            Génère un Sprite avec les paramètres données
+            </summary>
+            <param name="spriteSheet">La <see cref="T:SudoEngine.Render.Texture"/> contenant les frames d'animation</param>
+            <param name="shader">Le <see cref="P:SudoEngine.Render.Sprite.Shader"/> associé au Sprite</param>
+            <param name="rowInSpriteSheet">Le numéro de ligne sur lequel se trouve les frames d'animation du Sprite dans le <see cref="P:SudoEngine.Render.Sprite.SpriteSheet"/></param>
+            <param name="size"><see cref="T:SudoEngine.Maths.Vector2D"/> représentant la taille en pixels du Sprite</param>
+        </member>
+        <member name="M:SudoEngine.Render.Sprite.Delete">
+            <summary>Supprime le Sprite</summary>
+        </member>
+        <member name="M:SudoEngine.Render.Sprite.DeleteAll">
+            <summary>Supprime tous les <see cref="T:SudoEngine.Render.Sprite"/> </summary>
+        </member>
+        <member name="M:SudoEngine.Render.Sprite.Bind">
+            <summary>Bind le Sprite</summary>
+        </member>
+        <member name="M:SudoEngine.Render.Sprite.DisplayFrame(System.Int32)">
+            <summary>
+            Permet de changer la frame actuellement display depuis le <see cref="P:SudoEngine.Render.Sprite.SpriteSheet"/> pour le Sprite
+            </summary>
+            <param name="idx">L'index de la frame dans le <see cref="P:SudoEngine.Render.Sprite.SpriteSheet"/></param>
+        </member>
+        <member name="T:SudoEngine.Render.Texture">
+            <summary>
+            Classe permettant de gérer des Textures, fourni un ensemble de méthodes et de propriétés qui facilitent la création et l'utilisation
+            <para>Hérite de <see cref="T:SudoEngine.Core.BaseObject"/> et ne peut pas être héritée</para>
+            </summary>
+        </member>
         <member name="P:SudoEngine.Render.Texture.AllTextures">
-            <summary>Liste de toutes les <see cref="T:SudoEngine.Render.Texture"/> actuellement chargé en mémoire</summary>
+            <summary>Liste de toutes les <see cref="T:SudoEngine.Render.Texture"/> actuellement chargées en mémoire</summary>
         </member>
         <member name="P:SudoEngine.Render.Texture.Handle">
             <summary>Handle de la texture (nécessaire au fonctionnement d'OpenGL)</summary>
@@ -408,7 +687,7 @@
             <summary>Supprime la texture</summary>
         </member>
         <member name="M:SudoEngine.Render.Texture.DeleteAll">
-            <summary>Supprime l'intégralité des textures</summary>
+            <summary>Supprime toutes les <see cref="T:SudoEngine.Render.Texture"/></summary>
         </member>
         <member name="M:SudoEngine.Render.Texture.Bind">
             <summary>Bind la texture</summary>

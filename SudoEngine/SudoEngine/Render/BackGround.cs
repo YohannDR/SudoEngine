@@ -8,18 +8,30 @@ using System.Diagnostics;
 
 namespace SudoEngine.Render
 {
+    /// <summary>Couche sur lequel un <see cref="Render.BackGround"/> se trouve
+    /// <para>Affecte l'ordre de Render ainsi que l'accessibilité de certaines propriétés</para>
+    /// </summary>
     public enum Layer
     {
+        /// <summary>Le layer le plus au fond</summary>
         BackGround,
+        /// <summary>Le Layer entre le <see cref="PlayerLayer"/> et le <see cref="BackGround"/></summary>
         CloseBackGround,
+        /// <summary>Le Layer sur lequel se trouve le joueur</summary>
         PlayerLayer,
+        /// <summary>Le Layer entre le <see cref="PlayerLayer"/> et le <see cref="ForeGround"/></summary>
         CloseForeGround,
+        /// <summary>Le BackGround le plus proche</summary>
         ForeGround
     }
 
-
+    /// <summary>
+    /// Classe permettant de gérer des BackGround, fourni un ensemble de méthodes et de propriétés qui facilitent la création et le rendu
+    /// <para>Hérite de <see cref="BaseObject"/> et ne peut pas être héritée</para>
+    /// </summary>
     public sealed class BackGround : BaseObject
     {
+        /// <summary>Liste des 5 <see cref="BackGround"/> ayant un layer</summary>
         public static List<BackGround> AllBackGrounds = new List<BackGround>(5);
 
         /// <summary> Indique le layer sur lequel se trouve le BackGround </summary>
@@ -28,23 +40,23 @@ namespace SudoEngine.Render
         public Texture GFX { get; set; }
         /// <summary> Le shader attaché au BackGround </summary>
         public Shader Shader { get; set; }
-        float _transparency = 0;
+        double _transparency = 0;
         /// <summary> La transparence du BackGround, entre 0 (opaque) et 1 (complètement transparent) </summary>
-        public float Transparency
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public double Transparency
         {
             get => _transparency;
             set
             {
-                if (Layer != Layer.ForeGround) throw new ArgumentOutOfRangeException("Seul le background sur le layer ForeGround peut être transparent");
                 if (value < 0 || value > 1) throw new ArgumentOutOfRangeException("La transparence doit être comprise entre 0 et 1");
-                else _transparency = value;
+                _transparency = value;
             }
         }
         /// <summary> Indique si oui ou non le BackGround doit être render </summary>
         public bool Visible { get; set; } = true;
         /// <summary> La taille (en écrans) du BackGround </summary>
         public Vector2D Size { get; set; }
-        /// <summary> La largeur (en écrans) du background </summary>
+        /// <summary> La largeur (en écrans) du BackGround </summary>
         public double Width
         {
             get => Size.X;
@@ -58,7 +70,6 @@ namespace SudoEngine.Render
         }
 
         int VBO { get; set; }
-        int VAO { get; set; }
         int EBO { get; set; }
         double[] Vertices { get; set; } = new double[]
         {
@@ -80,38 +91,36 @@ namespace SudoEngine.Render
         /// <param name="name">Le nom interne de l'objet (BackGround par défaut)</param>
         public BackGround(string name = "BackGround") : base(name) { }
 
-        /// <summary>Bind les ressources du background</summary>
+        /// <summary>Bind les ressources du BackGround</summary>
         public void Bind()
         {
             Shader.Use();
             GFX.Bind();
-            //GL.BindVertexArray(VAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
             GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
 
-            if (Layer == Layer.BackGround)
+            if (AllBackGrounds[0] && Layer == Layer.BackGround)
             {
                 GL.EnableVertexAttribArray(1);
                 GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
             }
         }
 
-        /// <summary>Supprime le background</summary>
+        /// <summary>Supprime le BackGround</summary>
         public override void Delete()
         {
             GFX.Delete();
             Shader.Delete();
             GL.DeleteBuffer(VBO);
-            GL.DeleteVertexArray(VAO);
             GL.DeleteBuffer(EBO);
             AllBackGrounds[(int)Layer] = null;
             base.Delete();
         }
 
-        /// <summary>Render le background</summary>
+        /// <summary>Render le BackGround</summary>
         public void Render()
         {
             if (Visible && Transparency != 1)
@@ -124,12 +133,12 @@ namespace SudoEngine.Render
         }
 
         /// <summary>
-        /// Génère le background avec les paramètres donnés (<see cref="Render.Layer"/>, <see cref="Render.Shader"/>, <see cref="Texture"/> et <see cref="Vector2D"/>)
+        /// Génère le BackGround avec les paramètres donnés (<see cref="Render.Layer"/>, <see cref="Render.Shader"/>, <see cref="Texture"/> et <see cref="Vector2D"/>)
         /// </summary>
-        /// <param name="layer">Le <see cref="Render.Layer"/> sur lequel se trouve le background</param>
-        /// <param name="shader">Le <see cref="Render.Shader"/> associé au background</param>
-        /// <param name="gfx">La <see cref="Texture"/> du background, ces graphismes</param>
-        /// <param name="size"><see cref="Vector2D"/> représentant la taille du background en écrans</param>
+        /// <param name="layer">Le <see cref="Render.Layer"/> sur lequel se trouve le BackGround</param>
+        /// <param name="shader">Le <see cref="Render.Shader"/> associé au BackGround</param>
+        /// <param name="gfx">La <see cref="Texture"/> du BackGround, ces graphismes</param>
+        /// <param name="size"><see cref="Vector2D"/> représentant la taille du BackGround en écrans</param>
         public void Generate(Layer layer, Shader shader, Texture gfx, Vector2D size)
         {
             Layer = layer;
@@ -142,10 +151,10 @@ namespace SudoEngine.Render
         }
 
         /// <summary>
-        /// Génère le background avec les paramètres données (<see cref="Render.Layer"/>, <see cref="Render.Shader"/>, <see cref="int[,]"/> et <see cref="Bitmap"/>)
+        /// Génère le BackGround avec les paramètres données (<see cref="Render.Layer"/>, <see cref="Render.Shader"/>, <see cref="int[,]"/> et <see cref="Bitmap"/>)
         /// </summary>
-        /// <param name="layer">Le <see cref="Render.Layer"/> sur lequel se trouve le background</param>
-        /// <param name="shader">Le <see cref="Render.Shader"/> associé au background</param>
+        /// <param name="layer">Le <see cref="Render.Layer"/> sur lequel se trouve le BackGround</param>
+        /// <param name="shader">Le <see cref="Render.Shader"/> associé au BackGround</param>
         /// <param name="data">Array d'<see cref="int[,]"/> représentant les données des tiles</param>
         /// <param name="tileset"><see cref="Bitmap"/> représentant le tileset</param>
         public void Generate(Layer layer, Shader shader, int[,] data, Bitmap tileset)
@@ -158,10 +167,10 @@ namespace SudoEngine.Render
         }
 
         /// <summary>
-        /// Génère le background avec les paramètres données (<see cref="Texture"/>, <see cref="Vector2D"/>)
+        /// Génère le BackGround avec les paramètres données (<see cref="Texture"/>, <see cref="Vector2D"/>)
         /// </summary>
-        /// <param name="gfx">La <see cref="Texture"/> du background, ces graphismes</param>
-        /// <param name="size"><see cref="Vector2D"/> représentant la taille du background en écrans</param>
+        /// <param name="gfx">La <see cref="Texture"/> du BackGround, ces graphismes</param>
+        /// <param name="size"><see cref="Vector2D"/> représentant la taille du BackGround en écrans</param>
         public void Generate(Texture gfx, Vector2D size)
         {
             GFX = gfx;
@@ -169,13 +178,12 @@ namespace SudoEngine.Render
         }
 
         /// <summary>
-        /// Génère le background avec les paramètres données (<see cref="int[,]"/> et <see cref="Bitmap"/>)
+        /// Génère le BackGround avec les paramètres données (<see cref="int[,]"/> et <see cref="Bitmap"/>)
         /// </summary>
         /// <param name="data">Array d'<see cref="int[,]"/> représentant les données des tiles</param>
         /// <param name="tileset"><see cref="Bitmap"/> représentant le tileset</param>
         public void Generate(int[,] data, Bitmap tileset)
         {
-            Log.StartTimer();
             Bitmap Gfx = new Bitmap(data.GetLength(1) * 32, data.GetLength(0) * 32);
             Size = new Vector2D(Gfx.Width / (float)1920, Gfx.Height / (float)1080);
             CalculateVertices();
@@ -198,9 +206,9 @@ namespace SudoEngine.Render
             Texture tex = new Texture();
             tex.LoadFromBitmap(Gfx, true);
             GFX = tex;
-            Log.StopTimer();
         }
 
+        /// <summary>Supprime une tile du BackGround (utilisation déconseillée)</summary>
         public void DeleteTile(int index)
         {
             int tilePerRow = GFX.Width / 32;
@@ -227,7 +235,6 @@ namespace SudoEngine.Render
         void InitGL()
         {
             VBO = GL.GenBuffer();
-            VAO = GL.GenVertexArray();
             EBO = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
             GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
@@ -256,13 +263,13 @@ namespace SudoEngine.Render
             Vertices[16] = 1 - Height * 2;
         }
 
-        /// <summary>Render tous les background non null/></summary>
+        /// <summary>Render tous les BackGround non null/></summary>
         public static void RenderAll() { foreach (BackGround bg in AllBackGrounds) if (bg) bg.Render(); }
 
-        /// <summary>Supprime tous les background/></summary>
+        /// <summary>Supprime tous les BackGround/></summary>
         public static void DeleteAll() { for (int i = 0; i < 5; i++) if (AllBackGrounds[i]) AllBackGrounds[i].Delete(); }
 
-        /// <summary>Initialise la liste des backgrounds avec la valeur null</summary>
+        /// <summary>Initialise la liste des BackGrounds avec la valeur null</summary>
         public static void CreateList() { for (int i = 0; i < 5; i++) AllBackGrounds.Add(null); }
     }
 }

@@ -6,12 +6,12 @@ namespace SudoEngine.Core
     {
         protected internal string Name { get; private set; }
         protected internal Guid ID { get; private set; }
-        protected internal bool Enabled { get; set; } = true;
-        protected internal bool Deleted { get; set; } = false;
+        protected internal bool Enabled { get; private set; } = true;
+        protected internal bool Deleted { get; private set; } = false;
 
-        public BaseObject() => ID = Guid.NewGuid();
+        protected internal BaseObject() => ID = Guid.NewGuid();
 
-        public BaseObject(string name)
+        protected internal BaseObject(string name)
         {
             Name = name;
             ID = Guid.NewGuid();

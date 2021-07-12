@@ -5,6 +5,7 @@ using OpenTK.Audio.OpenAL;
 
 namespace SudoEngine.Core
 {
+    /// <summary>Classe statique offrant des méthodes pour écrire dans la console</summary>
     public static class Log
     {
         private static Stopwatch SW = new Stopwatch();

@@ -1,10 +1,11 @@
-﻿/*using OpenTK;
+﻿#if DEBUG
+using OpenTK;
 
 namespace SudoEngine
 {
     class Program
     {
-        static void Main()
+        public static void Main(string[] args)
         {
             using (Window window = new Window(900, 600, "SudoEngine"))
             {
@@ -13,4 +14,5 @@ namespace SudoEngine
             }
         }
     }
-}*/
+}
+#endif

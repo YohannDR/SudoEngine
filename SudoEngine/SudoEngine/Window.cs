@@ -1,4 +1,5 @@
-﻿/*using OpenTK;
+﻿#if DEBUG
+using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
@@ -13,7 +14,7 @@ namespace SudoEngine
 {
     public sealed class Window : GameWindow
     {
-        public Window(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, GameWindowFlags.Fullscreen, DisplayDevice.GetDisplay(DisplayIndex.Second)) { }
+        public Window(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, GameWindowFlags.Fullscreen, DisplayDevice.GetDisplay(DisplayIndex.First)) { }
 
         readonly Camera camera = new Camera("Main");
         readonly Shader shader = new Shader();
@@ -23,9 +24,7 @@ namespace SudoEngine
         readonly BackGround BG2 = new BackGround();
         readonly Texture texture0 = new Texture();
         readonly Texture spriteSheet = new Texture();
-
-        Sound sound;
-        readonly Sprite sprite = new Sprite();
+        readonly TestSprite sprite = new TestSprite();
 
         Vector4D moveVector = new Vector4D(0);
         protected override void OnLoad(EventArgs e)
@@ -36,13 +35,11 @@ namespace SudoEngine
 
             shader.LoadFromFile("shaderTexture.vert", "shaderTexture.frag", null);
             camera.Shader = shader;
-            spriteSheet.LoadFromFile("spritesheet2.png");
+            spriteSheet.LoadFromFile("spritesheet.png");
             texture0.LoadFromFile("bg.png");
-
             sprite.Generate(spriteSheet, shader, 0, new Vector2D(64, 64));
-            sprite.Position = new Vector2D(0, -325);
 
-            /*BackGround.CreateList();
+            BackGround.CreateList();
             int[,] a = new int[,]
             {
                 {178, 100, 101, 102, 103, 98, 99, 102, 343, 138, 139, 140, 140, 140, 140},
@@ -72,7 +69,7 @@ namespace SudoEngine
             };
 
             int[,] c = new int[,]
-            {               
+            {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -99,28 +96,15 @@ namespace SudoEngine
                 {118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116 },
             };
 
-            BG2.Generate(Layer.PlayerLayer, shader, c, new Bitmap("Textures/1.png"));
-            //BG1.Generate(Layer.CloseBackGround, shader, b, new Bitmap("Textures/1.png"));
-            BG0.Generate(Layer.BackGround, shader, texture0, new Vector2D(1, 1));
+            BG2.Generate(Layer.PlayerLayer, shader, a, new Bitmap("Textures/1.png"));
+            BG1.Generate(Layer.CloseBackGround, shader, b, new Bitmap("Textures/1.png"));
+            BG0.Generate(Layer.BackGround, shader, texture0, BG2.Size);
 
             base.OnLoad(e);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            if (Keyboard.GetState().IsKeyDown(Key.Right))
-            {
-                sprite.Position = new Vector2D(sprite.Position.X + 5, sprite.Position.Y);
-                idx = 1;
-            }
-            if (Keyboard.GetState().IsKeyDown(Key.Left))
-            {
-                sprite.Position = new Vector2D(sprite.Position.X - 5, sprite.Position.Y);
-                idx = 2;
-            }
-            if (!Keyboard.GetState().IsAnyKeyDown) idx = 0;
-
-            sprite.DisplayImage(idx);
             GameObject.Update();
             base.OnUpdateFrame(e);
         }
@@ -129,14 +113,14 @@ namespace SudoEngine
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             shader.Use();
-            //BackGround.RenderAll();
+            BackGround.RenderAll();
             GameObject.Render();
 
             Context.SwapBuffers();
             //Log.Info($"{(1.0D / e.Time):F0} FPS");
             base.OnRenderFrame(e);
         }
-        int idx = 0;
+
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
             if (e.Key == Key.Keypad0 && BG0) BG0.Visible = !BG0.Visible;
@@ -146,12 +130,13 @@ namespace SudoEngine
             if (e.Key == Key.Escape) Exit();
             if (e.Alt && e.Key == Key.F4) Exit();
 
-            /*if (e.Key == Key.Right) camera.Scroll(Direcction.Right, 0.05);
+            if (e.Key == Key.Right) camera.Scroll(Direcction.Right, 0.05);
             if (e.Key == Key.Left) camera.Scroll(Direcction.Left, 0.05);
             if (e.Key == Key.Up) camera.Scroll(Direcction.Up, 0.05);
             if (e.Key == Key.Down) camera.Scroll(Direcction.Down, 0.055);
             if (e.Key == Key.Space) moveVector.W -= 0.01;
             if (e.Key == Key.BackSpace) moveVector.W += 0.01;
+
             base.OnKeyDown(e);
         }
 
@@ -164,6 +149,7 @@ namespace SudoEngine
             BackGround.DeleteAll();
             Sound.DeleteAll();
             Audio.Delete();
+            Sprite.DeleteAll();
 
             base.OnUnload(e);
         }
@@ -174,4 +160,5 @@ namespace SudoEngine
             base.OnResize(e);
         }
     }
-}*/
+}
+#endif

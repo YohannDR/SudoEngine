@@ -8,9 +8,13 @@ using System.Text;
 
 namespace SudoEngine.Render
 {
+    /// <summary>
+    /// Classe permettant de gérer des Shader, fourni des méthodes facilitant la manipulation des données
+    /// <para>Hérite de <see cref="BaseObject"/> et ne peut pas être héritée</para>
+    /// </summary>
     public sealed class Shader : BaseObject
     {
-        /// <summary>Liste de toutes les <see cref="Shader"/> actuellement chargé en mémoire</summary>
+        /// <summary>Liste de toutes les <see cref="Shader"/> actuellement chargés en mémoire</summary>
         public static List<Shader> AllShaders { get; set; } = new List<Shader>();
         /// <summary>Handle du shader (nécessaire au fonctionnement d'OpenGL)</summary>
         public int Handle { get; private set; }
@@ -67,8 +71,8 @@ namespace SudoEngine.Render
             base.Delete();
         }
 
-        /// <summary>Supprime tous les shaders</summary>
-        public static void DeleteAll() { for (int i = 0; i < AllShaders.Count; i++) if (AllShaders[i] != null) AllShaders[i].Delete(); }
+        /// <summary>Supprime tous les <see cref="Shader"/></summary>
+        public static void DeleteAll() { for (int i = 0; i < AllShaders.Count; i++) if (AllShaders[i]) AllShaders[i].Delete(); }
 
         /// <summary>
         /// Permet de set un unifrom de type int dans le shader
