@@ -25,7 +25,7 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 
 ### Shader
 - Gestion complète des shaders
-- Fonction unique pour set une valeur uniform quelque soit le type de la variable
+- Fonctions pour set les variables uniform
 
 ### Texture
 - Création d'une texture depuis une image ou une bitmap
