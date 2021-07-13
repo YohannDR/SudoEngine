@@ -14,7 +14,7 @@ namespace SudoEngine
 {
     public sealed class Window : GameWindow
     {
-        public Window(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, GameWindowFlags.Fullscreen, DisplayDevice.GetDisplay(DisplayIndex.First)) { }
+        public Window(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, GameWindowFlags.Fullscreen, DisplayDevice.GetDisplay(DisplayIndex.Second)) { }
 
         readonly Camera camera = new Camera("Main");
         readonly Shader shader = new Shader();

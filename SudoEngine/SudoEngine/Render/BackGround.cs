@@ -13,7 +13,7 @@ namespace SudoEngine.Render
     /// </summary>
     public enum Layer
     {
-        /// <summary>Le layer le plus au fond</summary>
+        /// <summary>Le Layer le plus au fond</summary>
         BackGround,
         /// <summary>Le Layer entre le <see cref="PlayerLayer"/> et le <see cref="BackGround"/></summary>
         CloseBackGround,
@@ -21,7 +21,7 @@ namespace SudoEngine.Render
         PlayerLayer,
         /// <summary>Le Layer entre le <see cref="PlayerLayer"/> et le <see cref="ForeGround"/></summary>
         CloseForeGround,
-        /// <summary>Le BackGround le plus proche</summary>
+        /// <summary>Le Layer le plus proche</summary>
         ForeGround
     }
 
@@ -52,7 +52,7 @@ namespace SudoEngine.Render
                 _transparency = value;
             }
         }
-        /// <summary> Indique si oui ou non le BackGround doit être render </summary>
+        /// <summary> Indique si oui ou non le BackGround doit être render (<see langword="true"/> par défaut)</summary>
         public bool Visible { get; set; } = true;
         /// <summary> La taille (en écrans) du BackGround </summary>
         public Vector2D Size { get; set; }
@@ -167,7 +167,7 @@ namespace SudoEngine.Render
         }
 
         /// <summary>
-        /// Génère le BackGround avec les paramètres données (<see cref="Texture"/>, <see cref="Vector2D"/>)
+        /// Génère le BackGround avec les paramètres données (<see cref="Texture"/> et <see cref="Vector2D"/>)
         /// </summary>
         /// <param name="gfx">La <see cref="Texture"/> du BackGround, ces graphismes</param>
         /// <param name="size"><see cref="Vector2D"/> représentant la taille du BackGround en écrans</param>
@@ -263,13 +263,13 @@ namespace SudoEngine.Render
             Vertices[16] = 1 - Height * 2;
         }
 
-        /// <summary>Render tous les BackGround non null/></summary>
+        /// <summary>Render tous les BackGround non <see langword="null"/>/></summary>
         public static void RenderAll() { foreach (BackGround bg in AllBackGrounds) if (bg) bg.Render(); }
 
         /// <summary>Supprime tous les BackGround/></summary>
         public static void DeleteAll() { for (int i = 0; i < 5; i++) if (AllBackGrounds[i]) AllBackGrounds[i].Delete(); }
 
-        /// <summary>Initialise la liste des BackGrounds avec la valeur null</summary>
+        /// <summary>Initialise la liste des BackGrounds avec la valeur <see langword="null"/></summary>
         public static void CreateList() { for (int i = 0; i < 5; i++) AllBackGrounds.Add(null); }
     }
 }

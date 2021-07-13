@@ -32,7 +32,7 @@ namespace SudoEngine.Render
             get => (int)Size.Y;
             set => Size = new Vector2D(Width, value);
         }
-        /// <summary>L/es données brutes des pixels de la texture</summary>
+        /// <summary>Les données brutes des pixels de la texture</summary>
         public byte[] Data { get; private set; }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace SudoEngine.Render
         /// Crée une texture à partir d'un <see cref="Bitmap"/>
         /// </summary>
         /// <param name="image">L'image à convertir en texture</param>
-        /// <param name="reverse">Booléen indiquant si l'image doit être flip verticalement</param>
+        /// <param name="reverse"><see cref="bool"/> indiquant si l'image doit être flip verticalement</param>
         public void LoadFromBitmap(Bitmap image, bool reverse)
         {
             if (reverse) image.RotateFlip(RotateFlipType.Rotate180FlipX);

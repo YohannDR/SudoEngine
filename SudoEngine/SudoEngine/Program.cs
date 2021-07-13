@@ -9,7 +9,7 @@ namespace SudoEngine
         {
             using (Window window = new Window(900, 600, "SudoEngine"))
             {
-                window.Run();
+                window.Run(10, 60);
                 window.VSync = VSyncMode.On;
             }
         }

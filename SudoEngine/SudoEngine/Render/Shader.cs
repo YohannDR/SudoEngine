@@ -14,7 +14,7 @@ namespace SudoEngine.Render
     /// </summary>
     public sealed class Shader : BaseObject
     {
-        /// <summary>Liste de toutes les <see cref="Shader"/> actuellement chargés en mémoire</summary>
+        /// <summary>Liste de tous les <see cref="Shader"/> actuellement chargés en mémoire</summary>
         public static List<Shader> AllShaders { get; set; } = new List<Shader>();
         /// <summary>Handle du shader (nécessaire au fonctionnement d'OpenGL)</summary>
         public int Handle { get; private set; }
@@ -54,10 +54,13 @@ namespace SudoEngine.Render
 
             GL.DetachShader(Handle, Vertex);
             GL.DetachShader(Handle, Fragment);
-            if (GeometrySource != null) GL.DetachShader(Handle, Geometry);
+            if (GeometrySource != null)
+            {
+                GL.DetachShader(Handle, Geometry);
+                GL.DeleteShader(Geometry);
+            }
             GL.DeleteShader(Vertex);
             GL.DeleteShader(Fragment);
-            if (GeometrySource != null) GL.DeleteShader(Geometry);
         }
 
         /// <summary>Bind le shader</summary>
@@ -75,21 +78,21 @@ namespace SudoEngine.Render
         public static void DeleteAll() { for (int i = 0; i < AllShaders.Count; i++) if (AllShaders[i]) AllShaders[i].Delete(); }
 
         /// <summary>
-        /// Permet de set un unifrom de type int dans le shader
+        /// Permet de set un unifrom de type <see cref="int"/> dans le shader
         /// </summary>
         /// <param name="name">Le nom de la variable dans le shader</param>
         /// <param name="value">La valeur a passer dans la variable</param>
         public void SetAttribute(string name, int value) => GL.Uniform1(GetAttribLocation(name), value);
 
         /// <summary>
-        /// Permet de set un unifrom de type float dans le shader
+        /// Permet de set un unifrom de type <see cref="float"/> dans le shader
         /// </summary>
         /// <param name="name">Le nom de la variable dans le shader</param>
         /// <param name="value">La valeur a passer dans la variable</param>
         public void SetAttribute(string name, float value) => GL.Uniform1(GetAttribLocation(name), value);
 
         /// <summary>
-        /// Permet de set un unifrom de type float dans le shader
+        /// Permet de set un unifrom de type <see cref="double"/> dans le shader
         /// </summary>
         /// <param name="name">Le nom de la variable dans le shader</param>
         /// <param name="value">La valeur a passer dans la variable</param>
@@ -201,7 +204,7 @@ namespace SudoEngine.Render
         public void SetAttribute(string name, Matrix4D value) => SetAttribute(name, (Matrix4)value);
 
         /// <summary>
-        /// Permet de set un unifrom de type bool dans le shader
+        /// Permet de set un unifrom de type <see cref="bool"/> dans le shader
         /// </summary>
         /// <param name="name">Le nom de la variable dans le shader</param>
         /// <param name="value">La valeur a passer dans la variable</param>
@@ -229,7 +232,7 @@ namespace SudoEngine.Render
         /// </summary>
         /// <param name="Vpath">Chemin vers le Vertex Shader</param>
         /// <param name="Fpath">Cheminvers le Fragment Shader</param>
-        /// <param name="Gpath">Chemin vers le Geometry Shader (null si non présent)</param>
+        /// <param name="Gpath">Chemin vers le Geometry Shader (<see langword="null"/> si non présent)</param>
         public void LoadFromFile(string Vpath, string Fpath, string Gpath)
         {
             string VertexSource, FragmentSource, GeometrySource;

@@ -17,7 +17,7 @@ namespace SudoEngine.Render
 
     public sealed class Camera : BaseObject
     {
-        public static Vector2D Resolution { get => new Vector2D(DisplayDevice.GetDisplay(DisplayIndex.Second).Width, DisplayDevice.GetDisplay(DisplayIndex.Second).Height); }
+        public static Vector2D Resolution { get => new Vector2D(DisplayDevice.GetDisplay(DisplayIndex.Default).Width, DisplayDevice.GetDisplay(DisplayIndex.Default).Height); }
         public static double AspectRatio { get => Resolution.X / Resolution.Y; }
         public static Camera Main { get; set; }
         public static List<Camera> AllCameras { get; set; } = new List<Camera>();

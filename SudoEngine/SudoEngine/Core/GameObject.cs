@@ -3,7 +3,7 @@
 namespace SudoEngine.Core
 {
     /// <summary>
-    /// Classe abstarct qui fournit du scripting et un système de hiérarchie d'objet
+    /// Classe <see langword="abstract"/> qui fournit du scripting et un système de hiérarchie d'objet
     /// <para>Hérite de <see cref="BaseObject"/> et doit être hérité pour être utilisé</para>
     /// </summary>
     public abstract class GameObject : BaseObject
@@ -13,9 +13,9 @@ namespace SudoEngine.Core
 
         /// <summary><see cref="bool"/> indiquant si le GameObject est passé par l'évenement <see cref="OnStart"/></summary>
         protected internal bool Started { get; private set; } = false;
-        /// <summary>Le <see cref="GameObject"/> assigné en parent de ce GameObject, null si aucun parent</summary>
+        /// <summary>Le <see cref="GameObject"/> assigné en parent de ce GameObject, <see langword="null"/> si aucun parent</summary>
         protected internal GameObject Parent { get; private set; } = null;
-        /// <summary>Liste des enfatns de ce GameObject</summary>
+        /// <summary>Liste des enfants de ce GameObject</summary>
         protected internal List<GameObject> Childrens { get; private set; } = new List<GameObject>();
 
         /// <summary>
@@ -28,9 +28,7 @@ namespace SudoEngine.Core
             AllGameObjects.Add(this);
         }
 
-        /// <summary>
-        /// Supprime le GameObject ainsi que tous ces enfants
-        /// </summary>
+        /// <summary>Supprime le GameObject ainsi que tous ces enfants</summary>
         public override void Delete()
         {
             OnDelete();
@@ -92,6 +90,12 @@ namespace SudoEngine.Core
             if (parent.Deleted)
             {
                 Log.Error("Impossible d'assigner un GameObject supprimé en tant que parent");
+                return;
+            }
+
+            if (parent == this)
+            {
+                Log.Error("Impossible d'assigner un GameObject en tant que parent de lui même");
                 return;
             }
 

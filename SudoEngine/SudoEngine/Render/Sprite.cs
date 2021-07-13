@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace SudoEngine.Render
 {
     /// <summary>
-    /// Classe abstract offrant un ensemble de propriétés et des méthodes permettant de créer des sprites et d'utiliser le système de scripting de 
+    /// Classe <see langword="abstract"/> offrant un ensemble de propriétés et des méthodes permettant de créer des sprites et d'utiliser le système de scripting de 
     /// <see cref="GameObject"/> en plus d'automatiser le rendu
     /// <para>Hérite de <see cref="GameObject"/> et doit être héritée pour être utilisé</para>
     /// </summary>
@@ -35,12 +35,12 @@ namespace SudoEngine.Render
             get => Size.Y;
             set => Size = new Vector2D(Size.X, value);
         }
-        /// <summary><see cref="System.Boolean"/> indiquant si le sprite doit être render</summary>
+        /// <summary><see cref="bool"/> indiquant si le sprite doit être render</summary>
         public bool Visible { get; set; } = true;
 
         Vector2D _position;
         /// <summary>Position du sprite dans la fenêtre
-        /// <para>La position 0;0 se toruve au centre de la fenêtre et elle est relative à la taille de l'écran et non la fenêtre</para>
+        /// <para>La position 0;0 se trouve au centre de la fenêtre et elle est relative à la taille de l'écran et non la fenêtre</para>
         /// </summary>
         public Vector2D Position
         {
@@ -108,13 +108,6 @@ namespace SudoEngine.Render
             RowInSpriteSheet = rowInSpriteSheet;
             Size = size;
             Position = Vector2D.Zero;
-        }
-
-        protected internal override void OnStart()
-        {
-            Vertices[4] = Vertices[9] = 1 - RowInSpriteSheet / NbrRows;
-            Vertices[14] = Vertices[19] = 1 - (RowInSpriteSheet + 1) / NbrRows;
-            DisplayFrame(0);
             VBO = GL.GenBuffer();
             EBO = GL.GenBuffer();
 
@@ -129,6 +122,8 @@ namespace SudoEngine.Render
             GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
         }
+
+        protected internal override void OnStart() => DisplayFrame(0);
 
         protected internal override void OnRender()
         {
@@ -159,7 +154,7 @@ namespace SudoEngine.Render
             Shader.Use();
             SpriteSheet.Bind();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.DynamicDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
