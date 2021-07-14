@@ -84,6 +84,8 @@ namespace SudoEngine.Render
         /// <param name="value">La valeur a passer dans la variable</param>
         public void SetAttribute(string name, int value) => GL.Uniform1(GetAttribLocation(name), value);
 
+        public void SetAttribute(string name, int[] value) => GL.Uniform1(GetAttribLocation(name), value.Length, value);
+
         /// <summary>
         /// Permet de set un unifrom de type <see cref="float"/> dans le shader
         /// </summary>
@@ -253,7 +255,7 @@ namespace SudoEngine.Render
 
             if (Gpath != null)
             {
-                if (File.Exists("Shaders/" + Gpath))
+                if (!File.Exists("Shaders/" + Gpath))
                 {
                     Log.Error($"Le fichier pour le geometry shader n'a pas été trouvé : {Gpath}");
                     return;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using OpenTK.Input;
 
 namespace SudoEngine.Core
 {
@@ -61,13 +62,15 @@ namespace SudoEngine.Core
         {
             foreach (GameObject GO in AllGameObjects)
             {
-                if (!GO.Enabled && !GO.Deleted) continue;
-                if (!GO.Started)
+                if (GO.Enabled)
                 {
-                    GO.OnStart();
-                    GO.Started = true;
+                    if (!GO.Started)
+                    {
+                        GO.OnStart();
+                        GO.Started = true;
+                    }
+                    GO.OnUpdate();
                 }
-                GO.OnUpdate();
             }
         }
 
@@ -76,11 +79,26 @@ namespace SudoEngine.Core
         {
             foreach (GameObject GO in AllGameObjects)
             {
-                if (!GO.Enabled && !GO.Deleted) continue;
-                GO.OnRender();
+                if (GO.Enabled) GO.OnRender();
             }
         }
-        
+
+        public static void KeyDown(KeyboardKeyEventArgs e)
+        {
+            foreach (GameObject GO in AllGameObjects)
+            {
+                if (GO.Enabled) GO.OnKeyDown(e);
+            }
+        }
+
+        public static void KeyUp(KeyboardKeyEventArgs e)
+        {
+            foreach (GameObject GO in AllGameObjects)
+            {
+                if (GO.Enabled) GO.OnKeyUp(e);
+            }
+        }
+
         /// <summary>
         /// Permet d'assigner un objet en tant que parent du GameObject actuel
         /// </summary>
@@ -163,5 +181,9 @@ namespace SudoEngine.Core
         protected internal virtual void OnEnable() { }
         /// <summary>Invoqué lorsque l'objet est désactivé avec la méthode <see cref="SetEnable(bool)"/></summary>
         protected internal virtual void OnDisable() { }
+        /// <summary>Invoqué à chaque passage dans l'event OnKeyDown de la fenêtre (La méthode statique <see cref="KeyDown"/> doit y être appelé)</summary>
+        protected internal virtual void OnKeyDown(KeyboardKeyEventArgs e) { }
+        /// <summary>Invoqué à chaque passage dans l'event OnKeyUp de la fenêtre (La méthode statique <see cref="KeyUp"/> doit y être appelé)</summary>
+        protected internal virtual void OnKeyUp(KeyboardKeyEventArgs e) { }
     }
 }

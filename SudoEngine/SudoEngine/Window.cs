@@ -16,8 +16,8 @@ namespace SudoEngine
     {
         public Window(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, GameWindowFlags.Fullscreen, DisplayDevice.GetDisplay(DisplayIndex.Second)) { }
 
-        readonly Camera camera = new Camera("Main");
-        readonly Shader shader = new Shader();
+        readonly Shader shader = new Shader("Texture Shader");
+        readonly Shader BGShader = new Shader("BG Shader");
         readonly Stopwatch SW = new Stopwatch();
         readonly BackGround BG0 = new BackGround();
         readonly BackGround BG1 = new BackGround();
@@ -33,8 +33,8 @@ namespace SudoEngine
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            shader.LoadFromFile("shaderTexture.vert", "shaderTexture.frag", null);
-            camera.Shader = shader;
+            BGShader.LoadFromFile("background/shader.vert", "background/shader.frag", "background/shader.geom");
+            shader.LoadFromFile("texture/shader.vert", "texture/shader.frag", null);
             spriteSheet.LoadFromFile("spritesheet.png");
             texture0.LoadFromFile("bg.png");
             sprite.Generate(spriteSheet, shader, 0, new Vector2D(64, 64));
@@ -96,10 +96,10 @@ namespace SudoEngine
                 {118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116, 117, 114, 115, 118, 119, 131, 116 },
             };
 
-            BG2.Generate(Layer.PlayerLayer, shader, a, new Bitmap("Textures/1.png"));
-            BG1.Generate(Layer.CloseBackGround, shader, b, new Bitmap("Textures/1.png"));
-            BG0.Generate(Layer.BackGround, shader, texture0, BG2.Size);
-
+            BG2.Generate(Layer.PlayerLayer, BGShader, a, new Bitmap("Textures/1.png"));
+            BG1.Generate(Layer.CloseBackGround, BGShader, b, new Bitmap("Textures/1.png"));
+            BG0.Generate(Layer.BackGround, BGShader, texture0, BG2.Size);
+            
             base.OnLoad(e);
         }
 
@@ -112,7 +112,10 @@ namespace SudoEngine
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            shader.Use();
+            GL.Enable(EnableCap.DepthTest);
+            GL.DepthMask(true);
+            GL.Disable(EnableCap.DepthTest);
+            GL.DepthMask(false);
             BackGround.RenderAll();
             GameObject.Render();
 
@@ -130,15 +133,16 @@ namespace SudoEngine
             if (e.Key == Key.Escape) Exit();
             if (e.Alt && e.Key == Key.F4) Exit();
 
-            if (e.Key == Key.Right) camera.Scroll(Direcction.Right, 0.05);
-            if (e.Key == Key.Left) camera.Scroll(Direcction.Left, 0.05);
-            if (e.Key == Key.Up) camera.Scroll(Direcction.Up, 0.05);
-            if (e.Key == Key.Down) camera.Scroll(Direcction.Down, 0.055);
-            if (e.Key == Key.Space) moveVector.W -= 0.01;
-            if (e.Key == Key.BackSpace) moveVector.W += 0.01;
+            GameObject.KeyDown(e);
 
             base.OnKeyDown(e);
         }
+        protected override void OnKeyUp(KeyboardKeyEventArgs e)
+        {
+            GameObject.KeyUp(e);
+            base.OnKeyUp(e);
+        }
+
 
         protected override void OnUnload(EventArgs e)
         {

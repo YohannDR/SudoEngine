@@ -126,9 +126,21 @@ namespace SudoEngine.Render
             if (Visible && Transparency != 1)
             {
                 Bind();
-                Shader.SetAttribute("layer", (int)Layer);
                 if (Transparency != 0) Shader.SetAttribute("transparency", Transparency);
-                GL.DrawElements(PrimitiveType.Triangles, Indices.Length, DrawElementsType.UnsignedInt, 0);
+                if (Layer == Layer.BackGround) 
+                {
+                    /*int[] B = new int[]
+                    {
+                        0, 1, 2, 3, 4, 5
+                    };
+                    Shader.SetAttribute("data_buffer", B);*/
+                    int[] A = new int[6];
+                    GL.GetUniform(Shader.Handle, Shader.GetAttribLocation("tile_data"), A);
+                    Log.GLError();
+                    Log.Info("\n");
+                    for (int a = 0; a < A.Length; a++) Log.Info(A[a]);
+                }
+                GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0);
             }
         }
 
@@ -185,7 +197,8 @@ namespace SudoEngine.Render
         public void Generate(int[,] data, Bitmap tileset)
         {
             Bitmap Gfx = new Bitmap(data.GetLength(1) * 32, data.GetLength(0) * 32);
-            Size = new Vector2D(Gfx.Width / (float)1920, Gfx.Height / (float)1080);
+            Size = new Vector2D(Gfx.Width / (double)1920, Gfx.Height / (double)1080);
+
             CalculateVertices();
 
             int tilePerRow = tileset.Width / 32;

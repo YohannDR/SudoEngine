@@ -1,5 +1,6 @@
-﻿using SudoEngine.Render;
-using OpenTK.Input;
+﻿using OpenTK.Input;
+using SudoEngine.Core;
+using SudoEngine.Render;
 
 namespace SudoEngine
 {
@@ -7,16 +8,15 @@ namespace SudoEngine
     {
         public TestSprite() : base("TestSprite") { }
 
-        protected internal override void OnUpdate()
+        protected internal override void OnKeyDown(KeyboardKeyEventArgs e)
         {
-            if (Keyboard.GetState().IsAnyKeyDown)
-            {
-                KeyboardState K = Keyboard.GetState();
-                if (K.IsKeyDown(Key.Right)) RowInSpriteSheet = 1;
-                if (K.IsKeyDown(Key.Left)) RowInSpriteSheet = 2;
-            }
-            else RowInSpriteSheet = 0;
-            base.OnUpdate();
+            if (e.Key == Key.Right) RowInSpriteSheet = 1;
+            if (e.Key == Key.Left) RowInSpriteSheet = 2;
+        }
+
+        protected internal override void OnKeyUp(KeyboardKeyEventArgs e)
+        {
+            RowInSpriteSheet = 0;
         }
     }
 }

@@ -2,6 +2,7 @@
 using SudoEngine.Maths;
 using SudoEngine.Core;
 using System.Collections.Generic;
+using OpenTK.Input;
 
 namespace SudoEngine.Render
 {
@@ -171,6 +172,12 @@ namespace SudoEngine.Render
         {
             Vertices[3] = Vertices[18] = (Width * idx + Width) / SpriteSheet.Width;
             Vertices[8] = Vertices[13] = Width * idx / SpriteSheet.Width;
+        }
+
+        protected internal override void OnKeyDown(KeyboardKeyEventArgs e)
+        {
+            Log.Info(e.Key);
+            base.OnKeyDown(e);
         }
     }
 }
