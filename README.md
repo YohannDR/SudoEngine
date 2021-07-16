@@ -16,9 +16,7 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 
 6 : Sélectionner `SudoEngine.DLL` et cliquer sur Ajouter
 
-7 : Le .DLL est désormais bind au projet, il faut maintenant installer le package NuGet `OpenTK` pour que le moteur puisse fonctionner : `Projet` -> `Gérer les packages NuGet` -> `Parcourir` -> `OpenTK 3.2.0` et installer
-
-8 : Suivre les instructions disponibles sur cette page pour setup la fenêtre : https://opentk.net/learn/chapter1/1-creating-a-window.html et ajouter les lignes suivantes : `GameObject.Update();` dans la fonction OnUpdateFrame de la fenêtre et `GameObject.Render()` dans la fonction OnRenderFrame de la fenêtre
+7 : Le .DLL est désormais bind au projet, il faut maintenant installer le package NuGet `OpenTK` pour que le moteur puisse fonctionner : `Projet` -> `Gérer les packages NuGet` -> `Parcourir` -> `OpenTK 3.2.0` et installe.
 
 
 ## Fonctionnalités actuelles
