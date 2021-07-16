@@ -1,22 +1,29 @@
-﻿using OpenTK.Input;
+﻿using SudoEngine.Render;
+using SudoEngine.Maths;
 using SudoEngine.Core;
-using SudoEngine.Render;
+using OpenTK.Input;
 
 namespace SudoEngine
 {
-    public class TestSprite : Sprite
+    public sealed class TestSprite : Sprite
     {
         public TestSprite() : base("TestSprite") { }
 
-        protected internal override void OnKeyDown(KeyboardKeyEventArgs e)
+        public void Generate(Texture spriteSheet, Shader shader, double row, Vector2D size, Vector2D position)
         {
-            if (e.Key == Key.Right) RowInSpriteSheet = 1;
-            if (e.Key == Key.Left) RowInSpriteSheet = 2;
+            Generate(spriteSheet, shader, row, size);
+            Position = position;
         }
 
-        protected internal override void OnKeyUp(KeyboardKeyEventArgs e)
+        protected internal override void OnUpdate()
         {
-            RowInSpriteSheet = 0;
+            KeyboardState K = Keyboard.GetState();
+            if (K.IsAnyKeyDown)
+            {
+                if (K.IsKeyDown(Key.Right)) ChangeRow(1);
+                if (K.IsKeyDown(Key.Left)) ChangeRow(2);
+            }
+            else ChangeRow(0);
         }
     }
 }

@@ -97,7 +97,6 @@ namespace SudoEngine.Render
             Shader.Use();
             GFX.Bind();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
@@ -127,19 +126,6 @@ namespace SudoEngine.Render
             {
                 Bind();
                 if (Transparency != 0) Shader.SetAttribute("transparency", Transparency);
-                if (Layer == Layer.BackGround) 
-                {
-                    /*int[] B = new int[]
-                    {
-                        0, 1, 2, 3, 4, 5
-                    };
-                    Shader.SetAttribute("data_buffer", B);*/
-                    int[] A = new int[6];
-                    GL.GetUniform(Shader.Handle, Shader.GetAttribLocation("tile_data"), A);
-                    Log.GLError();
-                    Log.Info("\n");
-                    for (int a = 0; a < A.Length; a++) Log.Info(A[a]);
-                }
                 GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0);
             }
         }

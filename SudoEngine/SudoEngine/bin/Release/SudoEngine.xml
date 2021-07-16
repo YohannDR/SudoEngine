@@ -261,6 +261,12 @@
         <member name="M:SudoEngine.Core.GameObject.OnDisable">
             <summary>Invoqué lorsque l'objet est désactivé avec la méthode <see cref="M:SudoEngine.Core.GameObject.SetEnable(System.Boolean)"/></summary>
         </member>
+        <member name="M:SudoEngine.Core.GameObject.OnKeyDown(OpenTK.Input.KeyboardKeyEventArgs)">
+            <summary>Invoqué à chaque passage dans l'event OnKeyDown de la fenêtre (La méthode statique <see cref="M:SudoEngine.Core.GameObject.KeyDown(OpenTK.Input.KeyboardKeyEventArgs)"/> doit y être appelé)</summary>
+        </member>
+        <member name="M:SudoEngine.Core.GameObject.OnKeyUp(OpenTK.Input.KeyboardKeyEventArgs)">
+            <summary>Invoqué à chaque passage dans l'event OnKeyUp de la fenêtre (La méthode statique <see cref="M:SudoEngine.Core.GameObject.KeyUp(OpenTK.Input.KeyboardKeyEventArgs)"/> doit y être appelé)</summary>
+        </member>
         <member name="T:SudoEngine.Core.Log">
             <summary>Classe statique offrant des méthodes pour écrire dans la console</summary>
         </member>
@@ -465,6 +471,9 @@
         </member>
         <member name="M:SudoEngine.Render.BackGround.CreateList">
             <summary>Initialise la liste des BackGrounds avec la valeur <see langword="null"/></summary>
+        </member>
+        <member name="M:SudoEngine.Render.Mesh.Delete">
+            <summary>Supprime le Mesh</summary>
         </member>
         <member name="T:SudoEngine.Render.Shader">
             <summary>
@@ -708,6 +717,12 @@
             Permet de changer la frame actuellement display depuis le <see cref="P:SudoEngine.Render.Sprite.SpriteSheet"/> pour le Sprite
             </summary>
             <param name="idx">L'index de la frame dans le <see cref="P:SudoEngine.Render.Sprite.SpriteSheet"/></param>
+        </member>
+        <member name="M:SudoEngine.Render.Sprite.ChangeRow(System.Double)">
+            <summary>
+            Change la ligne sur laquelle se trouve les graphismes du Sprite sur le <see cref="P:SudoEngine.Render.Sprite.SpriteSheet"/>
+            </summary>
+            <param name="row">Le nouveau numéro de ligne</param>
         </member>
         <member name="T:SudoEngine.Render.Texture">
             <summary>

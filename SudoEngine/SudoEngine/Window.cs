@@ -26,7 +26,7 @@ namespace SudoEngine
         readonly Texture spriteSheet = new Texture();
         readonly TestSprite sprite = new TestSprite();
 
-        Vector4D moveVector = new Vector4D(0);
+        //Vector4D moveVector = new Vector4D(0);
         protected override void OnLoad(EventArgs e)
         {
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -37,7 +37,6 @@ namespace SudoEngine
             shader.LoadFromFile("texture/shader.vert", "texture/shader.frag", null);
             spriteSheet.LoadFromFile("spritesheet.png");
             texture0.LoadFromFile("bg.png");
-            sprite.Generate(spriteSheet, shader, 0, new Vector2D(64, 64));
 
             BackGround.CreateList();
             int[,] a = new int[,]
@@ -99,6 +98,7 @@ namespace SudoEngine
             BG2.Generate(Layer.PlayerLayer, BGShader, a, new Bitmap("Textures/1.png"));
             BG1.Generate(Layer.CloseBackGround, BGShader, b, new Bitmap("Textures/1.png"));
             BG0.Generate(Layer.BackGround, BGShader, texture0, BG2.Size);
+            sprite.Generate(spriteSheet, shader, 0, new Vector2D(64, 64), new Vector2D(0, 0));
             
             base.OnLoad(e);
         }
@@ -111,16 +111,14 @@ namespace SudoEngine
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            GL.Enable(EnableCap.DepthTest);
-            GL.DepthMask(true);
-            GL.Disable(EnableCap.DepthTest);
-            GL.DepthMask(false);
+            //GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
             BackGround.RenderAll();
             GameObject.Render();
 
             Context.SwapBuffers();
             //Log.Info($"{(1.0D / e.Time):F0} FPS");
+
             base.OnRenderFrame(e);
         }
 
@@ -129,7 +127,7 @@ namespace SudoEngine
             if (e.Key == Key.Keypad0 && BG0) BG0.Visible = !BG0.Visible;
             if (e.Key == Key.Keypad1 && BG1) BG1.Visible = !BG1.Visible;
             if (e.Key == Key.Keypad2 && BG2) BG2.Visible = !BG2.Visible;
-
+            
             if (e.Key == Key.Escape) Exit();
             if (e.Alt && e.Key == Key.F4) Exit();
 
@@ -137,6 +135,7 @@ namespace SudoEngine
 
             base.OnKeyDown(e);
         }
+
         protected override void OnKeyUp(KeyboardKeyEventArgs e)
         {
             GameObject.KeyUp(e);
@@ -146,8 +145,6 @@ namespace SudoEngine
 
         protected override void OnUnload(EventArgs e)
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-
             Texture.DeleteAll();
             Shader.DeleteAll();
             BackGround.DeleteAll();

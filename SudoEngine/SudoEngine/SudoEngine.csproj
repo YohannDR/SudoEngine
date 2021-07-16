@@ -94,8 +94,8 @@
     <Compile Include="Render\Sprite.cs" />
     <Compile Include="Render\Text.cs" />
     <Compile Include="Render\Texture.cs" />
-    <Compile Include="TestSprite.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TestSprite.cs" />
     <Compile Include="Window.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -57,24 +57,15 @@ namespace SudoEngine.Render
             }
         }
 
-        double rowInSpriteSheet;
         /// <summary>La ligne sur laquelle se trouve les frames d'animations dans le <see cref="SpriteSheet"/></summary>
-        public double RowInSpriteSheet
-        {
-            get => rowInSpriteSheet;
-            set 
-            {
-                Vertices[4] = Vertices[9] = 1 - RowInSpriteSheet / NbrRows;
-                Vertices[14] = Vertices[19] = 1 - (RowInSpriteSheet + 1) / NbrRows;
-                rowInSpriteSheet = value;
-            }
-        }
+        public double RowInSpriteSheet { get; private set; }
 
         double NbrRows => SpriteSheet.Height / Size.Y;
 
         int VBO { get; set; }
         int EBO { get; set; }
-        double[] Vertices { get; set; } = new double[] 
+        int VAO { get; set; }
+        public double[] Vertices { get; private set; } = new double[] 
         {
             1, 1, 0, 0, 0,
             -1, 1, 0, 0, 0,
@@ -106,11 +97,13 @@ namespace SudoEngine.Render
         {
             SpriteSheet = spriteSheet;
             Shader = shader;
-            RowInSpriteSheet = rowInSpriteSheet;
             Size = size;
-            Position = Vector2D.Zero;
+            ChangeRow(rowInSpriteSheet);
             VBO = GL.GenBuffer();
             EBO = GL.GenBuffer();
+            VAO = GL.GenVertexArray();
+
+            GL.BindVertexArray(VAO);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
             GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
@@ -123,8 +116,6 @@ namespace SudoEngine.Render
             GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
         }
-
-        protected internal override void OnStart() => DisplayFrame(0);
 
         protected internal override void OnRender()
         {
@@ -154,6 +145,7 @@ namespace SudoEngine.Render
         {
             Shader.Use();
             SpriteSheet.Bind();
+            GL.BindVertexArray(VAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
             GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
 
@@ -174,10 +166,16 @@ namespace SudoEngine.Render
             Vertices[8] = Vertices[13] = Width * idx / SpriteSheet.Width;
         }
 
-        protected internal override void OnKeyDown(KeyboardKeyEventArgs e)
+        /// <summary>
+        /// Change la ligne sur laquelle se trouve les graphismes du Sprite sur le <see cref="SpriteSheet"/>
+        /// </summary>
+        /// <param name="row">Le nouveau numéro de ligne</param>
+        public void ChangeRow(double row)
         {
-            Log.Info(e.Key);
-            base.OnKeyDown(e);
+            RowInSpriteSheet = row;
+            Vertices[4] = Vertices[9] = 1 - RowInSpriteSheet / NbrRows;
+            Vertices[14] = Vertices[19] = 1 - (RowInSpriteSheet + 1) / NbrRows;
+            DisplayFrame(0);
         }
     }
 }

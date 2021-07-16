@@ -1,12 +1,10 @@
-﻿
-
-namespace SudoEngine.Render
+﻿/*namespace SudoEngine.Render
 {
     public static class Text
     {
-        /*public static void Display(string text)
+        public static void Display(string text)
         {
             
-        }*/
+        }
     }
-}
+}*/
