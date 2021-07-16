@@ -19,6 +19,7 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 7 : Le .DLL est désormais bind au projet, il faut maintenant installer le package NuGet `OpenTK` pour que le moteur puisse fonctionner : `Projet` -> `Gérer les packages NuGet` -> `Parcourir` -> `OpenTK 3.2.0` et installe.
 
 
+
 ## Fonctionnalités actuelles
 
 ### Shader
