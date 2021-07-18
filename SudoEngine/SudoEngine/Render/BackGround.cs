@@ -32,7 +32,10 @@ namespace SudoEngine.Render
     public sealed class BackGround : BaseObject
     {
         /// <summary>Liste des 5 <see cref="BackGround"/> ayant un layer</summary>
-        public static List<BackGround> AllBackGrounds = new List<BackGround>(5);
+        public static List<BackGround> AllBackGrounds = new List<BackGround>(5)
+        {
+            null, null, null, null, null
+        };
 
         /// <summary> Indique le layer sur lequel se trouve le BackGround </summary>
         public Layer Layer { get; private set; }
@@ -69,6 +72,7 @@ namespace SudoEngine.Render
             set { Size = new Vector2D(Size.X, value); CalculateVertices(); }
         }
 
+        int VAO { get; set; }
         int VBO { get; set; }
         int EBO { get; set; }
         double[] Vertices { get; set; } = new double[]
@@ -96,16 +100,7 @@ namespace SudoEngine.Render
         {
             Shader.Use();
             GFX.Bind();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-
-            GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
-
-            if (AllBackGrounds[0] && Layer == Layer.BackGround)
-            {
-                GL.EnableVertexAttribArray(1);
-                GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
-            }
+            GL.BindVertexArray(VAO);
         }
 
         /// <summary>Supprime le BackGround</summary>
@@ -115,6 +110,7 @@ namespace SudoEngine.Render
             Shader.Delete();
             GL.DeleteBuffer(VBO);
             GL.DeleteBuffer(EBO);
+            GL.DeleteVertexArray(VAO);
             AllBackGrounds[(int)Layer] = null;
             base.Delete();
         }
@@ -233,8 +229,12 @@ namespace SudoEngine.Render
 
         void InitGL()
         {
+            VAO = GL.GenVertexArray();
             VBO = GL.GenBuffer();
             EBO = GL.GenBuffer();
+
+            GL.BindVertexArray(VAO);
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
             GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
@@ -260,6 +260,11 @@ namespace SudoEngine.Render
             Vertices[11] = 1 - Height * 2;
             Vertices[15] = -1 + Width * 2;
             Vertices[16] = 1 - Height * 2;
+
+            GL.BindVertexArray(VAO);
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
         }
 
         /// <summary>Render tous les BackGround non <see langword="null"/>/></summary>
@@ -267,8 +272,5 @@ namespace SudoEngine.Render
 
         /// <summary>Supprime tous les BackGround/></summary>
         public static void DeleteAll() { for (int i = 0; i < 5; i++) if (AllBackGrounds[i]) AllBackGrounds[i].Delete(); }
-
-        /// <summary>Initialise la liste des BackGrounds avec la valeur <see langword="null"/></summary>
-        public static void CreateList() { for (int i = 0; i < 5; i++) AllBackGrounds.Add(null); }
     }
 }

@@ -53,18 +53,35 @@ namespace SudoEngine.Render
 
                 Vertices[5] = Vertices[10] = (value.X - Size.X) / Camera.Resolution.X;
                 Vertices[11] = Vertices[16] = (value.Y - Size.Y) / Camera.Resolution.Y;
+
+                GL.BindVertexArray(VAO);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
+                GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
                 _position = value;
             }
         }
 
+        double _RowInSpriteSheet;
         /// <summary>La ligne sur laquelle se trouve les frames d'animations dans le <see cref="SpriteSheet"/></summary>
-        public double RowInSpriteSheet { get; private set; }
+        public double RowInSpriteSheet 
+        {
+            get => _RowInSpriteSheet;
+            set 
+            {
+                Vertices[4] = Vertices[9] = 1 - value / NbrRows;
+                Vertices[14] = Vertices[19] = 1 - (value + 1) / NbrRows;
+                DisplayFrame(0);
+                _RowInSpriteSheet = value;
+            }
+        }
 
         double NbrRows => SpriteSheet.Height / Size.Y;
 
+        int VAO { get; set; }
         int VBO { get; set; }
         int EBO { get; set; }
-        int VAO { get; set; }
+
+        /// <summary>Vertices du Sprite</summary>
         public double[] Vertices { get; private set; } = new double[] 
         {
             1, 1, 0, 0, 0,
@@ -98,7 +115,7 @@ namespace SudoEngine.Render
             SpriteSheet = spriteSheet;
             Shader = shader;
             Size = size;
-            ChangeRow(rowInSpriteSheet);
+            RowInSpriteSheet = rowInSpriteSheet;
             VBO = GL.GenBuffer();
             EBO = GL.GenBuffer();
             VAO = GL.GenVertexArray();
@@ -132,8 +149,9 @@ namespace SudoEngine.Render
             AllSprites.Remove(this);
             GL.DeleteBuffer(VBO);
             GL.DeleteBuffer(EBO);
-            Shader.Delete();
+            GL.DeleteVertexArray(VAO);
             SpriteSheet.Delete();
+            Shader.Delete();
             base.Delete();
         }
 
@@ -146,14 +164,6 @@ namespace SudoEngine.Render
             Shader.Use();
             SpriteSheet.Bind();
             GL.BindVertexArray(VAO);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
-
-            GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
-
-            GL.EnableVertexAttribArray(1);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
         }
 
         /// <summary>
@@ -164,18 +174,10 @@ namespace SudoEngine.Render
         {
             Vertices[3] = Vertices[18] = (Width * idx + Width) / SpriteSheet.Width;
             Vertices[8] = Vertices[13] = Width * idx / SpriteSheet.Width;
-        }
 
-        /// <summary>
-        /// Change la ligne sur laquelle se trouve les graphismes du Sprite sur le <see cref="SpriteSheet"/>
-        /// </summary>
-        /// <param name="row">Le nouveau numéro de ligne</param>
-        public void ChangeRow(double row)
-        {
-            RowInSpriteSheet = row;
-            Vertices[4] = Vertices[9] = 1 - RowInSpriteSheet / NbrRows;
-            Vertices[14] = Vertices[19] = 1 - (RowInSpriteSheet + 1) / NbrRows;
-            DisplayFrame(0);
+            GL.BindVertexArray(VAO);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
         }
     }
 }

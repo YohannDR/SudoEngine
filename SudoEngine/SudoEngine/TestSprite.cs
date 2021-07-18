@@ -1,6 +1,6 @@
-﻿using SudoEngine.Render;
+﻿#if DEBUG
+using SudoEngine.Render;
 using SudoEngine.Maths;
-using SudoEngine.Core;
 using OpenTK.Input;
 
 namespace SudoEngine
@@ -20,10 +20,11 @@ namespace SudoEngine
             KeyboardState K = Keyboard.GetState();
             if (K.IsAnyKeyDown)
             {
-                if (K.IsKeyDown(Key.Right)) ChangeRow(1);
-                if (K.IsKeyDown(Key.Left)) ChangeRow(2);
+                if (K.IsKeyDown(Key.Right)) RowInSpriteSheet = 1;
+                if (K.IsKeyDown(Key.Left)) RowInSpriteSheet = 2;
             }
-            else ChangeRow(0);
+            else RowInSpriteSheet = 0; ;
         }
     }
 }
+#endif

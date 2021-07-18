@@ -25,24 +25,20 @@ namespace SudoEngine.Maths
             }
         }
 
-        /// <summary> Taile du vecteur  </summary>
+        /// <summary>Taile du vecteur</summary>
         public double Length => Math.Sqrt(X * X + Y * Y);
 
-        /// <summary> Racine carré de la taile du vecteur </summary>
+        /// <summary>Racine carré de la taile du vecteur</summary>
         public double SquaredLength => X * X + Y * Y;
 
-        /// <summary> Crée un Vecteur2D à partir d'un double </summary>
+        /// <summary>Crée un Vecteur2D à partir d'un <see cref="double"/></summary>
         public Vector2D(double xy) => (X, Y) = (xy, xy);
 
-        /// <summary> Crée un Vecteur2D à partir de deux double </summary>
+        /// <summary>Crée un Vecteur2D à partir de deux <see cref="double"/></summary>
         public Vector2D(double x, double y) => (X, Y) = (x, y);
 
-        /// <summary> Normalise le vecteur </summary>
-        public Vector2D Normalize()
-        {
-            if (this == Zero) return this;
-            else return this / Length;
-        }
+        /// <summary>Normalise le vecteur</summary>
+        public Vector2D Normalize() => this == Zero ? this : this / Length;
 
         /// <summary> Calcule la distance entre 2 vecteurs </summary>
         public static double Distance(Vector2D vector1, Vector2D vector2) => Math.Abs((vector1 - vector2).Length);

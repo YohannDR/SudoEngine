@@ -469,9 +469,6 @@
         <member name="M:SudoEngine.Render.BackGround.DeleteAll">
             <summary>Supprime tous les BackGround/></summary>
         </member>
-        <member name="M:SudoEngine.Render.BackGround.CreateList">
-            <summary>Initialise la liste des BackGrounds avec la valeur <see langword="null"/></summary>
-        </member>
         <member name="M:SudoEngine.Render.Mesh.Delete">
             <summary>Supprime le Mesh</summary>
         </member>
@@ -688,6 +685,9 @@
         <member name="P:SudoEngine.Render.Sprite.RowInSpriteSheet">
             <summary>La ligne sur laquelle se trouve les frames d'animations dans le <see cref="P:SudoEngine.Render.Sprite.SpriteSheet"/></summary>
         </member>
+        <member name="P:SudoEngine.Render.Sprite.Vertices">
+            <summary>Vertices du Sprite</summary>
+        </member>
         <member name="M:SudoEngine.Render.Sprite.#ctor(System.String)">
             <summary>
             Crée un nouvel objet <see cref="T:SudoEngine.Render.Sprite"/> et appele le constructeur de <see cref="T:SudoEngine.Core.GameObject"/>
@@ -717,12 +717,6 @@
             Permet de changer la frame actuellement display depuis le <see cref="P:SudoEngine.Render.Sprite.SpriteSheet"/> pour le Sprite
             </summary>
             <param name="idx">L'index de la frame dans le <see cref="P:SudoEngine.Render.Sprite.SpriteSheet"/></param>
-        </member>
-        <member name="M:SudoEngine.Render.Sprite.ChangeRow(System.Double)">
-            <summary>
-            Change la ligne sur laquelle se trouve les graphismes du Sprite sur le <see cref="P:SudoEngine.Render.Sprite.SpriteSheet"/>
-            </summary>
-            <param name="row">Le nouveau numéro de ligne</param>
         </member>
         <member name="T:SudoEngine.Render.Texture">
             <summary>
