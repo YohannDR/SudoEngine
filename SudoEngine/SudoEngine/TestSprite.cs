@@ -1,13 +1,16 @@
 ﻿#if DEBUG
-using SudoEngine.Render;
-using SudoEngine.Maths;
+
 using OpenTK.Input;
+using SudoEngine.Maths;
+using SudoEngine.Render;
 
 namespace SudoEngine
 {
     public sealed class TestSprite : Sprite
     {
-        public TestSprite() : base("TestSprite") { }
+        public TestSprite() : base("TestSprite")
+        {
+        }
 
         public void Generate(Texture spriteSheet, Shader shader, double row, Vector2D size, Vector2D position)
         {
@@ -27,4 +30,5 @@ namespace SudoEngine
         }
     }
 }
+
 #endif

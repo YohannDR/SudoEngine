@@ -1,13 +1,12 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using SudoEngine.Maths;
 using SudoEngine.Core;
+using SudoEngine.Maths;
 using System.Collections.Generic;
-using OpenTK.Input;
 
 namespace SudoEngine.Render
 {
     /// <summary>
-    /// Classe <see langword="abstract"/> offrant un ensemble de propriétés et des méthodes permettant de créer des sprites et d'utiliser le système de scripting de 
+    /// Classe <see langword="abstract"/> offrant un ensemble de propriétés et des méthodes permettant de créer des sprites et d'utiliser le système de scripting de
     /// <see cref="GameObject"/> en plus d'automatiser le rendu
     /// <para>Hérite de <see cref="GameObject"/> et doit être héritée pour être utilisé</para>
     /// </summary>
@@ -18,28 +17,34 @@ namespace SudoEngine.Render
 
         /// <summary><see cref="Render.Shader"/> associé au sprite</summary>
         public Shader Shader { get; set; }
+
         /// <summary><see cref="Texture"/> contenant les différentes frames de l'animation du Sprite</summary>
         public Texture SpriteSheet { get; set; }
+
         /// <summary><see cref="Vector2D"/> représenant la taille en pixels du sprite
         /// <para>Il est fortement recommandé que cette taille soit égale à la taille des frames dans le <see cref="SpriteSheet"/></para>
         /// </summary>
         public Vector2D Size { get; set; }
+
         /// <summary>Largueur du sprite</summary>
         public double Width
         {
             get => Size.X;
             set => Size = new Vector2D(value, Size.Y);
         }
+
         /// <summary>Hauteur du sprite</summary>
         public double Height
         {
             get => Size.Y;
             set => Size = new Vector2D(Size.X, value);
         }
+
         /// <summary><see cref="bool"/> indiquant si le sprite doit être render</summary>
         public bool Visible { get; set; } = true;
 
-        Vector2D _position;
+        private Vector2D _position;
+
         /// <summary>Position du sprite dans la fenêtre
         /// <para>La position 0;0 se trouve au centre de la fenêtre et elle est relative à la taille de l'écran et non la fenêtre</para>
         /// </summary>
@@ -61,12 +66,13 @@ namespace SudoEngine.Render
             }
         }
 
-        double _RowInSpriteSheet;
+        private double _RowInSpriteSheet;
+
         /// <summary>La ligne sur laquelle se trouve les frames d'animations dans le <see cref="SpriteSheet"/></summary>
-        public double RowInSpriteSheet 
+        public double RowInSpriteSheet
         {
             get => _RowInSpriteSheet;
-            set 
+            set
             {
                 Vertices[4] = Vertices[9] = 1 - value / NbrRows;
                 Vertices[14] = Vertices[19] = 1 - (value + 1) / NbrRows;
@@ -75,14 +81,14 @@ namespace SudoEngine.Render
             }
         }
 
-        double NbrRows => SpriteSheet.Height / Size.Y;
+        private double NbrRows => SpriteSheet.Height / Size.Y;
 
-        int VAO { get; set; }
-        int VBO { get; set; }
-        int EBO { get; set; }
+        private int VAO { get; set; }
+        private int VBO { get; set; }
+        private int EBO { get; set; }
 
         /// <summary>Vertices du Sprite</summary>
-        public double[] Vertices { get; private set; } = new double[] 
+        public double[] Vertices { get; private set; } = new double[]
         {
             1, 1, 0, 0, 0,
             -1, 1, 0, 0, 0,
@@ -90,12 +96,11 @@ namespace SudoEngine.Render
             1, -1, 0, 0, 0
         };
 
-        readonly uint[] Indices =
+        private readonly uint[] Indices =
         {
             0, 1, 2,
             2, 3, 0
         };
-
 
         /// <summary>
         /// Crée un nouvel objet <see cref="Sprite"/> et appele le constructeur de <see cref="GameObject"/>
@@ -142,7 +147,7 @@ namespace SudoEngine.Render
                 GL.DrawElements(PrimitiveType.Triangles, Indices.Length, DrawElementsType.UnsignedInt, 0);
             }
         }
-        
+
         /// <summary>Supprime le Sprite</summary>
         public override void Delete()
         {

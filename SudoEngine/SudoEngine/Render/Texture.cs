@@ -1,9 +1,9 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using System.Drawing;
-using System.Collections.Generic;
-using System.IO;
 using SudoEngine.Core;
 using SudoEngine.Maths;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 
 namespace SudoEngine.Render
 {
@@ -18,20 +18,24 @@ namespace SudoEngine.Render
 
         /// <summary>Handle de la texture (nécessaire au fonctionnement d'OpenGL)</summary>
         public int Handle { get; private set; }
+
         /// <summary>Taille de la texture, en pixels</summary>
         public Vector2D Size { get; set; }
+
         /// <summary>Longueur de la texture en pixels</summary>
         public int Width
         {
             get => (int)Size.X;
             set => Size = new Vector2D(value, Height);
         }
+
         /// <summary>Hauteur de la texture en pixels</summary>
         public int Height
         {
             get => (int)Size.Y;
             set => Size = new Vector2D(Width, value);
         }
+
         /// <summary>Les données brutes des pixels de la texture</summary>
         public byte[] Data { get; private set; }
 
@@ -48,6 +52,7 @@ namespace SudoEngine.Render
             GL.DeleteTexture(Handle);
             base.Delete();
         }
+
         /// <summary>Supprime toutes les <see cref="Texture"/></summary>
         public static void DeleteAll() { for (int i = 0; i < AllTextures.Count; i++) if (AllTextures[i]) AllTextures[i].Delete(); }
 
@@ -122,7 +127,7 @@ namespace SudoEngine.Render
             Generate();
         }
 
-        void Generate()
+        private void Generate()
         {
             Handle = GL.GenTexture();
             Bind();

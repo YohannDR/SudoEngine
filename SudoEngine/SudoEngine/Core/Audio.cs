@@ -18,16 +18,22 @@ namespace SudoEngine.Core
 
         /// <summary>Handle du son (nécessaire au fonctionnement d'OpenAL)</summary>
         public int Handle { get; private set; }
+
         /// <summary>Handle de la source du son</summary>
         public int Source { get; private set; }
+
         /// <summary>Nombre de chaines du son (Mono ou Stereo)</summary>
         public int NumberChannels { get; private set; }
+
         /// <summary>Sample rate du son</summary>
         public int SampleRate { get; private set; }
+
         /// <summary>Bits par sample du son</summary>
         public int BitsPerSample { get; private set; }
+
         /// <summary>Taille des données du son</summary>
         public int Size { get; private set; }
+
         /// <summary><see cref="ALFormat"/> représentant le format du son</summary>
         public ALFormat Format { get; private set; }
 
@@ -37,7 +43,7 @@ namespace SudoEngine.Core
         /// <param name="name">Le nom interne de l'objet (Sound par défaut)</param>
         public Sound(string name = "Sound") : base(name) => AllSounds.Add(this);
 
-        void Generate(byte[] data)
+        private void Generate(byte[] data)
         {
             Handle = AL.GenBuffer();
             Source = AL.GenSource();
@@ -107,9 +113,9 @@ namespace SudoEngine.Core
             int bitsPerSample = BitConverter.ToInt32(bpsBytes, 0);
             BitsPerSample = bitsPerSample;
 
-            byte[] sizeBytes = { buffer[40],  buffer[41], buffer[42], buffer[43] };
+            byte[] sizeBytes = { buffer[40], buffer[41], buffer[42], buffer[43] };
 
-            Size = BitConverter.ToInt32(sizeBytes, 0); 
+            Size = BitConverter.ToInt32(sizeBytes, 0);
 
             byte[] data = new byte[Size];
             Array.Copy(buffer, 44, data, 0, Size);
@@ -133,10 +139,13 @@ namespace SudoEngine.Core
 
         /// <summary>Handle de la musique (nécessaire au fonctionnement d'OpenAL)</summary>
         public int Handle { get; private set; }
+
         /// <summary>Handle de la source</summary>
         public int Source { get; private set; }
+
         /// <summary>Sample rate de la musique</summary>
         public int SampleRate { get; private set; }
+
         /// <summary><see cref="ALFormat"/> représentant le format de la musique</summary>
         public ALFormat Format { get; private set; }
 
@@ -146,7 +155,7 @@ namespace SudoEngine.Core
         /// <param name="name">Le nom interne de l'objet (Music par défaut)</param>
         public Music(string name = "Music") : base(name) => AllMusics.Add(this);
 
-        void Generate(byte[] data)
+        private void Generate(byte[] data)
         {
             Handle = AL.GenBuffer();
             //Format
@@ -197,7 +206,6 @@ namespace SudoEngine.Core
                 return;
             }
 
-
             byte[] data = new byte[1];
             Generate(data);
         }
@@ -208,9 +216,9 @@ namespace SudoEngine.Core
     {
         /// <summary>Le device actuellement ouvert</summary>
         public static IntPtr Device { get; private set; }
-        /// <summary>Le contexte actuellement créé</summary>
-        public static ContextHandle Context { get; private set; } 
 
+        /// <summary>Le contexte actuellement créé</summary>
+        public static ContextHandle Context { get; private set; }
 
         /// <summary>Crée un contexte OpenAL valide</summary>
         public static void Init()
@@ -246,7 +254,7 @@ namespace SudoEngine.Core
         /// </summary>
         /// <returns><see cref="IList{String}"/> contenant la liste des noms des devices</returns>
         public static IList<string> DeviceList() => Alc.GetString((IntPtr)null, AlcGetStringList.AllDevicesSpecifier);
-        
+
         /// <summary>Détruit le contexte et ferme le device</summary>
         public static void Delete()
         {

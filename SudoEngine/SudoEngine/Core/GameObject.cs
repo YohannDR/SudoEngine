@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using OpenTK.Input;
+﻿using OpenTK.Input;
+using System.Collections.Generic;
 
 namespace SudoEngine.Core
 {
@@ -14,8 +14,10 @@ namespace SudoEngine.Core
 
         /// <summary><see cref="bool"/> indiquant si le GameObject est passé par l'évenement <see cref="OnStart"/></summary>
         protected internal bool Started { get; private set; } = false;
+
         /// <summary>Le <see cref="GameObject"/> assigné en parent de ce GameObject, <see langword="null"/> si aucun parent</summary>
         protected internal GameObject Parent { get; private set; } = null;
+
         /// <summary>Liste des enfants de ce GameObject</summary>
         protected internal List<GameObject> Childrens { get; private set; } = new List<GameObject>();
 
@@ -138,12 +140,10 @@ namespace SudoEngine.Core
             }
             Log.Warning($"Hiérarchie de {Name}");
             GameObject gameObject = this;
-            int a = 0;
-            while (gameObject.Parent)
+            for (int a = 0; gameObject.Parent; a++)
             {
                 Log.Info($"Parent N°{a} : {gameObject.Parent.Name}");
                 gameObject = gameObject.Parent;
-                a++;
             }
         }
 
@@ -169,20 +169,28 @@ namespace SudoEngine.Core
 
         /// <summary>Invoqué lors de l'appel du constructeur</summary>
         protected internal virtual void OnCreation() { }
+
         /// <summary>Invoqué lors de la première frame active</summary>
         protected internal virtual void OnStart() { }
+
         /// <summary>Invoqué à chaque passage dans l'event OnUpdate de la fenêtre (La méthode statique <see cref="Update"/> doit y être appelé)</summary>
         protected internal virtual void OnUpdate() { }
+
         /// <summary>Invoqué à chaque passage dans l'event OnRender de la fenêtre (La méthode statique <see cref="Render"/> doit y être appelé)</summary>
         protected internal virtual void OnRender() { }
+
         /// <summary>Invoqué lorsque la méthode <see cref="Delete"/> est appelé</summary>
         protected internal virtual void OnDelete() { }
+
         /// <summary>Invoqué lorsque l'objet est activé avec la méthode <see cref="SetEnable(bool)"/></summary>
         protected internal virtual void OnEnable() { }
+
         /// <summary>Invoqué lorsque l'objet est désactivé avec la méthode <see cref="SetEnable(bool)"/></summary>
         protected internal virtual void OnDisable() { }
+
         /// <summary>Invoqué à chaque passage dans l'event OnKeyDown de la fenêtre (La méthode statique <see cref="KeyDown"/> doit y être appelé)</summary>
         protected internal virtual void OnKeyDown(KeyboardKeyEventArgs e) { }
+
         /// <summary>Invoqué à chaque passage dans l'event OnKeyUp de la fenêtre (La méthode statique <see cref="KeyUp"/> doit y être appelé)</summary>
         protected internal virtual void OnKeyUp(KeyboardKeyEventArgs e) { }
     }

@@ -19,7 +19,7 @@ namespace SudoEngine.Maths
         /// The length of that quaternion.
         /// </summary>
         [JsonIgnore]
-        public double Length =>  Math.Sqrt(LengthSquared);
+        public double Length => Math.Sqrt(LengthSquared);
 
         /// <summary>
         /// The squared length of that quaternion. Faster than <see cref="Length"/> but has to be squared rooted.
@@ -69,7 +69,6 @@ namespace SudoEngine.Maths
         public Quaternion Conjugated => ConjugateQuaternion(this);
         public Quaternion Inverted => InverseQuaternion(this);
 
-
         public Quaternion(double x, double y, double z, double w) => (X, Y, Z, W) = (x, y, z, w);
 
         public Quaternion(Vector3D axis, double angle)
@@ -88,7 +87,9 @@ namespace SudoEngine.Maths
             W = c;
         }
 
-        public Quaternion(Vector3D angles) : this(angles.X, angles.Y, angles.Z) { }
+        public Quaternion(Vector3D angles) : this(angles.X, angles.Y, angles.Z)
+        {
+        }
 
         public Quaternion(double xAngle, double yAngle, double zAngle)
         {
@@ -176,6 +177,7 @@ namespace SudoEngine.Maths
 
             return q;
         }
+
         private static Quaternion ConjugateQuaternion(Quaternion q)
         {
             q.X = -q.X;
@@ -316,7 +318,6 @@ namespace SudoEngine.Maths
 
         public override string ToString() => $"Quaternion ({Math.Round(X, 4)}; {Math.Round(Y, 4)}; {Math.Round(Z, 4)}; {Math.Round(W, 4)})";
 
-
         public static Vector3D operator *(Quaternion rotation, Vector3D point)
         {
             double X = rotation.X * 2.0D;
@@ -338,7 +339,6 @@ namespace SudoEngine.Maths
             res.Z = (XZ - WY) * point.X + (YZ + WX) * point.Y + (1.0D - (XX + YY)) * point.Z;
             return res;
         }
-
 
         public static explicit operator Vector4D(Quaternion q) => new Vector4D(q.X, q.Y, q.Z, q.W);
     }

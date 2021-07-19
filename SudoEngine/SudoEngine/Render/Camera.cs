@@ -1,8 +1,7 @@
 ﻿using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using System.Collections.Generic;
-using SudoEngine.Maths;
 using SudoEngine.Core;
+using SudoEngine.Maths;
+using System.Collections.Generic;
 
 namespace SudoEngine.Render
 {
@@ -13,7 +12,6 @@ namespace SudoEngine.Render
         Up,
         Down
     }
-
 
     public sealed class Camera : BaseObject
     {
@@ -39,12 +37,15 @@ namespace SudoEngine.Render
                 case Direcction.Left:
                     MoveVector = new Vector4D(MoveVector.X - value, MoveVector.YZW);
                     break;
+
                 case Direcction.Right:
                     MoveVector = new Vector4D(MoveVector.X + value, MoveVector.YZW);
                     break;
+
                 case Direcction.Up:
                     MoveVector = new Vector4D(MoveVector.X, MoveVector.Y + value, MoveVector.Y, MoveVector.W);
                     break;
+
                 case Direcction.Down:
                     MoveVector = new Vector4D(MoveVector.X, MoveVector.Y - value, MoveVector.Y, MoveVector.W);
                     break;

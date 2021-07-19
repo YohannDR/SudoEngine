@@ -5,6 +5,7 @@ namespace SudoEngine.Maths
     public static class FMath
     {
         public const float ToRadians = (float)Math.PI / 180.0f;
+
         public static double CopySign(double receiver, double sender)
         {
             if (double.IsNaN(receiver)) return double.NaN;

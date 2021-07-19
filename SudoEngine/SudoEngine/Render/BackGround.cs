@@ -4,7 +4,6 @@ using SudoEngine.Maths;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Diagnostics;
 
 namespace SudoEngine.Render
 {
@@ -15,12 +14,16 @@ namespace SudoEngine.Render
     {
         /// <summary>Le Layer le plus au fond</summary>
         BackGround,
+
         /// <summary>Le Layer entre le <see cref="PlayerLayer"/> et le <see cref="BackGround"/></summary>
         CloseBackGround,
+
         /// <summary>Le Layer sur lequel se trouve le joueur</summary>
         PlayerLayer,
+
         /// <summary>Le Layer entre le <see cref="PlayerLayer"/> et le <see cref="ForeGround"/></summary>
         CloseForeGround,
+
         /// <summary>Le Layer le plus proche</summary>
         ForeGround
     }
@@ -39,11 +42,15 @@ namespace SudoEngine.Render
 
         /// <summary> Indique le layer sur lequel se trouve le BackGround </summary>
         public Layer Layer { get; private set; }
+
         /// <summary> La texture attaché au BackGround </summary>
         public Texture GFX { get; set; }
+
         /// <summary> Le shader attaché au BackGround </summary>
         public Shader Shader { get; set; }
-        double _transparency = 0;
+
+        private double _transparency = 0;
+
         /// <summary> La transparence du BackGround, entre 0 (opaque) et 1 (complètement transparent) </summary>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public double Transparency
@@ -55,16 +62,20 @@ namespace SudoEngine.Render
                 _transparency = value;
             }
         }
+
         /// <summary> Indique si oui ou non le BackGround doit être render (<see langword="true"/> par défaut)</summary>
         public bool Visible { get; set; } = true;
+
         /// <summary> La taille (en écrans) du BackGround </summary>
         public Vector2D Size { get; set; }
+
         /// <summary> La largeur (en écrans) du BackGround </summary>
         public double Width
         {
             get => Size.X;
             set { Size = new Vector2D(value, Size.Y); CalculateVertices(); }
         }
+
         /// <summary> La hauteur (en écrans) du BackGround </summary>
         public double Height
         {
@@ -72,18 +83,21 @@ namespace SudoEngine.Render
             set { Size = new Vector2D(Size.X, value); CalculateVertices(); }
         }
 
-        int VAO { get; set; }
-        int VBO { get; set; }
-        int EBO { get; set; }
-        double[] Vertices { get; set; } = new double[]
+        private int VAO { get; set; }
+        private int VBO { get; set; }
+        private int EBO { get; set; }
+
+        private double[] Vertices { get; set; } = new double[]
         {
             0, 1, 0, 1, 1,
             -1, 1, 0, 0, 1,
             -1, 0, 0, 0, 0,
             0, 0, 0, 1, 0
         };
-        
-        readonly uint[] Indices =
+
+        private Mesh Mesh { get; set; } = null;
+
+        private uint[] Indices { get; set; } =
         {
             0, 1, 2,
             2, 3, 0
@@ -106,11 +120,15 @@ namespace SudoEngine.Render
         /// <summary>Supprime le BackGround</summary>
         public override void Delete()
         {
-            GFX.Delete();
-            Shader.Delete();
-            GL.DeleteBuffer(VBO);
-            GL.DeleteBuffer(EBO);
-            GL.DeleteVertexArray(VAO);
+            if (Mesh) Mesh.Delete();
+            else
+            {
+                GFX.Delete();
+                Shader.Delete();
+                GL.DeleteBuffer(VBO);
+                GL.DeleteBuffer(EBO);
+                GL.DeleteVertexArray(VAO);
+            }
             AllBackGrounds[(int)Layer] = null;
             base.Delete();
         }
@@ -120,9 +138,17 @@ namespace SudoEngine.Render
         {
             if (Visible && Transparency != 1)
             {
-                Bind();
-                if (Transparency != 0) Shader.SetAttribute("transparency", Transparency);
-                GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0);
+                if (Mesh)
+                {
+                    if (Transparency != 0) Mesh.Shader.SetAttribute("transparency", Transparency);
+                    Mesh.Render();
+                }
+                else
+                {
+                    Bind();
+                    if (Transparency != 0) Shader.SetAttribute("transparency", Transparency);
+                    GL.DrawElements(PrimitiveType.Triangles, Indices.Length, DrawElementsType.UnsignedInt, 0);
+                }
             }
         }
 
@@ -145,19 +171,18 @@ namespace SudoEngine.Render
         }
 
         /// <summary>
-        /// Génère le BackGround avec les paramètres données (<see cref="Render.Layer"/>, <see cref="Render.Shader"/>, <see cref="int[,]"/> et <see cref="Bitmap"/>)
+        /// Génère le BackGround avec les paramètres données (<see cref="Render.Layer"/>, <see cref="Render.Shader"/>, <see langword="int[]"/> et <see cref="Bitmap"/>)
         /// </summary>
         /// <param name="layer">Le <see cref="Render.Layer"/> sur lequel se trouve le BackGround</param>
         /// <param name="shader">Le <see cref="Render.Shader"/> associé au BackGround</param>
-        /// <param name="data">Array d'<see cref="int[,]"/> représentant les données des tiles</param>
+        /// <param name="data">Array d'<see langword="int[]"/> représentant les données des tiles</param>
         /// <param name="tileset"><see cref="Bitmap"/> représentant le tileset</param>
-        public void Generate(Layer layer, Shader shader, int[,] data, Bitmap tileset)
+        public void Generate(Layer layer, Shader shader, int[] data, Bitmap tileset, Vector2D size)
         {
             Layer = layer;
             Shader = shader;
-            Generate(data, tileset);
+            Generate(data, tileset, size);
             AllBackGrounds[(int)Layer] = this;
-            InitGL();
         }
 
         /// <summary>
@@ -172,62 +197,36 @@ namespace SudoEngine.Render
         }
 
         /// <summary>
-        /// Génère le BackGround avec les paramètres données (<see cref="int[,]"/> et <see cref="Bitmap"/>)
+        /// Génère le BackGround avec les paramètres données (<see langword="int[]"/> et <see cref="Bitmap"/>)
         /// </summary>
-        /// <param name="data">Array d'<see cref="int[,]"/> représentant les données des tiles</param>
+        /// <param name="data">Array d'<see langword="int[]"/> représentant les données des tiles</param>
         /// <param name="tileset"><see cref="Bitmap"/> représentant le tileset</param>
-        public void Generate(int[,] data, Bitmap tileset)
+        public void Generate(int[] data, Bitmap tileset, Vector2D size)
         {
-            Bitmap Gfx = new Bitmap(data.GetLength(1) * 32, data.GetLength(0) * 32);
-            Size = new Vector2D(Gfx.Width / (double)1920, Gfx.Height / (double)1080);
+            Mesh = new Mesh();
+            Texture a = new Texture();
+            Size = size;
+            a.LoadFromBitmap(tileset, true);
 
-            CalculateVertices();
-
-            int tilePerRow = tileset.Width / 32;
-            for (int x = 0; x < data.GetLength(0); x++)
+            Vector3D[] vertices = new Vector3D[]
             {
-                for (int y = 0; y < data.GetLength(1); y++)
-                {
-                    int row = data[x, y] / tilePerRow;
-                    for (int a = 0; a < 32; a++)
-                    {
-                        for (int b = 0; b < 32; b++)
-                        {
-                            Gfx.SetPixel(y * 32 + a, x * 32 + b, tileset.GetPixel((data[x, y] - row * tilePerRow) * 32 + a, row * 32 + b));
-                        }
-                    }
-                }
-            }
-            Texture tex = new Texture();
-            tex.LoadFromBitmap(Gfx, true);
-            GFX = tex;
+                new Vector3D(0)
+            };
+
+            Vector2D[] uvs = new Vector2D[]
+            {
+                new Vector2D(0)
+            };
+
+            uint[] indices = new uint[]
+            {
+                0
+            };
+
+            Mesh.Generate(Shader, a, vertices, uvs, indices);
         }
 
-        /// <summary>Supprime une tile du BackGround (utilisation déconseillée)</summary>
-        public void DeleteTile(int index)
-        {
-            int tilePerRow = GFX.Width / 32;
-            Log.Info(ConvertIndex(index));
-            int row = index / tilePerRow;
-            byte[] data = GFX.Data;
-            int f = index % tilePerRow * 128;
-            int e = row * 4096 * tilePerRow;
-            for (int a = 0; a < 32; a++)
-            {
-                int d = a * tilePerRow * 128;
-                for (int b = 0; b < 32; b++)
-                {
-                    int c = b * 4;
-                    data[f + e + c + d] = 0;
-                    data[f + e + c + d + 1] = 0;
-                    data[f + e + c + d + 2] = 0;
-                    data[f + e + c + d + 3] = 1;
-                }
-            }
-            GFX.Generate(data);
-        }
-
-        void InitGL()
+        private void InitGL()
         {
             VAO = GL.GenVertexArray();
             VBO = GL.GenBuffer();
@@ -238,7 +237,7 @@ namespace SudoEngine.Render
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
             GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(double), Vertices, BufferUsageHint.StaticDraw);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, 6 * sizeof(uint), Indices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, Indices.Length * sizeof(uint), Indices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
@@ -247,14 +246,7 @@ namespace SudoEngine.Render
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
         }
 
-        int ConvertIndex(int index)
-        {
-            int tilePerRow = GFX.Width / 32;
-            int tilePerColumn = GFX.Height / 32;
-            return index;
-        }
-
-        void CalculateVertices()
+        private void CalculateVertices()
         {
             Vertices[0] = -1 + Width * 2;
             Vertices[11] = 1 - Height * 2;

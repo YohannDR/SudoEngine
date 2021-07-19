@@ -1,7 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using SudoEngine.Core;
 using SudoEngine.Maths;
-using System;
 using System.Collections.Generic;
 
 namespace SudoEngine.Render
@@ -22,17 +21,11 @@ namespace SudoEngine.Render
         public Vector2D[] UVs { get; set; }
         public double[] Vertex { get; set; }
 
-        int VBO { get; set; }
-        int VAO { get; set; }
-        int EBO { get; set; }
+        private int VBO { get; set; }
+        private int VAO { get; set; }
+        private int EBO { get; set; }
 
-        readonly uint[] Indices =
-        {
-            0, 1, 2,
-            2, 3, 0,
-            0, 4, 5,
-            5, 1, 0
-        };
+        public uint[] Indices { get; set; }
 
         /// <summary>
         /// Crée un nouvel objet <see cref="Mesh"/> et appele le constructeur de <see cref="BaseObject"/>
@@ -40,7 +33,7 @@ namespace SudoEngine.Render
         /// <param name="name">Le nom interne de l'objet (Mesh par défaut)</param>
         public Mesh(string name = "Mesh") : base(name) => Meshes.Add(this);
 
-        public void Generate(Shader shader, Texture gfx, Vector3D[] vertices, Vector2D[] uvs)
+        public void Generate(Shader shader, Texture gfx, Vector3D[] vertices, Vector2D[] uvs, uint[] indices)
         {
             Shader = shader;
             GFX = gfx;
@@ -62,7 +55,7 @@ namespace SudoEngine.Render
             }
 
             Vertex = vertex;
-
+            Indices = indices;
             InitGL();
         }
 
@@ -73,8 +66,8 @@ namespace SudoEngine.Render
             GFX.Bind();
             GL.BindVertexArray(VAO);
         }
-        
-        void InitGL()
+
+        private void InitGL()
         {
             VBO = GL.GenBuffer();
             VAO = GL.GenVertexArray();
@@ -85,13 +78,15 @@ namespace SudoEngine.Render
             GL.BufferData(BufferTarget.ArrayBuffer, Vertex.Length * sizeof(double), Vertex, BufferUsageHint.StaticDraw);
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, 6 * sizeof(uint), Indices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, Indices.Length * sizeof(uint), Indices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Double, false, 5 * sizeof(double), 0);
 
             GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Double, false, 5 * sizeof(double), 3 * sizeof(double));
+            Vertices = null;
+            UVs = null;
         }
 
         /// <summary>Render le Mesh</summary>
@@ -102,7 +97,7 @@ namespace SudoEngine.Render
         }
 
         /// <summary>Render tous les Mesh non <see langword="null"/></summary>
-        public static void RenderAll() { for (int i = 0; i < Meshes.Count; i++) if(Meshes[i]) Meshes[i].Render(); }
+        public static void RenderAll() { for (int i = 0; i < Meshes.Count; i++) if (Meshes[i]) Meshes[i].Render(); }
 
         /// <summary>Supprime le Mesh</summary>
         public override void Delete()

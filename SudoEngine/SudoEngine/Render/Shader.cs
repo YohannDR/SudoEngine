@@ -16,6 +16,7 @@ namespace SudoEngine.Render
     {
         /// <summary>Liste de tous les <see cref="Shader"/> actuellement chargés en mémoire</summary>
         public static List<Shader> AllShaders { get; set; } = new List<Shader>();
+
         /// <summary>Handle du shader (nécessaire au fonctionnement d'OpenGL)</summary>
         public int Handle { get; private set; }
 
@@ -25,7 +26,7 @@ namespace SudoEngine.Render
         /// <param name="name">Le nom interne de l'objet (Shader par défaut)</param>
         public Shader(string name = "Shader") : base(name) => AllShaders.Add(this);
 
-        void Generate(string VertexSource, string FragmentSource, string GeometrySource)
+        private void Generate(string VertexSource, string FragmentSource, string GeometrySource)
         {
             int Vertex = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(Vertex, VertexSource);
@@ -219,7 +220,7 @@ namespace SudoEngine.Render
         /// <returns>L'empllacement de la variable</returns>
         public int GetAttribLocation(string name) => GL.GetUniformLocation(Handle, name);
 
-        void CheckCompileError(int Object, string type)
+        private void CheckCompileError(int Object, string type)
         {
             string ErrorLog = GL.GetShaderInfoLog(Object);
             if (ErrorLog != string.Empty)

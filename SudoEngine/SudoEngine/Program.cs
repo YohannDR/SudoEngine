@@ -1,4 +1,5 @@
 ﻿#if DEBUG
+
 using OpenTK;
 
 namespace SudoEngine
@@ -15,4 +16,5 @@ namespace SudoEngine
         }
     }
 }
+
 #endif

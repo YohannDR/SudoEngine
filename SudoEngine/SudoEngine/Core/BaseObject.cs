@@ -7,10 +7,13 @@ namespace SudoEngine.Core
     {
         /// <summary>Nom interne de l'objet</summary>
         protected internal string Name { get; private set; }
+
         /// <summary><see cref="Guid"/> servant d'ID interne de l'objet</summary>
         protected internal Guid ID { get; private set; }
+
         /// <summary><see cref="bool"/> indiquant si l'objet est activé ou non (<see langword="true"/> par défaut)</summary>
         protected internal bool Enabled { get; private set; } = true;
+
         /// <summary><see cref="bool"/> indiquant si l'objet est supprimé ou non (<see langword="false"/> par défaut)</summary>
         protected internal bool Deleted { get; private set; } = false;
 

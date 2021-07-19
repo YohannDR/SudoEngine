@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using System.Collections.Generic;
 using SudoEngine.Core;
 using SudoEngine.Maths;
+using System.Collections.Generic;
 
 namespace SudoEngine.Render
 {
@@ -32,9 +32,9 @@ namespace SudoEngine.Render
         public Vector2D Size { get; set; }
         public double SizeOverLifeTime { get; set; }
         public int ParticlePerCycle { get; set; }
-        int LastUsedParticle { get; set; }
+        private int LastUsedParticle { get; set; }
 
-        int VAO;
+        private int VAO;
 
         public ParticleEffect(string name = "ParticleEffect") : base(name) => AllParticlesEffects.Add(this);
 
@@ -82,9 +82,9 @@ namespace SudoEngine.Render
         {
             GFX.Bind();
             Shader.Use();
-        }  
+        }
 
-        int FirstUnused()
+        private int FirstUnused()
         {
             for (int i = LastUsedParticle; i < MaxParticles; i++)
             {
@@ -98,8 +98,7 @@ namespace SudoEngine.Render
             return 0;
         }
 
-
-        unsafe void UpdateParticle(Particle* p)
+        private unsafe void UpdateParticle(Particle* p)
         {
             Particle P = *p;
             P.Age -= 0.1;
@@ -107,9 +106,8 @@ namespace SudoEngine.Render
             *p = P;
         }
 
-        unsafe void NewParticle(Particle* p)
+        private unsafe void NewParticle(Particle* p)
         {
-            
         }
 
         public override void Delete()
