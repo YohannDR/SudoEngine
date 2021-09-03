@@ -4,7 +4,7 @@ Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
 
 ## Comment utiliser le moteur :
 
-1 : Télécharger la [release](https://github.com/YohannDR/SudoEngine/releases) la plus récente dans (le .7z ou les 4 fichiers indépendamment) ou compiler le projet en Release, en bibliothèque de classes
+1 : Télécharger la [release](https://github.com/YohannDR/SudoEngine/releases) la plus récente (le .7z ou les 4 fichiers indépendamment) ou compiler le projet en Release, en bibliothèque de classes
 
 2 : Créer un nouveau projet console C# en .NET FrameWork 4.8
 
