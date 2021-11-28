@@ -1,5 +1,5 @@
 # SudoEngine
-Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL)
+Moteur de jeu 2D en C# avec OpenTK (OpenGL et OpenAL) **PROJET STOPPÉ**
 
 
 ## Comment utiliser le moteur :
